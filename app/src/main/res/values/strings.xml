@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Inksell</string>
 
-    <string name="hello_world">Inksell</string>
+    <string name="hello_world">Hello Inksell!</string>
     <string name="action_settings">Settings</string>
+    <string name="register">Register</string>
+    <string name="verify">Verify</string>
+    <string name="already">Already Registered ?</string>
+    <string name="title_activity_register_activity">Register</string>
+    <string name="title_activity_verify_activity">Verify</string>
+    <string name="title_activity_already_activity">Already Registered</string>
 </resources>

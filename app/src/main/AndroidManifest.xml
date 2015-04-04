@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="inksell.inksell" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,12 +11,37 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".StartPage"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="inksell.login.register_activity"
+            android:label="@string/title_activity_register_activity"
+            android:parentActivityName=".StartPage" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="inksell.inksell.StartPage" />
+        </activity>
+        <activity
+            android:name="inksell.login.verify_activity"
+            android:label="@string/title_activity_verify_activity"
+            android:parentActivityName=".StartPage" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="inksell.inksell.StartPage" />
+        </activity>
+        <activity
+            android:name="inksell.login.already_activity"
+            android:label="@string/title_activity_already_activity" >
+            android:parentActivityName=".StartPage" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="inksell.inksell.StartPage" />
         </activity>
     </application>
 
