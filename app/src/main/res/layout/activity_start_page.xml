@@ -1,11 +1,58 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".StartPage">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:id="@+id/layoutContainer" android:orientation="horizontal"
+    android:background="@drawable/splash">
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.15">
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.7">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <!-- This is the part that's 70% of the total width. I'm inserting a LinearLayout and buttons.-->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
 
-</RelativeLayout>
+            <Button
+                android:text="@string/register"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                style="@style/ButtonDarkRed"
+                android:onClick="register_click">
+            </Button>
+            <Button
+                android:layout_marginTop="10px"
+                android:text="@string/verify"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                style="@style/ButtonLightRed"
+                android:onClick="verify_click">
+            </Button>
+            <Button
+                android:text="@string/already"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                style="?android:attr/borderlessButtonStyle"
+                android:onClick="already_click">
+            </Button>
+
+        </LinearLayout>
+        <!-- 70% Width End-->
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.15">
+    </RelativeLayout>
+</LinearLayout>

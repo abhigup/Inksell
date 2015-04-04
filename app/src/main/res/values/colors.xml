@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<color name="white">#ffffffff</color>
+    <color name="RedDark">#B71C1C</color>
+    <color name="RedLight">#C62828</color>
+
+    <color name="TitlePrimaryDark">#01579B</color>
+    <color name="TitlePrimary">#0277BD</color>
+</resources>
