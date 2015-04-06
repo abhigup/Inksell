@@ -9,21 +9,23 @@
 
     <style name="ButtonDarkRed">
         <item name="android:textColor">@color/white</item>
-        <item name="android:padding">0dp</item>
         <item name="android:minWidth">88dp</item>
         <item name="android:minHeight">36dp</item>
-        <item name="android:layout_margin">3dp</item>
         <item name="android:background">@drawable/btn_darkred</item>
     </style>
 
     <style name="ButtonLightRed">
         <item name="android:textColor">@color/white</item>
-        <item name="android:padding">0dp</item>
         <item name="android:minWidth">88dp</item>
         <item name="android:minHeight">36dp</item>
-        <item name="android:layout_margin">3dp</item>
         <item name="android:background">@drawable/btn_lightred</item>
     </style>
 
+    <style name="ButtonPrimary">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:minWidth">88dp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:background">@drawable/btn_primary</item>
+    </style>
 
 </resources>
