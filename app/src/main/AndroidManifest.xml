@@ -21,27 +21,15 @@
         </activity>
         <activity
             android:name="inksell.login.register_activity"
-            android:label="@string/title_activity_register_activity"
-            android:parentActivityName=".StartPage" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="inksell.inksell.StartPage" />
+            android:label="@string/title_activity_register_activity">
         </activity>
         <activity
             android:name="inksell.login.verify_activity"
-            android:label="@string/title_activity_verify_activity"
-            android:parentActivityName=".StartPage" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="inksell.inksell.StartPage" />
+            android:label="@string/title_activity_verify_activity" >
         </activity>
         <activity
             android:name="inksell.login.already_activity"
             android:label="@string/title_activity_already_activity" >
-            android:parentActivityName=".StartPage" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="inksell.inksell.StartPage" />
         </activity>
     </application>
 
