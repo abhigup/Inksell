@@ -10,6 +10,8 @@ import android.widget.Spinner;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import inksell.inksell.R;
 import models.CompanyEntity;
 import models.LocationEntity;
@@ -28,21 +30,27 @@ public class register_activity extends ActionBarActivity implements AdapterView.
     String name;
     String email;
 
+    @InjectView(R.id.spncompany)
+    Spinner companySpinner;
+
+    @InjectView(R.id.spnlocation)
+    Spinner locationSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_activity);
+
+        ButterKnife.inject(this);
 
         populateCompanies();
 
         companyAdapter = new ArrayAdapter(this, R.layout.spinner_item);
         locationAdapter = new ArrayAdapter(this, R.layout.spinner_item);
 
-        Spinner companySpinner = (Spinner) findViewById(R.id.spncompany);
         companySpinner.setAdapter(companyAdapter);
         companySpinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
-        Spinner locationSpinner = (Spinner) findViewById(R.id.spnlocation);
         locationSpinner.setAdapter(locationAdapter);
         locationSpinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
