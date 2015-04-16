@@ -19,8 +19,8 @@ public interface IGetServices {
     @GET("/getLocations/{companyId}")
     void getLocations(@Path("companyId") int companyId, Callback<List<LocationEntity>> callback);
 
-    @GET("/verifyUser/{guid}/{code}/0")
-    void verifyNewUser(@Path("guid") String guid, @Path("code") String code, Callback<Integer> callback);
+    @GET("/verifyUser/{guid}/{code}/{isAlreadyRegistered}")
+    void verifyNewUser(@Path("guid") String guid, @Path("code") String code, @Path("isAlreadyRegistered") int isAlreadyRegistered, Callback<Integer> callback);
 
     @GET("/registerUserAgain/{email}")
     void registerUserAgain(@Path("email") String email, Callback<String> callback);

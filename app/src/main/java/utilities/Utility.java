@@ -2,7 +2,11 @@ package utilities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 
+import com.google.gson.Gson;
+
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -59,5 +63,34 @@ public class Utility {
 
     public static String GetResourceString(int resId) {
         return ConfigurationManager.CurrentActivityContext.getString(resId);
+    }
+
+    public static void NavigateTo(Class clazz)
+    {
+        NavigateTo(clazz, null);
+    }
+
+    public static void NavigateTo(Class clazz, Map<String, Object> map)
+    {
+        Intent intent = new Intent(ConfigurationManager.CurrentActivityContext, clazz);
+        if(map!=null) {
+            intent.putExtra("intentExtra", GetJSONString(map));
+        }
+        ConfigurationManager.CurrentActivityContext.startActivity(intent);
+    }
+
+
+
+    public static String GetJSONString(Object entity)
+    {
+        Gson usergson=new Gson();
+        String jsonString= usergson.toJson(entity);
+        return jsonString;
+    }
+
+    public static <T> T GetObjectFromJSON(String jsonString, Class<T> clazz)
+    {
+        Gson gson=new Gson();
+        return gson.fromJson(jsonString, clazz);
     }
 }

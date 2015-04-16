@@ -1,25 +1,27 @@
 package inksell.login;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import Constants.StorageConstants;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import inksell.inksell.Home;
 import inksell.inksell.R;
+import models.BaseActionBarActivity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import services.RestClient;
-import utilities.ConfigurationManager;
 import utilities.LocalStorageHandler;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
-public class verify_activity extends ActionBarActivity {
+public class verify_activity extends BaseActionBarActivity {
 
     String guid;
+    boolean isAlreadyRegistered = false;
 
     @InjectView(R.id.verifyTextCode)
     TextView txtCode;
@@ -31,13 +33,17 @@ public class verify_activity extends ActionBarActivity {
 
         ButterKnife.inject(this);
 
-        ConfigurationManager.CurrentActivityContext = this;
-
         String uuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
         if(!Utility.IsStringNullorEmpty(uuid))
         {
             guid = uuid;
         }
+    }
+
+    @Override
+    protected void setIntentExtras()
+    {
+        isAlreadyRegistered = Boolean.parseBoolean(this.intentExtraMap.get("isAlreadyRegistered").toString());
     }
 
     public void verify_click(View view) {
@@ -50,10 +56,13 @@ public class verify_activity extends ActionBarActivity {
         {
             Utility.ShowInfoDialog(R.string.ErrorVerifyEmptyCode);
         }
-        RestClient.get().verifyNewUser(guid, txtCode.getText().toString(), new Callback<Integer>() {
+        RestClient.get().verifyNewUser(guid, txtCode.getText().toString(), isAlreadyRegistered?1:0, new Callback<Integer>() {
             @Override
             public void success(Integer integer, Response response) {
-                Utility.ShowInfoDialog(integer.toString());
+                if(isAlreadyRegistered && ResponseStatus.values()[integer] == ResponseStatus.UserSuccessfullyVerified)
+                {
+                    Utility.NavigateTo(Home.class);
+                }
             }
 
             @Override

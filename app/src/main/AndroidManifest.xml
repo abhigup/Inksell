@@ -21,7 +21,7 @@
         </activity>
         <activity
             android:name="inksell.login.register_activity"
-            android:label="@string/title_activity_register_activity">
+            android:label="@string/title_activity_register_activity" >
         </activity>
         <activity
             android:name="inksell.login.verify_activity"
@@ -30,6 +30,14 @@
         <activity
             android:name="inksell.login.already_activity"
             android:label="@string/title_activity_already_activity" >
+        </activity>
+        <activity
+            android:name=".Home"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name="inksell.login.UserDetails"
+            android:label="@string/title_activity_user_details" >
         </activity>
     </application>
 

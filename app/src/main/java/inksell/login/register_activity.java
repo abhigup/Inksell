@@ -1,8 +1,6 @@
 package inksell.login;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,9 +9,11 @@ import android.widget.Spinner;
 
 import java.util.List;
 
+import Constants.StorageConstants;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import inksell.inksell.R;
+import models.BaseActionBarActivity;
 import models.CompanyEntity;
 import models.LocationEntity;
 import models.VerifyUserEntity;
@@ -21,9 +21,10 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import services.RestClient;
-import utilities.ConfigurationManager;
+import utilities.LocalStorageHandler;
+import utilities.Utility;
 
-public class register_activity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
+public class register_activity extends BaseActionBarActivity implements AdapterView.OnItemSelectedListener {
 
     ArrayAdapter companyAdapter;
     ArrayAdapter locationAdapter;
@@ -44,8 +45,6 @@ public class register_activity extends ActionBarActivity implements AdapterView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_activity);
-
-        ConfigurationManager.CurrentActivityContext = this;
 
         ButterKnife.inject(this);
 
@@ -91,10 +90,10 @@ public class register_activity extends ActionBarActivity implements AdapterView.
         RestClient.post().registerUser(entity, new Callback<String>() {
             @Override
             public void success(String s, Response response) {
-                Intent intent = new Intent(getBaseContext(), verify_activity.class);
-                    intent.putExtra("guid", s);
-                    startActivity(intent);
-
+                if(Utility.GetUUID(s)!=null) {
+                    LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
+                    Utility.NavigateTo(verify_activity.class);
+                }
             }
 
             @Override

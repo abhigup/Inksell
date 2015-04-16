@@ -14,6 +14,7 @@
         android:inputType="textPersonName"
         android:layout_width="250dp"
         android:hint="Name"
+        android:singleLine="true"
         android:ems="10"
         android:id="@+id/txtname"
         android:layout_marginTop="20dp" />
@@ -41,7 +42,7 @@
         android:layout_marginTop="10dp"
         android:id="@+id/txtemail"
         android:hint="e-mail"
-        android:singleLine="false" />
+        android:singleLine="true" />
 
     <Button
         android:text="@string/register"

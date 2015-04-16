@@ -1,7 +1,6 @@
 package inksell.inksell;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,6 +8,7 @@ import inksell.login.already_activity;
 import inksell.login.register_activity;
 import inksell.login.verify_activity;
 import utilities.ConfigurationManager;
+import utilities.Utility;
 
 public class StartPage extends Activity {
 
@@ -17,21 +17,18 @@ public class StartPage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_page);
 
-        ConfigurationManager.CurrentActivityContext = getApplicationContext();
+        ConfigurationManager.CurrentActivityContext = this;
     }
 
     public void register_click(View view) {
-        Intent intent = new Intent(this, register_activity.class);
-        startActivity(intent);
+        Utility.NavigateTo(register_activity.class);
     }
 
     public void verify_click(View view) {
-        Intent intent = new Intent(this, verify_activity.class);
-        startActivity(intent);
+        Utility.NavigateTo(verify_activity.class);
     }
 
     public void already_click(View view) {
-        Intent intent = new Intent(this, already_activity.class);
-        startActivity(intent);
+        Utility.NavigateTo(already_activity.class);
     }
 }
