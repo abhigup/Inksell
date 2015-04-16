@@ -21,6 +21,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import services.RestClient;
+import utilities.ConfigurationManager;
 
 public class register_activity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
 
@@ -43,6 +44,8 @@ public class register_activity extends ActionBarActivity implements AdapterView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_activity);
+
+        ConfigurationManager.CurrentActivityContext = this;
 
         ButterKnife.inject(this);
 

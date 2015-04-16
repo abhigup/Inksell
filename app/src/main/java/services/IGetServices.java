@@ -13,12 +13,15 @@ import retrofit.http.Path;
  */
 public interface IGetServices {
 
-    @GET("/getcompanies")
+    @GET("/getCompanies")
     void getCompanies(Callback<List<CompanyEntity>> callback);
 
-    @GET("/getlocations/{companyId}")
+    @GET("/getLocations/{companyId}")
     void getLocations(@Path("companyId") int companyId, Callback<List<LocationEntity>> callback);
 
-    @GET("/verifyuser/{guid}/{code}/0")
+    @GET("/verifyUser/{guid}/{code}/0")
     void verifyNewUser(@Path("guid") String guid, @Path("code") String code, Callback<Integer> callback);
+
+    @GET("/registerUserAgain/{email}")
+    void registerUserAgain(@Path("email") String email, Callback<String> callback);
 }

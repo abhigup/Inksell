@@ -1,40 +1,67 @@
 package inksell.login;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.TextView;
 
+import Constants.StorageConstants;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import inksell.inksell.R;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import services.RestClient;
+import utilities.ConfigurationManager;
+import utilities.LocalStorageHandler;
+import utilities.ResponseStatus;
+import utilities.Utility;
 
 public class already_activity extends ActionBarActivity {
+
+    @InjectView(R.id.AlreadyTextEmail)
+    TextView txtEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_already_activity);
+
+        ConfigurationManager.CurrentActivityContext = this;
+
+        ButterKnife.inject(this);
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_already_activity, menu);
-        return true;
-    }
+    public void submit_click(View view) {
+        String email = txtEmail.getText().toString();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if(email.isEmpty()) {
+            Utility.ShowInfoDialog(R.string.ErrorAlreadyEmptyEmail);
+            return;
         }
 
-        return super.onOptionsItemSelected(item);
+        RestClient.get().registerUserAgain(email, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                if(Utility.GetUUID(s)!=null) {
+                    LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
+                    Intent intent = new Intent(getBaseContext(), verify_activity.class);
+                    intent.putExtra("guid", s);
+                    startActivity(intent);
+                }
+                else if(ResponseStatus.values()[Integer.parseInt(s)] == ResponseStatus.UserNotExists)
+                {
+                    Utility.ShowInfoDialog(R.string.ErrorUserNotExists);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 }

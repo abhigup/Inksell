@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ErrorAlreadyEmptyEmail">Please enter valid email id</string>
+    <string name="ErrorUserNotExists">Email id is not registered. Please register.</string>
+    <string name="ErrorNotRegistered">Please Register yourself.</string>
+    <string name="ErrorVerifyEmptyCode">Verification code cannot be empty.</string>
+</resources>

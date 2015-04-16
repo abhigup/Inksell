@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import inksell.login.*;
+import inksell.login.already_activity;
+import inksell.login.register_activity;
+import inksell.login.verify_activity;
+import utilities.ConfigurationManager;
 
 public class StartPage extends Activity {
 
@@ -13,6 +16,8 @@ public class StartPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_page);
+
+        ConfigurationManager.CurrentActivityContext = getApplicationContext();
     }
 
     public void register_click(View view) {
