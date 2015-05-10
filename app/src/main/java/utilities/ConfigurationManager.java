@@ -7,4 +7,6 @@ import android.content.Context;
  */
 public class ConfigurationManager {
     public static Context CurrentActivityContext;
+
+
 }

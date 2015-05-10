@@ -10,9 +10,9 @@ import butterknife.InjectView;
 import inksell.inksell.Home;
 import inksell.inksell.R;
 import models.BaseActionBarActivity;
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
 import utilities.ResponseStatus;
@@ -56,9 +56,9 @@ public class verify_activity extends BaseActionBarActivity {
         {
             Utility.ShowInfoDialog(R.string.ErrorVerifyEmptyCode);
         }
-        RestClient.get().verifyNewUser(guid, txtCode.getText().toString(), isAlreadyRegistered?1:0, new Callback<Integer>() {
+        RestClient.get().verifyNewUser(guid, txtCode.getText().toString(), isAlreadyRegistered?1:0, new InksellCallback<Integer>() {
             @Override
-            public void success(Integer integer, Response response) {
+            public void onSuccess(Integer integer, Response response) {
                 if(isAlreadyRegistered && ResponseStatus.values()[integer] == ResponseStatus.UserSuccessfullyVerified)
                 {
                     Utility.NavigateTo(Home.class);
@@ -66,7 +66,7 @@ public class verify_activity extends BaseActionBarActivity {
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onFailure(RetrofitError error) {
 
             }
         });

@@ -4,6 +4,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
+import utilities.ConfigurationManager;
 
 /**
  * Created by Abhinav on 05/04/15.
@@ -32,14 +33,16 @@ public class RestClient {
     private static void setupRestClient() {
         RestAdapter.Builder getbuilder = new RestAdapter.Builder()
                 .setEndpoint(ROOT)
-                .setClient(new OkClient(new OkHttpClient()));
+                .setClient(new OkClient(new OkHttpClient()))
+                .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
 
         RestAdapter getRestAdapter = getbuilder.build();
         GET_REST_CLIENT = getRestAdapter.create(IGetServices.class);
 
         RestAdapter.Builder postbuilder = new RestAdapter.Builder()
                 .setEndpoint(ROOT)
-                .setClient(new OkClient(new OkHttpClient()));
+                .setClient(new OkClient(new OkHttpClient()))
+                .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
 
         RestAdapter postRestAdapter = postbuilder.build();
         POST_REST_CLIENT = postRestAdapter.create(IPostServices.class);

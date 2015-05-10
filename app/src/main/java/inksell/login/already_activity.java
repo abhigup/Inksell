@@ -12,12 +12,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import inksell.inksell.R;
 import models.BaseActionBarActivity;
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
-import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class already_activity extends BaseActionBarActivity {
@@ -42,23 +41,19 @@ public class already_activity extends BaseActionBarActivity {
             return;
         }
 
-        RestClient.get().registerUserAgain(email, new Callback<String>() {
+        RestClient.get().registerUserAgain(email, new InksellCallback<String>() {
             @Override
-            public void success(String s, Response response) {
+            public void onSuccess(String s, Response response) {
                 if(Utility.GetUUID(s)!=null) {
                     LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("isAlreadyRegistered", true);
                     Utility.NavigateTo(verify_activity.class, map);
                 }
-                else if(ResponseStatus.values()[Integer.parseInt(s)] == ResponseStatus.UserNotExists)
-                {
-                    Utility.ShowInfoDialog(R.string.ErrorUserNotExists);
-                }
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onFailure(RetrofitError error) {
 
             }
         });

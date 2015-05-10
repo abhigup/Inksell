@@ -20,6 +20,7 @@ import models.VerifyUserEntity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
 import utilities.Utility;
@@ -87,9 +88,9 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
         entity.Username = name.getText().toString();
         entity.CorporateEmail = email.getText().toString();
 
-        RestClient.post().registerUser(entity, new Callback<String>() {
+        RestClient.post().registerUser(entity, new InksellCallback<String>() {
             @Override
-            public void success(String s, Response response) {
+            public void onSuccess(String s, Response response) {
                 if(Utility.GetUUID(s)!=null) {
                     LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
                     Utility.NavigateTo(verify_activity.class);
@@ -97,7 +98,7 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onFailure(RetrofitError error) {
 
             }
         });
@@ -134,6 +135,9 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
         });
     }
 
+    public void cannot_find_click(View view) {
+        Utility.NavigateTo(new_company.class);
+    }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {

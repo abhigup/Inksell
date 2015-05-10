@@ -4,4 +4,11 @@
     <string name="ErrorUserNotExists">Email id is not registered. Please register.</string>
     <string name="ErrorNotRegistered">Please Register yourself.</string>
     <string name="ErrorVerifyEmptyCode">Verification code cannot be empty.</string>
+    <string name="ErrorUnknownResponseStatus">Unknown Error Response Status.</string>
+
+    <string name="error_network">No Network</string>
+    <string name="error_network_http_error">Network Error</string>
+    <string name="error_unknown">Unknown Error</string>
+    <string name="error_no_response">No Response.</string>
+
 </resources>

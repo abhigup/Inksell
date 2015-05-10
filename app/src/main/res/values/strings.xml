@@ -7,6 +7,9 @@
     <string name="verify">Verify</string>
     <string name="submit">Submit</string>
     <string name="already">Already Registered ?</string>
+    <string name="cannot_find">Cannot find company or location ?</string>
+    <string name="register_new_success">Thanks for registering !!\nWe will intimate you soon through email once the above details are verified and registered.</string>
+
     <string name="title_activity_register_activity">Register</string>
     <string name="title_activity_verify_activity">Verify</string>
     <string name="title_activity_already_activity">Already Registered</string>
@@ -21,4 +24,5 @@
 
     <string name="action_example">Example action</string>
     <string name="title_activity_user_details">Profile</string>
+    <string name="title_activity_new_company">Register</string>
 </resources>
