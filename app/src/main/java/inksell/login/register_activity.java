@@ -6,6 +6,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -42,6 +43,9 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
     @InjectView(R.id.txtemail)
     EditText email;
 
+    @InjectView(R.id.txtdomain)
+    TextView domain;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +72,7 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
             @Override
             public void success(List<CompanyEntity> companyEntities, Response response) {
                 companyAdapter.addAll(companyEntities);
+                domain.setText(companyEntities.get(0).companyDomain);
                 populateLocations(companyEntities.get(0));
             }
 
@@ -88,6 +93,14 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
         entity.Username = name.getText().toString();
         entity.CorporateEmail = email.getText().toString();
 
+        if(Utility.IsStringNullorEmpty(entity.Username) ||
+                Utility.IsStringNullorEmpty(entity.CorporateEmail))
+        {
+            Utility.ShowInfoDialog(R.string.ErrorEmptyFields);
+            return;
+        }
+
+        entity.CorporateEmail = entity.CorporateEmail + domain.getText();
         RestClient.post().registerUser(entity, new InksellCallback<String>() {
             @Override
             public void onSuccess(String s, Response response) {
@@ -109,6 +122,7 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
         switch (parent.getId()) {
             case R.id.spncompany: {
                 CompanyEntity entity = (CompanyEntity) parent.getSelectedItem();
+                domain.setText(entity.companyDomain);
                 locationAdapter.clear();
                 populateLocations(entity);
                 break;

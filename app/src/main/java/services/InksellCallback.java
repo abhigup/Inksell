@@ -1,5 +1,6 @@
 package services;
 
+import inksell.inksell.R;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -20,10 +21,19 @@ public abstract class InksellCallback<T> implements Callback<T> {
     @Override
     public void success(T t, Response response)
     {
+        if(t==null)
+        {
+            Utility.ShowInfoDialog(R.string.ErrorSomeErrorOccured);
+            return;
+        }
+
         if(Utility.isInteger(t.toString()))
         {
             ResponseStatus responseStatus = ResponseStatus.values()[Integer.parseInt(t.toString())];
-            Utility.ShowInfoDialog(Utility.GetResponseError(responseStatus));
+            if(Utility.ShouldProcessFurtherAndShowResponseError(responseStatus))
+            {
+                this.onSuccess(t, response);
+            }
         }
         else {
             this.onSuccess(t, response);

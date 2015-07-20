@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
+import Constants.AppData;
+import Constants.StorageConstants;
 import inksell.login.already_activity;
 import inksell.login.register_activity;
 import inksell.login.verify_activity;
 import utilities.ConfigurationManager;
+import utilities.LocalStorageHandler;
 import utilities.Utility;
 
 public class StartPage extends Activity {
@@ -18,6 +21,13 @@ public class StartPage extends Activity {
         setContentView(R.layout.activity_start_page);
 
         ConfigurationManager.CurrentActivityContext = this;
+
+        if(Utility.GetUUID(LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class))!=null
+            && LocalStorageHandler.GetData(StorageConstants.UserVerified, boolean.class)==true)
+        {
+            AppData.UserGuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
+            Utility.NavigateTo(Home.class, true);
+        }
     }
 
     public void register_click(View view) {

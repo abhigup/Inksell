@@ -3,6 +3,7 @@ package utilities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import inksell.inksell.R;
@@ -63,6 +65,12 @@ public class Utility {
         );
     }
 
+    public final static int generateRandomColour() {
+
+        Random r = new Random();
+        return Color.argb(200,r.nextInt(100),r.nextInt(100),r.nextInt(100));
+    }
+
     public static UUID GetUUID(String str)
     {
         try{
@@ -104,15 +112,27 @@ public class Utility {
         NavigateTo(clazz, null);
     }
 
+    public static void NavigateTo(Class clazz, boolean clearStack)
+    {
+        NavigateTo(clazz, null, clearStack);
+    }
+
     public static void NavigateTo(Class clazz, Map<String, Object> map)
     {
+        NavigateTo(clazz, map, false);
+    }
+
+    public static void NavigateTo(Class clazz, Map<String, Object> map, boolean clearStack)
+    {
         Intent intent = new Intent(ConfigurationManager.CurrentActivityContext, clazz);
+        if(clearStack) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
         if(map!=null) {
             intent.putExtra("intentExtra", GetJSONString(map));
         }
         ConfigurationManager.CurrentActivityContext.startActivity(intent);
     }
-
 
 
     public static String GetJSONString(Object entity)
@@ -167,14 +187,151 @@ public class Utility {
         }
     }
 
-    public static int GetResponseError(ResponseStatus responseStatus)
+    public static boolean ShouldProcessFurtherAndShowResponseError(ResponseStatus responseStatus)
     {
+        int displayMessage;
+        boolean processFurther = false;
         switch (responseStatus)
         {
+            case UserNotRegistered:
+                displayMessage = R.string.ErrorUserNotExists;
+                break;
+            case UserAlreadyExist:
+                displayMessage = R.string.ErrorUserAlreadyExist;
+                break;
+            case UserAlreadyRegistered:
+                displayMessage = R.string.ErrorUserAlreadyRegistered;
+                break;
+            case UserAlreadyVerified:
+                displayMessage = R.string.ErrorUserAlreadyVerified;
+                break;
+            case UserSuccessfullyVerified:
+                displayMessage = 1;
+                processFurther = true;
+                break;
+            case WrongVerificationCode:
+                displayMessage = R.string.ErrorWrongVerificationCode;
+                break;
+            case SomeErrorOccured:
+                displayMessage = R.string.ErrorSomeErrorOccured;
+                break;
+            case PartialUserAddedSuccess:
+                displayMessage = 1;
+                break;
+            case PartialUserNotAdded:
+                displayMessage = -1;
+                break;
+            case ErrorInTransferringDataInVUTable:
+                displayMessage = -1;
+                break;
+            case UserTableUpdateSuccess:
+                displayMessage = 1;
+                break;
+            case UserTableNotUpdated:
+                displayMessage = -1;
+                break;
+            case UserAddedSuccess:
+                displayMessage = R.string.SuccessUserAddedSuccess;
+                processFurther = true;
+                break;
+            case UserAddedFailed:
+                displayMessage = R.string.ErrorUserAddedFailed;
+                break;
+            case UserNotAuthorized:
+                displayMessage = R.string.ErrorUserNotAuthorized;
+                break;
+            case PostAddedSuccess:
+                displayMessage = R.string.SuccessPostAddedSuccess;
+                processFurther = true;
+                break;
+            case PostSummaryAdded:
+                displayMessage = 1;
+                break;
+            case PostSummaryNotAdded:
+                displayMessage = -1;
+                break;
             case UserNotExists:
-                return R.string.ErrorUserNotExists;
+                displayMessage = R.string.ErrorUserNotExists;
+                break;
+            case ErrorInUpdationOfVerifyUser:
+                displayMessage = -1;
+                break;
+            case PostSummaryDeletedSuccess:
+                displayMessage = 1;
+                break;
+            case PostSummaryDeletionFailed:
+                displayMessage = -1;
+                break;
+            case PostDeletedSuccess:
+                displayMessage = R.string.SuccessPostDeletedSuccess;
+                processFurther = true;
+                break;
+            case PostDeletionFailed:
+                displayMessage = R.string.ErrorPostDeletionFailed;
+                break;
+            case PostUpdationSuccess:
+                displayMessage = R.string.SuccessPostUpdationSuccess;
+                processFurther = true;
+                break;
+            case PostUpdationFailed:
+                displayMessage = R.string.ErrorPostUpdationFailed;
+                break;
+            case PostUpdationDenied:
+                displayMessage = -1;
+                break;
+            case CompanyRequestAdded:
+                displayMessage = R.string.SuccessCompanyRequestAdded;
+                processFurther = true;
+                break;
+            case CompanyRequestFailed:
+                displayMessage = R.string.ErrorCompanyRequestFailed;
+                break;
+            case EmailIdNotPermitted:
+                displayMessage = R.string.ErrorEmailIdNotPermitted;
+                break;
+            case UserNotPermitted:
+                displayMessage = -1;
+                break;
+            case SubscriptionAdded:
+                displayMessage = 1;
+                processFurther = true;
+                break;
+            case SubscriptionFailed:
+                displayMessage = R.string.ErrorSubscriptionFailed;
+                break;
+            case UserUriUpdated:
+                displayMessage = 1;
+                break;
+            case UserUriNotUpdated:
+                displayMessage = -1;
+                break;
+            case UnsubscribeSuccess:
+                displayMessage = R.string.SucessUnsubscribeSuccess;
+                processFurther = true;
+                break;
+            case UnSubscribeFailed:
+                displayMessage = R.string.ErrorUnSubscribeFailed;
+                break;
+            case PostSoldOutUpdated:
+                displayMessage = -1;
+                processFurther = true;
+                break;
+            case PostSoldOutUpdateFailed:
+                displayMessage = R.string.ErrorPostSoldOutUpdateFailed;
+                break;
+            case PostSummarySoldOutUpdate:
+                displayMessage = -1;
+                break;
+            case PostSummarySoldOutFailed:
+                displayMessage = -1;
+                break;
             default:
-                return R.string.ErrorUnknownResponseStatus;
+                displayMessage = R.string.ErrorUnknownResponseStatus;
         }
+
+        if(displayMessage!=-1 && displayMessage!=1) {
+            Utility.ShowInfoDialog(displayMessage);
+        }
+            return processFurther;
     }
 }

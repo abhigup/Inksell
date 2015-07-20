@@ -1,9 +1,12 @@
 package services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
+import retrofit.converter.GsonConverter;
 import utilities.ConfigurationManager;
 
 /**
@@ -31,8 +34,14 @@ public class RestClient {
     }
 
     private static void setupRestClient() {
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .create();
+        GsonConverter gsonConverter = new GsonConverter(gson);
         RestAdapter.Builder getbuilder = new RestAdapter.Builder()
                 .setEndpoint(ROOT)
+                .setConverter(gsonConverter)
                 .setClient(new OkClient(new OkHttpClient()))
                 .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
 
@@ -41,6 +50,7 @@ public class RestClient {
 
         RestAdapter.Builder postbuilder = new RestAdapter.Builder()
                 .setEndpoint(ROOT)
+                .setConverter(gsonConverter)
                 .setClient(new OkClient(new OkHttpClient()))
                 .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
 

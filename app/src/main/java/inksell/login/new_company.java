@@ -51,8 +51,7 @@ public class new_company extends BaseActionBarActivity {
             RestClient.post().newCompanyRequest(txtCompany.getText().toString(), txtLocation.getText().toString()
                     , txtName.getText().toString(), txtEmail.getText().toString(),new InksellCallback<String>() {
                 @Override
-                public void onSuccess(String s, Response response) {
-                    Utility.ShowInfoDialog(R.string.register_new_success);
+                public void onSuccess(String s, Response response) {;
                 }
             });
     }

@@ -20,29 +20,41 @@
         android:layout_marginTop="20dp" />
 
     <Spinner
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/spncompany"
         android:layout_width="250dp"
         android:layout_marginTop="10dp"
         android:spinnerMode="dropdown" />
 
     <Spinner
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_width="250dp"
         android:id="@+id/spnlocation"
         android:layout_marginTop="10dp"
         android:spinnerMode="dropdown" />
 
-    <EditText
-        android:layout_width="250dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:width="300dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/txtemail"
-        android:hint="e-mail"
-        android:singleLine="true" />
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="10dp"
+            android:id="@+id/txtemail"
+            android:hint="e-mail"
+            android:ems="10"
+            android:layout_weight="3"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:id="@+id/txtdomain"/>
+    </LinearLayout>
 
     <Button
         android:layout_marginTop="20dp"

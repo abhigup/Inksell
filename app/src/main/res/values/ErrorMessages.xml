@@ -5,10 +5,29 @@
     <string name="ErrorNotRegistered">Please Register yourself.</string>
     <string name="ErrorVerifyEmptyCode">Verification code cannot be empty.</string>
     <string name="ErrorUnknownResponseStatus">Unknown Error Response Status.</string>
+    <string name="ErrorUserAlreadyExist">User already exists.</string>
 
     <string name="error_network">No Network</string>
     <string name="error_network_http_error">Network Error</string>
     <string name="error_unknown">Unknown Error</string>
     <string name="error_no_response">No Response.</string>
+    <string name="ErrorUserAlreadyRegistered">User has already been registered.</string>
+    <string name="ErrorUserAlreadyVerified">User has already been verified.</string>
+    <string name="ErrorWrongVerificationCode">Wrong Verification Code. Please retry.</string>
+    <string name="ErrorSomeErrorOccured">Some Error occurred. Please try again later.</string>
+    <string name="SuccessUserAddedSuccess">User successfully added !</string>
+    <string name="ErrorUserAddedFailed">Error Adding User. Please try again later.</string>
+    <string name="ErrorUserNotAuthorized">User is not authorized to perform the action.</string>
+    <string name="SuccessPostAddedSuccess">Post has been successfully added.</string>
+    <string name="SuccessPostDeletedSuccess">Deleted Successfully !</string>
+    <string name="ErrorPostDeletionFailed">Error deleting post. Please try again.</string>
+    <string name="SuccessPostUpdationSuccess">Post has been successfully updated.</string>
+    <string name="ErrorPostUpdationFailed">Error updating post. Please try again.</string>
+    <string name="SuccessCompanyRequestAdded">Thanks for registering !!\nWe will intimate you soon through email once the above details are verified and registered.</string>
+    <string name="ErrorCompanyRequestFailed">Error in registering company. Please try again later.</string>
+    <string name="ErrorEmailIdNotPermitted">This email domain is not permitted. Please use the company\'s email address.</string>
+    <string name="ErrorSubscriptionFailed">Error adding subscription. Please try again later.</string>
+    <string name="SucessUnsubscribeSuccess">Tag unsubscribed successfully.</string>
+    <string name="ErrorEmptyFields">Please fill the required fields.</string>
 
 </resources>

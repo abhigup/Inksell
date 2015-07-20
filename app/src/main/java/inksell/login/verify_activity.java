@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import Constants.AppData;
 import Constants.StorageConstants;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -61,7 +62,9 @@ public class verify_activity extends BaseActionBarActivity {
             public void onSuccess(Integer integer, Response response) {
                 if(isAlreadyRegistered && ResponseStatus.values()[integer] == ResponseStatus.UserSuccessfullyVerified)
                 {
-                    Utility.NavigateTo(Home.class);
+                    LocalStorageHandler.SaveData(StorageConstants.UserVerified, true);
+                    AppData.UserGuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
+                    Utility.NavigateTo(Home.class, true);
                 }
             }
 

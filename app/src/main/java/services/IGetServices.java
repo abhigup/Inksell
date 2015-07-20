@@ -4,6 +4,8 @@ import java.util.List;
 
 import models.CompanyEntity;
 import models.LocationEntity;
+import models.PostSummaryEntity;
+import models.UserEntity;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
@@ -24,4 +26,10 @@ public interface IGetServices {
 
     @GET("/registerUserAgain/{email}")
     void registerUserAgain(@Path("email") String email, Callback<String> callback);
+
+    @GET("/GetUserEntityDevFriendly/{guid}")
+    void getUserDetails(@Path("guid") String guid, Callback<UserEntity> userEntity);
+
+    @GET("/GetPostSummaryAll/{lastPostId}/{guid}")
+    void getPostSummaryAll(@Path("lastPostId") int lastPostId, @Path("guid") String guid, Callback<List<PostSummaryEntity>> postSummaryList);
 }

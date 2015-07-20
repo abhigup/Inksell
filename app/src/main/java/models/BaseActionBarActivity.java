@@ -1,7 +1,7 @@
 package models;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import utilities.Utility;
 /**
  * Created by Abhinav on 17/04/15.
  */
-public abstract class BaseActionBarActivity extends ActionBarActivity {
+public abstract class BaseActionBarActivity extends AppCompatActivity {
 
     public Map<String, Object> intentExtraMap = new HashMap<String, Object>();
 

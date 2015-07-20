@@ -6,4 +6,7 @@ package Constants;
 public class StorageConstants {
 
     public static final String UserUUID = "UserUUID";
+
+    public static final String UserVerified = "Verified";
+
 }
