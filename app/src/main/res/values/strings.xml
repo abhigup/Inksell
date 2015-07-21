@@ -32,4 +32,6 @@
     <string name="hello_home_fragment">Hello Home fragment</string>
     <string name="hello_settings_fragment">Hello Settings fragment</string>
     <string name="title_activity_view_post">ViewPost</string>
+
+    <string name="yesterday">yesterday</string>
 </resources>

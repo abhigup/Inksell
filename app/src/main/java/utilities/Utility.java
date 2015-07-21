@@ -12,10 +12,15 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.UUID;
 
+import Constants.Constants;
 import inksell.inksell.R;
 
 /**
@@ -185,6 +190,102 @@ public class Utility {
         {
             return false;
         }
+    }
+
+    private static Date GetUTCdatetimeAsDate()
+    {
+        //note: doesn't check for null
+        return StringDateToDate(GetUTCdatetimeAsString());
+    }
+
+    public static Date StringDateToDate(String StrDate)
+    {
+        Date dateToReturn = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATEFORMAT);
+
+        try
+        {
+            dateToReturn = (Date)dateFormat.parse(StrDate);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        return dateToReturn;
+    }
+
+    private static String GetUTCdatetimeAsString()
+    {
+        final SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATEFORMAT);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        final String utcTime = sdf.format(new Date());
+
+        return utcTime;
+    }
+
+    public static String StringDateToRelativeStringDate(String strDate)
+    {
+        Date dateToReturn = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATEFORMAT);
+        try
+        {
+            dateToReturn = (Date)dateFormat.parse(strDate);
+            return StringDateToRelativeStringDate(dateToReturn);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String StringDateToRelativeStringDate(Date date)
+    {
+        String dateToReturn = null;
+
+        return getRelativeDateString(date, GetUTCdatetimeAsDate());
+    }
+
+    private static String getRelativeDateString(Date startDate, Date endDate){
+
+        //milliseconds
+        long different = endDate.getTime() - startDate.getTime();
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = different / daysInMilli;
+        different = different % daysInMilli;
+
+        if(elapsedDays>2)
+        {
+            return DateToLocalStringDate(startDate);
+        }
+
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+
+        if(elapsedDays>1)
+        {
+            return Utility.GetResourceString(R.string.yesterday);
+        }
+        if(elapsedHours>1)
+        {
+            return elapsedHours + " hours ago";
+        }
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+
+        return elapsedMinutes + "min ago";
+    }
+
+    private static String DateToLocalStringDate(Date date)
+    {
+        return android.text.format.DateFormat.getMediumDateFormat(ConfigurationManager.CurrentActivityContext).format(date);
+
     }
 
     public static boolean ShouldProcessFurtherAndShowResponseError(ResponseStatus responseStatus)

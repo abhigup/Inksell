@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 
+import Constants.Constants;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
@@ -36,7 +37,7 @@ public class RestClient {
     private static void setupRestClient() {
 
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .setDateFormat(Constants.DATEFORMAT)
                 .create();
         GsonConverter gsonConverter = new GsonConverter(gson);
         RestAdapter.Builder getbuilder = new RestAdapter.Builder()

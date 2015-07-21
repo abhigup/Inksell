@@ -38,4 +38,6 @@ dependencies {
     compile ("com.android.support:design:22.2.0")
 
     compile 'com.getbase:floatingactionbutton:1.10.0'
+
+    compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }
