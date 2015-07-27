@@ -40,4 +40,7 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.0'
 
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
+    compile 'com.daimajia.slider:library:1.0.9@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
 }

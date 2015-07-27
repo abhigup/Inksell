@@ -46,8 +46,8 @@ public class already_activity extends BaseActionBarActivity {
             public void onSuccess(String s, Response response) {
                 if(Utility.GetUUID(s)!=null) {
                     LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
-                    Map<String, Object> map = new HashMap<String, Object>();
-                    map.put("isAlreadyRegistered", true);
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("isAlreadyRegistered", "true");
                     Utility.NavigateTo(verify_activity.class, map);
                 }
             }

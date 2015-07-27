@@ -5,8 +5,12 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/TitlePrimary</item>
         <item name="colorPrimaryDark">@color/TitlePrimaryDark</item>
-        <item name="colorAccent">#0277BD</item>
+        <item name="colorAccent">@color/TitlePrimaryDark</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="actionOverflowMenuStyle">@style/CMOptionsMenu</item>
+
+        <!-- enable window content transitions -->
+        <item name="android:windowContentTransitions">true</item>
 
     </style>
 
@@ -14,13 +18,19 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/TitlePrimary</item>
         <item name="colorPrimaryDark">@color/TitlePrimaryDark</item>
-        <item name="colorAccent">#0277BD</item>
+        <item name="colorAccent">#e91e63</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="actionOverflowMenuStyle">@style/CMOptionsMenu</item>
+
+        <!-- enable window content transitions -->
+        <item name="android:windowContentTransitions">true</item>
+
 
     </style>
 
     <style name="CMOptionsMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:popupBackground">#0277BD</item>
+        <item name="android:popupBackground">#EEEEEE</item>
+
     </style>
 
     <style name="ButtonDarkRed">

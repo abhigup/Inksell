@@ -14,7 +14,7 @@ import utilities.Utility;
  */
 public abstract class BaseActionBarActivity extends AppCompatActivity {
 
-    public Map<String, Object> intentExtraMap = new HashMap<String, Object>();
+    public Map<String, String> intentExtraMap = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,14 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
         {
             this.setIntentExtras();
         }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        ConfigurationManager.CurrentActivityContext = this;
+        //Restore state here
     }
 
     protected void setIntentExtras()

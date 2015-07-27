@@ -2,6 +2,8 @@ package models;
 
 import java.util.Date;
 
+import utilities.Utility;
+
 /**
  * Created by Abhinav on 20/07/15.
  */
@@ -27,4 +29,10 @@ public class PostSummaryEntity {
 
     public int CategoryId;
 
+    public String PostTitlePic;
+
+    public boolean HasPostTitlePic()
+    {
+        return !Utility.IsStringNullorEmpty(PostTitlePic);
+    }
 }

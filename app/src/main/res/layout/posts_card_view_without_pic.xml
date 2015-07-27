@@ -27,7 +27,7 @@
                     android:id="@+id/post_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@android:color/secondary_text_light"
                     android:textSize="20sp"
                     />
 
@@ -52,6 +52,20 @@
             android:textSize="10sp"
             android:layout_marginBottom="5dp"
             />
+
+        <ToggleButton
+            android:id="@+id/card_fav_toggle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/check"
+            android:layout_margin="10dp"
+            android:textOn=""
+            android:textOff=""
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_centerVertical="true"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_marginLeft="15dp"

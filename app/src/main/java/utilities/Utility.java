@@ -6,11 +6,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -119,15 +125,20 @@ public class Utility {
 
     public static void NavigateTo(Class clazz, boolean clearStack)
     {
-        NavigateTo(clazz, null, clearStack);
+        NavigateTo(clazz, null, clearStack, null);
     }
 
-    public static void NavigateTo(Class clazz, Map<String, Object> map)
+    public static void NavigateTo(Class clazz, Map<String, String> map)
     {
-        NavigateTo(clazz, map, false);
+        NavigateTo(clazz, map, false, null);
     }
 
-    public static void NavigateTo(Class clazz, Map<String, Object> map, boolean clearStack)
+    public static void NavigateTo(Class clazz, Map<String, String> map, Bundle bundle)
+    {
+        NavigateTo(clazz, map, false, bundle);
+    }
+
+    public static void NavigateTo(Class clazz, Map<String, String> map, boolean clearStack, @Nullable Bundle bundle)
     {
         Intent intent = new Intent(ConfigurationManager.CurrentActivityContext, clazz);
         if(clearStack) {
@@ -136,7 +147,7 @@ public class Utility {
         if(map!=null) {
             intent.putExtra("intentExtra", GetJSONString(map));
         }
-        ConfigurationManager.CurrentActivityContext.startActivity(intent);
+        ConfigurationManager.CurrentActivityContext.startActivity(intent, bundle);
     }
 
 
@@ -434,5 +445,32 @@ public class Utility {
             Utility.ShowInfoDialog(displayMessage);
         }
             return processFurther;
+    }
+
+
+    public static void setUserPic(ImageView imageView, String UserImageUrl, String PostedBy)
+    {
+        if(Utility.IsStringNullorEmpty(UserImageUrl))
+        {
+            ColorGenerator generator = ColorGenerator.MATERIAL;
+            int color2 = generator.getColor(PostedBy);
+
+            TextDrawable.IBuilder builder = TextDrawable.builder()
+                    .beginConfig()
+                    .width(50)  // width in px
+                    .height(50) // height in px
+                    .endConfig()
+                    .rect();
+
+            TextDrawable userImage = builder.build(PostedBy.substring(0,1), color2);
+
+            imageView.setImageDrawable(userImage);
+        }
+        else {
+            Picasso.with(ConfigurationManager.CurrentActivityContext)
+                    .load(UserImageUrl)
+                    .placeholder(R.drawable.ic_person)
+                    .into(imageView);
+        }
     }
 }

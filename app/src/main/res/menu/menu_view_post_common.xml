@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="inksell.posts.view.ViewPostCommon">
+    <item android:id="@+id/action_forward" android:title="@string/action_forward"
+        android:orderInCategory="1" app:showAsAction="always"
+        android:icon="@drawable/ic_action_forward"/>
+</menu>

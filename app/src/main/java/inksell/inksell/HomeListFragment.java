@@ -1,12 +1,14 @@
 package inksell.inksell;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Fragment;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,16 +19,19 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Constants.AppData;
 import adapters.RVAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import inksell.posts.view.ViewPost;
+import inksell.posts.view.ViewPostCommon;
 import models.PostSummaryEntity;
 import retrofit.client.Response;
 import services.InksellCallback;
@@ -67,7 +72,6 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
         super.onCreate(savedInstanceState);
 
         loadPostsData();
-
     }
 
     private void loadPostsData()
@@ -84,18 +88,63 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
         RestClient.get().getPostSummaryAll(lastPostid, AppData.UserGuid, new InksellCallback<List<PostSummaryEntity>>() {
             @Override
             public void onSuccess(List<PostSummaryEntity> postSummaryEntities, Response response) {
-                postSummaryList = postSummaryEntities;
+                postSummaryList = getDummyPostSummaryWithTitlePics(postSummaryEntities);
                 RVAdapter adapter = new RVAdapter(postSummaryList, cardViewClickListener());
                 rv.setAdapter(adapter);
             }
         });
     }
 
+    private List<PostSummaryEntity> getDummyPostSummaryWithTitlePics(List<PostSummaryEntity> postSummaryEntities)
+    {
+        for(int position=0;position<postSummaryEntities.size();position++) {
+            String titlepic = null;
+
+            switch (position) {
+                case 2:
+                    titlepic = "https://inksell.blob.core.windows.net/posts/ccf75ef3-3b07-40b8-b0a1-e04471dda1ca/28122013182625041.jpg";
+                    break;
+                case 4:
+                    titlepic = "https://inksell.blob.core.windows.net/posts/d6388f53-ed36-473a-bfd6-fbf76bebe18f/31012014185643388.jpg";
+                    break;
+                case 1:
+                    titlepic = "http://cnet1.cbsistatic.com/hub/i/r/2013/11/25/a5dfa579-84b8-11e3-beb9-14feb5ca9861/thumbnail/770x433/94c1ef0e2322a3c1448cfe623d8bf598/Dell_Venue_8_Pro_35828030__05.jpg";
+                    break;
+                case 0:
+                    titlepic = "http://img01.olx.in/images_olxin/52935875_2_1000x700_color-tv-21-hathway-set-top-box-wooden-tv-corner-.jpg";
+                    break;
+                case 8:
+                    titlepic = "https://inksell.blob.core.windows.net/posts/80e8fb86-efd5-485c-b3e5-595919fb6bab/05012014184518022.jpg";
+                    break;
+                case 9:
+                    titlepic = "https://inksell.blob.core.windows.net/posts/3077ccdd-d56e-4d61-884b-9ca77644b6c3/05012014151013285.jpg";
+                    break;
+
+            }
+
+            postSummaryEntities.get(position).PostTitlePic = titlepic;
+        }
+        return postSummaryEntities;
+    }
+
     private View.OnClickListener cardViewClickListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utility.NavigateTo(ViewPost.class);
+                int childItemPosition = rv.getChildPosition(v);
+                PostSummaryEntity postSummaryEntity = postSummaryList.get(childItemPosition);
+
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("object", Utility.GetJSONString(postSummaryEntity));
+
+                if(!postSummaryEntity.HasPostTitlePic())
+                {
+                    Utility.NavigateTo(ViewPostCommon.class, map);
+                }
+                else {
+                    ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(getActivity(), v.findViewById(R.id.card_title_pic), getString(R.string.cardTitlePicTransition));
+                    Utility.NavigateTo(ViewPostCommon.class, map, transitionActivityOptions.toBundle());
+                }
             }
         };
     }
@@ -110,6 +159,14 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void onCreateOptionsMenu(
             Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.home, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getActivity().getSystemService(ConfigurationManager.CurrentActivityContext.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getActivity().getComponentName()));
     }
 
     @Override

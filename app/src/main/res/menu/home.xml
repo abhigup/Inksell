@@ -5,11 +5,18 @@
     <item android:id="@+id/action_settings" android:title="@string/action_filter" android:icon="@drawable/ic_filter_list"
         android:orderInCategory="2" app:showAsAction="always">
         <menu >
-            <item android:id="@+id/submenu1" android:title="SubMenu No. 1" />
-                <item android:id="@+id/submenu2" android:title="SubMenu No. 2" />
+            <item android:id="@+id/filter_all" android:title="All" />
+            <item android:id="@+id/filter_furniture" android:title="Furniture" />
+            <item android:id="@+id/filter_real_estate" android:title="Real Estate" />
+            <item android:id="@+id/filter_electronics" android:title="Electronics" />
+            <item android:id="@+id/filter_autos" android:title="Autos" />
+            <item android:id="@+id/filter_other" android:title="Other" />
         </menu>
     </item>
-    <item android:orderInCategory="1" android:title="@string/action_search" android:id="@+id/action_example" android:icon="@drawable/ic_search"
-        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_search"
+        android:title="@string/action_search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always"/>
 
 </menu>
