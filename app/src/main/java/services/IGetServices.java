@@ -3,6 +3,7 @@ package services;
 import java.util.List;
 
 import models.CompanyEntity;
+import models.ElectronicEntity;
 import models.LocationEntity;
 import models.PostSummaryEntity;
 import models.UserEntity;
@@ -32,4 +33,8 @@ public interface IGetServices {
 
     @GET("/GetPostSummaryAll/{lastPostId}/{guid}")
     void getPostSummaryAll(@Path("lastPostId") int lastPostId, @Path("guid") String guid, Callback<List<PostSummaryEntity>> postSummaryList);
+
+    @GET("/GetFullElectronicPost/{postId}/{userGuid}")
+    void getElectronicsFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid, Callback<ElectronicEntity> entityCallback);
+
 }

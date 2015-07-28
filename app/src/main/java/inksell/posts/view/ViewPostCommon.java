@@ -1,24 +1,29 @@
 package inksell.posts.view;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 
+import Constants.AppData;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.hdodenhof.circleimageview.CircleImageView;
+import enums.CategoryTypes;
 import inksell.inksell.R;
 import models.BaseActionBarActivity;
+import models.ElectronicEntity;
+import models.IPostEntity;
 import models.PostSummaryEntity;
+import retrofit.client.Response;
+import services.InksellCallback;
+import services.RestClient;
+import utilities.ConfigurationManager;
 import utilities.Utility;
 
 public class ViewPostCommon extends BaseActionBarActivity {
@@ -28,14 +33,11 @@ public class ViewPostCommon extends BaseActionBarActivity {
     @InjectView(R.id.view_post_image_slider)
     SliderLayout image_slider;
 
-    @InjectView(R.id.view_user_pic)
-    CircleImageView userPic;
-
     @InjectView(R.id.view_post_title)
     TextView postTitle;
 
-    @InjectView(R.id.view_post_postedby)
-    TextView postedByWithTimeStamp;
+    @InjectView(R.id.view_post_postedon)
+    TextView postedOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +47,13 @@ public class ViewPostCommon extends BaseActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.inject(this);
 
-        initSummaryView(savedInstanceState);
-        loadFullPost();
+        initSummaryView();
+
+        loadFullPost(savedInstanceState);
+
     }
 
-    private void initSummaryView(Bundle savedInstanceState) {
+    private void initSummaryView() {
 
         DefaultSliderView defaultSliderView = new DefaultSliderView(this);
 
@@ -60,7 +64,7 @@ public class ViewPostCommon extends BaseActionBarActivity {
         else
         {
             int defaultImageResId;
-            switch (summaryEntity.CategoryId)
+            switch (summaryEntity.categoryid)
             {
                 default:
                     defaultImageResId = R.drawable.splash;
@@ -70,20 +74,13 @@ public class ViewPostCommon extends BaseActionBarActivity {
         }
         image_slider.addSlider(defaultSliderView);
         image_slider.stopAutoCycle();
-
         if(image_slider.getChildCount()>1) {
             image_slider.startAutoCycle();
         }
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.view_fragment_container, new PlaceholderFragment())
-                    .commit();
-        }
-        Utility.setUserPic(userPic, summaryEntity.UserImageUrl, summaryEntity.PostedBy);
         postTitle.setText(summaryEntity.Title);
 
-        postedByWithTimeStamp.setText(summaryEntity.PostedBy + " \u2022 " + Utility.StringDateToRelativeStringDate(summaryEntity.Postdate));
+        postedOn.setText(Utility.StringDateToRelativeStringDate(summaryEntity.Postdate));
     }
 
     @Override
@@ -92,9 +89,62 @@ public class ViewPostCommon extends BaseActionBarActivity {
         super.onStop();
     }
 
-    private void loadFullPost() {
+    private void loadFullPost(Bundle savedInstanceState) {
 
+        Fragment fragment = null;
+        switch (CategoryTypes.values()[summaryEntity.categoryid])
+        {
+            case Automobile:
+                break;
+            case Electronics:
+                RestClient.get()
+                        .getElectronicsFullPostEntity(summaryEntity.PostId, AppData.UserGuid, ViewFragmentsCallback(ElectronicEntity.class, new ViewElectronicsFragment()));
+                break;
+            case Furniture:
+                break;
+            case Multiple:
+                break;
+            case Others:
+                break;
+            case RealState:
+                break;
+        }
     }
+
+    private <T> InksellCallback<T> ViewFragmentsCallback(Class<T> clazz, final BaseViewFragment fragment) {
+        return new InksellCallback<T>() {
+            @Override
+            public void onSuccess(T t, Response response) {
+                fragment.setData((IPostEntity)t);
+                getFragmentManager().beginTransaction()
+                        .add(R.id.view_fragment_container, fragment)
+                        .commit();
+
+                if(summaryEntity.HasPostTitlePic() && fragment.getImageUrl()!=null && fragment.getImageUrl().size()>1) {
+                    image_slider.removeAllSliders();
+                    for (int i = 0; i < fragment.getImageUrl().size(); i++) {
+                        DefaultSliderView sliderImageView = new DefaultSliderView(ConfigurationManager.CurrentActivityContext);
+                        sliderImageView
+                                .image(fragment.getImageUrl().get(i)).setScaleType(BaseSliderView.ScaleType.CenterCrop);
+                        image_slider.addSlider(sliderImageView);
+                    }
+
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            if (fragment.getImageUrl().size() > 1) {
+                                image_slider.startAutoCycle();
+                            }
+                        }
+                    }, 5000);
+
+
+                }
+            }
+        };
+    }
+
 
     @Override
     protected void setIntentExtras()
@@ -124,21 +174,5 @@ public class ViewPostCommon extends BaseActionBarActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_view_post_common, container, false);
-            return rootView;
-        }
     }
 }

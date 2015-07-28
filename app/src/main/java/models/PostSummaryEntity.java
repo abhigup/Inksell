@@ -27,7 +27,7 @@ public class PostSummaryEntity {
 
     public String UserImageUrl;
 
-    public int CategoryId;
+    public int categoryid;
 
     public String PostTitlePic;
 

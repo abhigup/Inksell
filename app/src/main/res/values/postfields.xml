@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="actualPrice">Actual Price</string>
+    <string name="usedPeriod">Used Period</string>
+    <string name="description">Description</string>
+    <string name="contactInformation">Contact Information</string>
+    <string name="address">Address</string>
+
+</resources>

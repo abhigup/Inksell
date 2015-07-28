@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Currency;
 import java.util.Date;
 import java.util.Map;
 import java.util.Random;
@@ -35,6 +36,8 @@ import inksell.inksell.R;
 
 
 public class Utility {
+
+    private static Currency currency = Currency.getInstance(ConfigurationManager.CurrentActivityContext.getResources().getConfiguration().locale);
 
     public static void ShowInfoDialog(int resId){
         ShowInfoDialog(GetResourceString(resId));
@@ -473,4 +476,22 @@ public class Utility {
                     .into(imageView);
         }
     }
+
+    public static String GetLocalCurrencySymbol()
+    {
+        return currency.getSymbol();
+    }
+
+    public static void WaitFor(int milliSeconds)
+    {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // Actions to do after 10 seconds
+            }
+        }, milliSeconds);
+    }
+
+
+
 }
