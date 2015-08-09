@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/loading_spinner"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="32dp"
+        android:indeterminateTintMode="src_atop"
+        android:layout_gravity="center"
+        android:indeterminate="true" />
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/layout_error_tryAgain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/btnerror"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_error"
+            android:background="@android:color/transparent"
+            >
+
+            </ImageView>
+
+        <TextView
+            android:id="@+id/txtViewErrorLabel"
+            android:layout_margin="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnerror"
+            android:text="@string/ErrorSomeErrorOccured"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/half_black"/>
+
+        <Button
+            android:layout_below="@+id/txtViewErrorLabel"
+            android:text="@string/ErrorTryAgain"
+            android:layout_width="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            style="@style/ButtonLightRed"
+            android:onClick="refresh_click"
+            >
+        </Button>
+
+        </RelativeLayout>
+
+</RelativeLayout>

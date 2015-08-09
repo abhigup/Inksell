@@ -1,0 +1,105 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="inksell.posts.view.ViewFurnitureFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/TitlePrimaryDark"
+            android:id="@+id/view_furniture_price"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_below="@+id/view_furniture_price"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/view_furniture_linearTable">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left">
+
+                <TextView android:textSize="12sp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="match_parent"
+                    android:text="@string/actualPrice"
+                    android:textColor="@color/half_black"
+                    android:id="@+id/view_furniture_label_actualprice"
+                    android:layout_height="wrap_content" />
+
+                <TextView android:textSize="14sp"
+                    android:layout_below="@+id/view_furniture_label_actualprice"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="match_parent"
+                    android:id="@+id/view_furniture_actualPrice"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
+
+                <TextView android:textSize="12sp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/half_black"
+                    android:text="@string/usedPeriod"
+                    android:id="@+id/view_furniture_label_usedperiod"
+                    android:layout_height="wrap_content" />
+
+                <TextView android:textSize="14sp"
+                    android:layout_below="@+id/view_furniture_label_usedperiod"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="match_parent"
+                    android:id="@+id/view_furniture_usedperiod"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView android:textSize="12sp"
+            android:layout_below="@+id/view_furniture_linearTable"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-light"
+            android:layout_width="match_parent"
+            android:text="@string/description"
+            android:textColor="@color/half_black"
+            android:id="@+id/view_furniture_label_description"
+            android:layout_height="wrap_content" />
+
+        <TextView android:textSize="14sp"
+            android:layout_below="@+id/view_furniture_label_description"
+            android:fontFamily="sans-serif-light"
+            android:singleLine="false"
+            android:layout_width="match_parent"
+            android:id="@+id/view_furniture_description"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <include android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/view_post_contact_layout" />
+
+  </LinearLayout>
+
+</FrameLayout>

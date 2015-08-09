@@ -24,9 +24,9 @@ public class ElectronicEntity implements IPostEntity {
 
     public String UserOfficialEmail;
 
-    public int ActualPrice;
+    public String ActualPrice;
 
-    public int ExpectedPrice;
+    public String ExpectedPrice;
 
     public boolean IsSoldOut;
 

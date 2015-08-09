@@ -38,7 +38,7 @@
                 android:layout_alignParentBottom="true">
 
                 <TextView
-                    android:paddingStart="70dp"
+                    android:paddingStart="75dp"
                     android:id="@+id/post_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

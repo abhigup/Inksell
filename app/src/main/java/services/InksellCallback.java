@@ -42,7 +42,9 @@ public abstract class InksellCallback<T> implements Callback<T> {
 
     @Override
     public void failure(RetrofitError error) {
+        //ToDo : Remove below after Development
         Utility.ShowInfoDialog(error.getMessage().toString());
+
         this.onFailure(error);
     }
 }

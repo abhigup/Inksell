@@ -29,10 +29,10 @@ public class PostSummaryEntity {
 
     public int categoryid;
 
-    public String PostTitlePic;
+    public String PostDefaultImage;
 
     public boolean HasPostTitlePic()
     {
-        return !Utility.IsStringNullorEmpty(PostTitlePic);
+        return !Utility.IsStringNullorEmpty(PostDefaultImage);
     }
 }

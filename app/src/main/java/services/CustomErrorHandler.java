@@ -34,6 +34,7 @@ public class CustomErrorHandler implements ErrorHandler {
                 }
             }
         }
+
         Utility.ShowInfoDialog(errorDescription);
         return new Exception(errorDescription);
     }

@@ -1,16 +1,14 @@
 package inksell.inksell;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -19,13 +17,16 @@ import Constants.AppData;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import enums.CategoryType;
+import inksell.search.SearchResultsActivity;
 import models.BaseActionBarActivity;
 import models.UserEntity;
 import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
+import utilities.Utility;
 
-public class Home extends BaseActionBarActivity implements DrawerLayout.DrawerListener,HomeListFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
+public class Home extends BaseActionBarActivity implements HomeListFragment.OnFragmentInteractionListener{
     @InjectView(R.id.drawer_layout)
     DrawerLayout mDrawer;
 
@@ -77,6 +78,8 @@ public class Home extends BaseActionBarActivity implements DrawerLayout.DrawerLi
         RestClient.get().getUserDetails(AppData.UserGuid, new InksellCallback<UserEntity>() {
             @Override
             public void onSuccess(UserEntity userEntity, Response response) {
+                AppData.UserData = userEntity;
+
                 navHeadEmail.setText(userEntity.CorporateEmail);
                 navHeadName.setText(userEntity.Username);
 
@@ -125,8 +128,7 @@ public class Home extends BaseActionBarActivity implements DrawerLayout.DrawerLi
         }
 
         // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = this.getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
 
         // Highlight the selected item, update the title, and close the drawer
         menuItem.setChecked(true);
@@ -137,13 +139,39 @@ public class Home extends BaseActionBarActivity implements DrawerLayout.DrawerLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
+        CategoryType filterType;
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.menu_search:
+                Utility.NavigateTo(SearchResultsActivity.class);
+                return true;
+            case R.id.filter_all:
+                return setFilteredList(CategoryType.AllCategory);
+            case R.id.filter_autos:
+                return setFilteredList(CategoryType.Automobile);
+            case R.id.filter_electronics:
+                return setFilteredList(CategoryType.Electronics);
+            case R.id.filter_furniture:
+                return setFilteredList(CategoryType.Furniture);
+            case R.id.filter_other:
+                return setFilteredList(CategoryType.Others);
+            case R.id.filter_real_estate:
+                return setFilteredList(CategoryType.RealState);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean setFilteredList(CategoryType type)
+    {
+        HomeListFragment homeListFragment = (HomeListFragment)
+                getSupportFragmentManager().findFragmentById(R.id.flContent);
+        homeListFragment.setFilteredList(type);
+
+        return true;
     }
 
     @Override
@@ -157,24 +185,13 @@ public class Home extends BaseActionBarActivity implements DrawerLayout.DrawerLi
     }
 
     @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {
-
-    }
-
-    @Override
-    public void onDrawerOpened(View drawerView) {
-
-
-
-    }
-
-    @Override
-    public void onDrawerClosed(View drawerView) {
-
-    }
-
-    @Override
-    public void onDrawerStateChanged(int newState) {
-
+    public void onBackPressed()
+    {
+        if(mDrawer.isDrawerOpen(GravityCompat.START))
+        {
+            mDrawer.closeDrawers();
+            return;
+        }
+        super.onBackPressed();
     }
 }

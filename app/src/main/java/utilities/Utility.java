@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -20,15 +21,19 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
 
 import Constants.Constants;
+import enums.CategoryType;
 import inksell.inksell.R;
+import models.CategoryEntity;
 
 /**
  * Created by Abhinav on 08/04/15.
@@ -293,7 +298,7 @@ public class Utility {
         long elapsedMinutes = different / minutesInMilli;
         different = different % minutesInMilli;
 
-        return elapsedMinutes + "min ago";
+        return elapsedMinutes + " min ago";
     }
 
     private static String DateToLocalStringDate(Date date)
@@ -493,5 +498,41 @@ public class Utility {
     }
 
 
+    public static void setCallAndEmailButton(ImageButton btnCall, ImageButton btnEmail, String contactNumber, String contactEmail)
+    {
+        int callBgColor;
+        int emailBgColor;
+        if(Utility.IsStringNullorEmpty(contactNumber))
+        {
+            callBgColor = R.color.black_semi_transparent;
+        }
+        else
+        {
+            callBgColor = R.color.TitlePrimaryDark;
+        }
+        if(Utility.IsStringNullorEmpty(contactEmail))
+        {
+            emailBgColor = R.color.black_semi_transparent;
+        }
+        else
+        {
+            emailBgColor = R.color.TitlePrimaryDark;
+        }
+        btnCall.setBackgroundColor(btnCall.getContext().getResources().getColor(callBgColor));
+        btnEmail.setBackgroundColor(btnEmail.getContext().getResources().getColor(emailBgColor));
+    }
+
+    public static List<CategoryEntity> getCategoryList()
+    {
+        List<CategoryEntity> categoryEntities = new ArrayList<>();
+        categoryEntities.add(new CategoryEntity(CategoryType.AllCategory, Utility.GetResourceString(R.string.category_all)));
+        categoryEntities.add(new CategoryEntity(CategoryType.Electronics, Utility.GetResourceString(R.string.category_electronics)));
+        categoryEntities.add(new CategoryEntity(CategoryType.Automobile, Utility.GetResourceString(R.string.category_autos)));
+        categoryEntities.add(new CategoryEntity(CategoryType.Furniture, Utility.GetResourceString(R.string.category_furniture)));
+        categoryEntities.add(new CategoryEntity(CategoryType.RealState, Utility.GetResourceString(R.string.category_realestate)));
+        categoryEntities.add(new CategoryEntity(CategoryType.Others, Utility.GetResourceString(R.string.category_other)));
+
+        return categoryEntities;
+    }
 
 }

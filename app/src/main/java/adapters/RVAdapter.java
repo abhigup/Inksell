@@ -20,7 +20,7 @@ import utilities.Utility;
 /**
  * Created by Abhinav on 20/07/15.
  */
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> {
+public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
 
     List<PostSummaryEntity> postSummaryEntityList;
 
@@ -31,20 +31,28 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         this.cvClickListener = clickListener;
     }
 
+    public void Update(List<PostSummaryEntity> persons, View.OnClickListener clickListener)
+    {
+        this.postSummaryEntityList.clear();
+        this.postSummaryEntityList = persons;
+        this.cvClickListener = clickListener;
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return postSummaryEntityList.size();
     }
 
     @Override
-    public PersonViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public PostViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         int resource = R.layout.posts_card_view;
         if(viewType==1)
         {
             resource = R.layout.posts_card_view_without_pic;
         }
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(resource, viewGroup, false);
-        PersonViewHolder pvh = new PersonViewHolder(v);
+        PostViewHolder pvh = new PostViewHolder(v);
         return pvh;
     }
 
@@ -66,7 +74,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(PersonViewHolder personViewHolder, int position) {
+    public void onBindViewHolder(PostViewHolder personViewHolder, int position) {
         PostSummaryEntity postSummaryEntity = postSummaryEntityList.get(position);
 
         personViewHolder.cv.setOnClickListener(this.cvClickListener);
@@ -77,14 +85,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         if(postSummaryEntity.HasPostTitlePic())
         {
             Picasso.with(ConfigurationManager.CurrentActivityContext)
-                    .load(postSummaryEntity.PostTitlePic)
+                    .load(postSummaryEntity.PostDefaultImage)
                     .into(personViewHolder.titlePic);
         }
 
         Utility.setUserPic(personViewHolder.userPic, postSummaryEntity.UserImageUrl, postSummaryEntity.PostedBy);
     }
 
-    public static class PersonViewHolder extends RecyclerView.ViewHolder {
+    public static class PostViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView postedBy;
         TextView postTitle;
@@ -92,7 +100,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PersonViewHolder> 
         ImageView titlePic;
         ImageView userPic;
 
-        PersonViewHolder(View itemView) {
+        PostViewHolder(View itemView) {
             super(itemView);
             cv = (CardView)itemView.findViewById(R.id.cv);
             postTitle = (TextView)itemView.findViewById(R.id.post_title);

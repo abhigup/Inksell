@@ -1,10 +1,7 @@
 package inksell.inksell;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
-import android.app.Fragment;
-import android.app.SearchManager;
-import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,7 +16,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -31,8 +29,11 @@ import Constants.AppData;
 import adapters.RVAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import inksell.posts.view.ViewPostCommon;
+import enums.CategoryType;
+import inksell.posts.view.ViewPostActivity;
 import models.PostSummaryEntity;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
@@ -50,6 +51,8 @@ import utilities.Utility;
  */
 public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    private CategoryType categoryType;
+
     @InjectView(R.id.homeListRecycleView)
     RecyclerView rv;
 
@@ -58,6 +61,14 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @InjectView(R.id.fab_add_button)
     FloatingActionsMenu fabMenu;
+
+    @InjectView(R.id.loading_spinner)
+    ProgressBar progressBar;
+
+    @InjectView(R.id.layout_error_tryAgain)
+    RelativeLayout layoutErrorTryAgain;
+
+    private RVAdapter rvAdapter;
 
     private List<PostSummaryEntity> postSummaryList;
     private OnFragmentInteractionListener mListener;
@@ -71,60 +82,62 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
 
-        loadPostsData();
+        loadPostsData(CategoryType.AllCategory);
     }
 
-    private void loadPostsData()
+    private void loadPostsData(CategoryType type)
     {
+        this.categoryType = type;
+
         int lastPostid = 0;
-        if(postSummaryList==null || postSummaryList.isEmpty())
+
+        switch (type)
         {
-            lastPostid = 0;
+            case AllCategory:
+                RestClient.get().getPostSummaryAll(lastPostid, AppData.UserGuid, setListOnResponse());
+                break;
+            default:
+                RestClient.get().getFilteredPostSummary(lastPostid, type.ordinal(), AppData.UserGuid, setListOnResponse());
         }
-        else
-        {
-            lastPostid = postSummaryList.get(0).PostId;
-        }
-        RestClient.get().getPostSummaryAll(lastPostid, AppData.UserGuid, new InksellCallback<List<PostSummaryEntity>>() {
+
+    }
+
+    private Callback<List<PostSummaryEntity>> setListOnResponse() {
+        return new InksellCallback<List<PostSummaryEntity>>() {
             @Override
             public void onSuccess(List<PostSummaryEntity> postSummaryEntities, Response response) {
-                postSummaryList = getDummyPostSummaryWithTitlePics(postSummaryEntities);
-                RVAdapter adapter = new RVAdapter(postSummaryList, cardViewClickListener());
-                rv.setAdapter(adapter);
+
+                layoutErrorTryAgain.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+
+                postSummaryList = postSummaryEntities;
+
+                if(rvAdapter==null) {
+                    RVAdapter adapter = new RVAdapter(postSummaryList, cardViewClickListener());
+                    rv.setAdapter(adapter);
+                }
+                else {
+                    rvAdapter.Update(postSummaryList, cardViewClickListener());
+                }
+                swipeContainer.setRefreshing(false);
             }
-        });
+
+            @Override
+            public void onFailure(RetrofitError error)
+            {
+                progressBar.setVisibility(View.GONE);
+                layoutErrorTryAgain.setVisibility(View.VISIBLE);
+
+                swipeContainer.setRefreshing(false);
+            }
+        };
     }
 
-    private List<PostSummaryEntity> getDummyPostSummaryWithTitlePics(List<PostSummaryEntity> postSummaryEntities)
-    {
-        for(int position=0;position<postSummaryEntities.size();position++) {
-            String titlepic = null;
+    public void refresh_click(View view) {
+        layoutErrorTryAgain.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
-            switch (position) {
-                case 2:
-                    titlepic = "https://inksell.blob.core.windows.net/posts/ccf75ef3-3b07-40b8-b0a1-e04471dda1ca/28122013182625041.jpg";
-                    break;
-                case 4:
-                    titlepic = "https://inksell.blob.core.windows.net/posts/d6388f53-ed36-473a-bfd6-fbf76bebe18f/31012014185643388.jpg";
-                    break;
-                case 1:
-                    titlepic = "http://cnet1.cbsistatic.com/hub/i/r/2013/11/25/a5dfa579-84b8-11e3-beb9-14feb5ca9861/thumbnail/770x433/94c1ef0e2322a3c1448cfe623d8bf598/Dell_Venue_8_Pro_35828030__05.jpg";
-                    break;
-                case 0:
-                    titlepic = "http://img01.olx.in/images_olxin/52935875_2_1000x700_color-tv-21-hathway-set-top-box-wooden-tv-corner-.jpg";
-                    break;
-                case 8:
-                    titlepic = "https://inksell.blob.core.windows.net/posts/80e8fb86-efd5-485c-b3e5-595919fb6bab/05012014184518022.jpg";
-                    break;
-                case 9:
-                    titlepic = "https://inksell.blob.core.windows.net/posts/3077ccdd-d56e-4d61-884b-9ca77644b6c3/05012014151013285.jpg";
-                    break;
-
-            }
-
-            postSummaryEntities.get(position).PostTitlePic = titlepic;
-        }
-        return postSummaryEntities;
+        onRefresh();
     }
 
     private View.OnClickListener cardViewClickListener() {
@@ -139,11 +152,11 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
                 if(!postSummaryEntity.HasPostTitlePic())
                 {
-                    Utility.NavigateTo(ViewPostCommon.class, map);
+                    Utility.NavigateTo(ViewPostActivity.class, map);
                 }
                 else {
-                    ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(getActivity(), v.findViewById(R.id.card_title_pic), getString(R.string.cardTitlePicTransition));
-                    Utility.NavigateTo(ViewPostCommon.class, map, transitionActivityOptions.toBundle());
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), v.findViewById(R.id.card_title_pic), getString(R.string.cardTitlePicTransition));
+                    Utility.NavigateTo(ViewPostActivity.class, map, options.toBundle());
                 }
             }
         };
@@ -159,14 +172,6 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void onCreateOptionsMenu(
             Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.home, menu);
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getActivity().getSystemService(ConfigurationManager.CurrentActivityContext.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getActivity().getComponentName()));
     }
 
     @Override
@@ -176,13 +181,15 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
         final View view = inflater.inflate(R.layout.fragment_home_list, container, false);
         ButterKnife.inject(this, view);
 
+        progressBar.setVisibility(View.VISIBLE);
+        layoutErrorTryAgain.setVisibility(View.GONE);
+
         swipeContainer.setOnRefreshListener(this);
         swipeContainer.setColorSchemeResources(R.color.TitlePrimaryDark);
-        getActivity().findViewById(R.id.flContent).setOnTouchListener(new View.OnTouchListener() {
+        view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(fabMenu.isExpanded())
-                {
+                if (fabMenu.isExpanded()) {
                     fabMenu.collapse();
                 }
                 return true;
@@ -198,7 +205,6 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -224,11 +230,12 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
-                swipeContainer.setRefreshing(false);
-            }
-        }, 5000);
+        loadPostsData(this.categoryType);
+    }
+
+    public void setFilteredList(CategoryType type)
+    {
+        loadPostsData(type);
     }
 
     /**

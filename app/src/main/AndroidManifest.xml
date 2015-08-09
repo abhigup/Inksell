@@ -45,16 +45,13 @@
             android:name=".Home"
             android:label="@string/title_activity_home"
             android:theme="@style/AppThemeNoActionBar" >
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value="inksell.search.SearchResultsActivity" />
         </activity>
-        <activity
-            android:name="inksell.posts.view.ViewPostCommon">
+        <activity android:name="inksell.posts.view.ViewPostActivity" >
         </activity>
         <activity
             android:name="inksell.search.SearchResultsActivity"
-            android:label="@string/title_activity_search_results" >
+            android:launchMode="singleTop"
+            android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -63,6 +60,10 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name="inksell.posts.add.AddPostActivity"
+            android:label="@string/title_activity_add_post" >
         </activity>
     </application>
 

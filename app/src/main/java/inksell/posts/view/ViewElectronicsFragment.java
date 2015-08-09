@@ -1,5 +1,6 @@
 package inksell.posts.view;
 
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -40,6 +41,12 @@ public class ViewElectronicsFragment extends BaseViewFragment {
     @InjectView(R.id.view_post_address)
     TextView contactAddress;
 
+    @InjectView(R.id.view_post_call)
+    ImageButton btnCall;
+
+    @InjectView(R.id.view_post_email)
+    ImageButton btnEmail;
+
     private ElectronicEntity electronicEntity;
 
     public ViewElectronicsFragment() {
@@ -64,10 +71,10 @@ public class ViewElectronicsFragment extends BaseViewFragment {
     @Override
     public void initView() {
         price.setText(Utility.GetLocalCurrencySymbol() + " " + electronicEntity.ExpectedPrice + "  ");
-        usedPeriod.setText(electronicEntity.UsedPeriod);
+        usedPeriod.setText(Utility.IsStringNullorEmpty(electronicEntity.UsedPeriod)?"-":electronicEntity.UsedPeriod);
         electronicEntity.PostDescription = electronicEntity.PostDescription.replace("\r\n","\n").replace("\r","\n");
-        description.setText(electronicEntity.PostDescription);
-        actualPrice.setText(Utility.GetLocalCurrencySymbol() + " " + String.valueOf(electronicEntity.ActualPrice));
+        description.setText(Utility.IsStringNullorEmpty(electronicEntity.PostDescription)?"-":electronicEntity.PostDescription);
+        actualPrice.setText(Utility.IsStringNullorEmpty(electronicEntity.ActualPrice)?"-":(Utility.GetLocalCurrencySymbol() + " " + electronicEntity.ActualPrice));
         Utility.setUserPic(userPic, electronicEntity.UserImageUrl, electronicEntity.PostedBy);
         postedBy.setText(electronicEntity.PostedBy);
         contactName.setText(electronicEntity.ContactAddress.contactName);
@@ -83,5 +90,8 @@ public class ViewElectronicsFragment extends BaseViewFragment {
         contactAddress.setText(address);
 
         userEmail.setText(electronicEntity.UserOfficialEmail);
+
+        Utility.setCallAndEmailButton(btnCall, btnEmail, electronicEntity.ContactAddress.ContactNumber, electronicEntity.ContactAddress.ContactEmail);
     }
+
 }

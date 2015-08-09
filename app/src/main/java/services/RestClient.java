@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.concurrent.TimeUnit;
+
 import Constants.Constants;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -36,6 +38,10 @@ public class RestClient {
 
     private static void setupRestClient() {
 
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setReadTimeout(60, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
+
         Gson gson = new GsonBuilder()
                 .setDateFormat(Constants.DATEFORMAT)
                 .create();
@@ -43,7 +49,7 @@ public class RestClient {
         RestAdapter.Builder getbuilder = new RestAdapter.Builder()
                 .setEndpoint(ROOT)
                 .setConverter(gsonConverter)
-                .setClient(new OkClient(new OkHttpClient()))
+                .setClient(new OkClient(okHttpClient))
                 .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
 
         RestAdapter getRestAdapter = getbuilder.build();
@@ -52,7 +58,7 @@ public class RestClient {
         RestAdapter.Builder postbuilder = new RestAdapter.Builder()
                 .setEndpoint(ROOT)
                 .setConverter(gsonConverter)
-                .setClient(new OkClient(new OkHttpClient()))
+                .setClient(new OkClient(okHttpClient))
                 .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
 
         RestAdapter postRestAdapter = postbuilder.build();
