@@ -8,10 +8,6 @@
         <item name="colorAccent">@color/TitlePrimary</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="actionOverflowMenuStyle">@style/CMOptionsMenu</item>
-
-        <!-- enable window content transitions -->
-        <item name="android:windowContentTransitions">true</item>
-
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -21,11 +17,6 @@
         <item name="colorAccent">@color/TitlePrimary</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="actionOverflowMenuStyle">@style/CMOptionsMenu</item>
-
-        <!-- enable window content transitions -->
-        <item name="android:windowContentTransitions">true</item>
-
-
     </style>
 
     <style name="CMOptionsMenu" parent="Widget.AppCompat.PopupMenu.Overflow">

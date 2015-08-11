@@ -66,7 +66,7 @@ public class Utility {
 
     }
 
-    public static void ShowDialog(final String message, final DialogInterface.OnClickListener positive, final DialogInterface.OnClickListener negative){
+    public static void ShowDialog(final String message, final DialogInterface.OnClickListener listener){
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(
                 new Runnable() {
@@ -74,8 +74,8 @@ public class Utility {
                     public void run() {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ConfigurationManager.CurrentActivityContext);
                         alertDialogBuilder.setMessage(message);
-                        alertDialogBuilder.setPositiveButton("yes", positive);
-                        alertDialogBuilder.setNegativeButton("no", negative);
+                        alertDialogBuilder.setPositiveButton("yes", listener);
+                        alertDialogBuilder.setNegativeButton("no", listener);
 
                         AlertDialog alertDialog = alertDialogBuilder.create();
                         alertDialog.show();

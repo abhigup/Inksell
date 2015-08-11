@@ -1,5 +1,6 @@
 package inksell.inksell;
 
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,8 @@ import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import enums.CategoryType;
 import inksell.search.SearchResultsActivity;
+import inksell.user.MyAccount;
+import inksell.user.SubscriptionFragment;
 import models.BaseActionBarActivity;
 import models.UserEntity;
 import retrofit.client.Response;
@@ -108,15 +111,21 @@ public class Home extends BaseActionBarActivity implements HomeListFragment.OnFr
 
         Class fragmentClass;
         switch(menuItem.getItemId()) {
-            case R.id.nav_first_fragment:
+            case R.id.nav_home:
                 fragmentClass = HomeListFragment.class;
                 break;
-            case R.id.nav_second_fragment:
-                fragmentClass = SettingsFragment.class;
+            case R.id.nav_subscriptions:
+                fragmentClass = SubscriptionFragment.class;
                 break;
-            case R.id.nav_third_fragment:
-                fragmentClass = SettingsFragment.class;
+            case R.id.nav_favourites:
+                fragmentClass = FavouriteFragment.class;
                 break;
+            case R.id.nav_my_account:
+                Utility.NavigateTo(MyAccount.class);
+                return;
+            case R.id.nav_logout:
+                Utility.ShowDialog("Are you sure you want to logout?", logout());
+                return;
             default:
                 fragmentClass = HomeListFragment.class;
         }
@@ -134,6 +143,23 @@ public class Home extends BaseActionBarActivity implements HomeListFragment.OnFr
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         mDrawer.closeDrawers();
+    }
+
+    private DialogInterface.OnClickListener logout() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+
+                        break;
+                }
+            }
+        };
     }
 
     @Override

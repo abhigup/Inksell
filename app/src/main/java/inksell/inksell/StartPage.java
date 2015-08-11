@@ -18,6 +18,7 @@ import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ConfigurationManager;
+import utilities.FavouritesHelper;
 import utilities.LocalStorageHandler;
 import utilities.Utility;
 
@@ -38,6 +39,7 @@ public class StartPage extends Activity {
             && LocalStorageHandler.GetData(StorageConstants.UserVerified, boolean.class)==true)
         {
             AppData.UserGuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
+            FavouritesHelper.setFavourites();
             loadUserData();
             startLayout.setVisibility(View.GONE);
         }

@@ -3,14 +3,20 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_first_fragment"
+            android:id="@+id/nav_home"
             android:title="Home"
             android:checked="true"/>
         <item
-            android:id="@+id/nav_second_fragment"
-            android:title="Settings" />
+            android:id="@+id/nav_subscriptions"
+            android:title="Subscriptions"/>
         <item
-            android:id="@+id/nav_third_fragment"
+            android:id="@+id/nav_favourites"
+            android:title="Favourites" />
+        <item
+            android:id="@+id/nav_my_account"
+            android:title="My Account" />
+        <item
+            android:id="@+id/nav_logout"
             android:title="Logout" />
     </group>
 </menu>

@@ -19,11 +19,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/card_user_pic"
             android:padding="5dp"
             android:id="@+id/image_layout">
 
                 <TextView
-                    android:paddingStart="70dp"
                     android:id="@+id/post_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -34,7 +34,8 @@
         </RelativeLayout>
 
         <TextView
-            android:layout_marginLeft="75dp"
+            android:layout_toRightOf="@+id/card_user_pic"
+            android:paddingLeft="5dp"
             android:id="@+id/person_name"
             android:textColor="@color/half_black"
             android:layout_below="@id/image_layout"
@@ -44,9 +45,9 @@
             />
 
         <TextView
-            android:layout_marginLeft="75dp"
+            android:layout_toRightOf="@+id/card_user_pic"
+            android:paddingLeft="5dp"
             android:textColor="@color/half_black"
-            android:background="@color/white"
             android:layout_below="@id/person_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

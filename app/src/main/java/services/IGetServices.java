@@ -38,6 +38,9 @@ public interface IGetServices {
     @GET("/GetPostSummaryAll/{lastPostId}/{guid}")
     void getPostSummaryAll(@Path("lastPostId") int lastPostId, @Path("guid") String guid, Callback<List<PostSummaryEntity>> postSummaryList);
 
+    @GET("/GetMyPostSummary/{userGuid}")
+    void getMyPostSummary(@Path("userGuid") String UserGuid, Callback<List<PostSummaryEntity>> postSummaryList);
+
     @GET("/GetFilteredPostSummary/{lastPostId}/{categoryId}/{guid}")
     void getFilteredPostSummary(@Path("lastPostId") int lastPostId, @Path("categoryId") int categoryId, @Path("guid") String guid, Callback<List<PostSummaryEntity>> postSummaryList);
 

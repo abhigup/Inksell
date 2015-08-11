@@ -9,4 +9,6 @@ public class StorageConstants {
 
     public static final String UserVerified = "Verified";
 
+    public static final String Favourites = "Favourites";
+
 }

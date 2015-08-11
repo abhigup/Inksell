@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
@@ -15,6 +17,7 @@ import java.util.List;
 import inksell.inksell.R;
 import models.PostSummaryEntity;
 import utilities.ConfigurationManager;
+import utilities.FavouritesHelper;
 import utilities.Utility;
 
 /**
@@ -24,11 +27,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
 
     List<PostSummaryEntity> postSummaryEntityList;
 
+    boolean isMyPosts = false;
+
     View.OnClickListener cvClickListener;
 
     public RVAdapter(List<PostSummaryEntity> persons, View.OnClickListener clickListener){
         this.postSummaryEntityList = persons;
         this.cvClickListener = clickListener;
+    }
+
+    public void setIsMyPosts(boolean isMyPosts)
+    {
+        this.isMyPosts = isMyPosts;
     }
 
     public void Update(List<PostSummaryEntity> persons, View.OnClickListener clickListener)
@@ -46,13 +56,25 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        int resource = R.layout.posts_card_view;
+
+        int resource = isMyPosts?R.layout.my_posts_card_view:R.layout.posts_card_view;
+
         if(viewType==1)
         {
             resource = R.layout.posts_card_view_without_pic;
         }
+
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(resource, viewGroup, false);
         PostViewHolder pvh = new PostViewHolder(v);
+
+        if(isMyPosts) {
+            pvh.fav.setVisibility(View.GONE);
+            pvh.postedBy.setVisibility(View.GONE);
+            if(pvh.userPic!=null) {
+                pvh.userPic.setVisibility(View.GONE);
+            }
+        }
+
         return pvh;
     }
 
@@ -74,22 +96,45 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(PostViewHolder personViewHolder, int position) {
-        PostSummaryEntity postSummaryEntity = postSummaryEntityList.get(position);
+    public void onBindViewHolder(PostViewHolder postViewHolder, int position) {
+        final PostSummaryEntity postSummaryEntity = postSummaryEntityList.get(position);
 
-        personViewHolder.cv.setOnClickListener(this.cvClickListener);
-        personViewHolder.postedBy.setText(postSummaryEntity.PostedBy);
-        personViewHolder.postedOn.setText(Utility.StringDateToRelativeStringDate(postSummaryEntity.Postdate));
-        personViewHolder.postTitle.setText(postSummaryEntity.Title);
+        postViewHolder.cv.setOnClickListener(this.cvClickListener);
+        postViewHolder.postedBy.setText(postSummaryEntity.PostedBy);
+        postViewHolder.postedOn.setText(Utility.StringDateToRelativeStringDate(postSummaryEntity.Postdate));
+        postViewHolder.postTitle.setText(postSummaryEntity.Title);
 
         if(postSummaryEntity.HasPostTitlePic())
         {
             Picasso.with(ConfigurationManager.CurrentActivityContext)
                     .load(postSummaryEntity.PostDefaultImage)
-                    .into(personViewHolder.titlePic);
+                    .into(postViewHolder.titlePic);
         }
 
-        Utility.setUserPic(personViewHolder.userPic, postSummaryEntity.UserImageUrl, postSummaryEntity.PostedBy);
+        Utility.setUserPic(postViewHolder.userPic, postSummaryEntity.UserImageUrl, postSummaryEntity.PostedBy);
+        if(FavouritesHelper.IsFavourite(postSummaryEntity.PostId))
+        {
+            postViewHolder.fav.setChecked(true);
+        }
+        else
+        {
+            postViewHolder.fav.setChecked(false);
+        }
+
+        postViewHolder.fav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    FavouritesHelper.AddToFavourites(postSummaryEntity);
+                }
+                else
+                {
+                    FavouritesHelper.RemoveFromFavourites(postSummaryEntity.PostId);
+                }
+            }
+        });
+
     }
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
@@ -99,6 +144,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
         TextView postedOn;
         ImageView titlePic;
         ImageView userPic;
+        ToggleButton fav;
 
         PostViewHolder(View itemView) {
             super(itemView);
@@ -108,6 +154,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
             postedOn = (TextView)itemView.findViewById(R.id.posted_on);
             titlePic = (ImageView)itemView.findViewById(R.id.card_title_pic);
             userPic = (ImageView)itemView.findViewById(R.id.card_user_pic);
+            fav = (ToggleButton)itemView.findViewById(R.id.card_fav_toggle);
         }
     }
 

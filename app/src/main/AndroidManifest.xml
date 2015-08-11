@@ -51,9 +51,10 @@
         <activity
             android:name="inksell.search.SearchResultsActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppThemeNoActionBar">
+            android:theme="@style/AppThemeNoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
@@ -64,6 +65,11 @@
         <activity
             android:name="inksell.posts.add.AddPostActivity"
             android:label="@string/title_activity_add_post" >
+        </activity>
+        <activity
+            android:name="inksell.user.MyAccount"
+            android:label="@string/title_activity_my_account"
+            android:theme="@style/AppThemeNoActionBar">
         </activity>
     </application>
 

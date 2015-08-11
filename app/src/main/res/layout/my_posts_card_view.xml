@@ -17,53 +17,63 @@
         >
 
         <RelativeLayout
-            android:layout_toRightOf="@+id/card_user_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
             android:id="@+id/image_layout">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:id="@+id/card_title_pic"
+                android:transitionName="@string/cardTitlePicTransition"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                android:background="@drawable/image_gradient"
+                />
+
+            <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/image_gradient"
+            android:layout_alignParentBottom="true">
+
                 <TextView
+                    android:paddingStart="5dp"
                     android:id="@+id/post_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/secondary_text_light"
+                    android:textColor="#fff"
                     android:textSize="20sp"
                     />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
         <TextView
-            android:layout_toRightOf="@+id/card_user_pic"
-            android:id="@+id/person_name"
+            android:paddingStart="5dp"
             android:textColor="@color/half_black"
             android:layout_below="@id/image_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            />
-
-        <TextView
-            android:layout_toRightOf="@+id/card_user_pic"
-            android:textColor="@color/half_black"
-            android:layout_below="@id/person_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/posted_on"
-            android:textSize="10sp"
             android:layout_marginBottom="5dp"
+            android:textSize="10sp"
             />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_marginLeft="15dp"
-            android:layout_alignBottom="@id/image_layout"
-            android:layout_marginBottom="-15dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="10dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/card_user_pic"
-            />
+        <ToggleButton
+            android:id="@+id/card_fav_toggle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/check"
+            android:layout_margin="10dp"
+            android:textOn=""
+            android:textOff=""
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 
