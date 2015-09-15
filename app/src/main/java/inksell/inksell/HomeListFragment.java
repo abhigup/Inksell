@@ -1,11 +1,10 @@
 package inksell.inksell;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +15,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import adapters.RVAdapter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import enums.CategoryType;
+import inksell.posts.add.AddPostActivity;
 import inksell.posts.view.ViewPostActivity;
 import models.PostSummaryEntity;
 import retrofit.Callback;
@@ -38,6 +40,8 @@ import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ConfigurationManager;
+import utilities.FavouritesHelper;
+import utilities.NavigationHelper;
 import utilities.Utility;
 
 
@@ -68,6 +72,27 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
     @InjectView(R.id.layout_error_tryAgain)
     RelativeLayout layoutErrorTryAgain;
 
+    @InjectView(R.id.tryAgainButton)
+    Button tryAgainButton;
+
+    @InjectView(R.id.fab_autos)
+    FloatingActionButton fab_auto;
+
+    @InjectView(R.id.fab_electronics)
+    FloatingActionButton fab_electronics;
+
+    @InjectView(R.id.fab_furniture)
+    FloatingActionButton fab_furniture;
+
+    @InjectView(R.id.fab_multiple)
+    FloatingActionButton fab_multiple;
+
+    @InjectView(R.id.fab_other)
+    FloatingActionButton fab_other;
+
+    @InjectView(R.id.fab_realestate)
+    FloatingActionButton fab_realestate;
+
     private RVAdapter rvAdapter;
 
     private List<PostSummaryEntity> postSummaryList;
@@ -83,6 +108,18 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
         super.onCreate(savedInstanceState);
 
         loadPostsData(CategoryType.AllCategory);
+    }
+
+    private View.OnClickListener refresh_click() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutErrorTryAgain.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+
+                onRefresh();
+            }
+        };
     }
 
     private void loadPostsData(CategoryType type)
@@ -102,6 +139,16 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(rvAdapter!=null) {
+            postSummaryList = FavouritesHelper.setFavourites(postSummaryList);
+            rvAdapter.updateFavourite(postSummaryList);
+        }
+    }
+
     private Callback<List<PostSummaryEntity>> setListOnResponse() {
         return new InksellCallback<List<PostSummaryEntity>>() {
             @Override
@@ -111,13 +158,14 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 progressBar.setVisibility(View.GONE);
 
                 postSummaryList = postSummaryEntities;
+                postSummaryList = FavouritesHelper.setFavourites(postSummaryList);
 
                 if(rvAdapter==null) {
-                    RVAdapter adapter = new RVAdapter(postSummaryList, cardViewClickListener());
-                    rv.setAdapter(adapter);
+                    rvAdapter = new RVAdapter(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getActivity()));
+                    rv.setAdapter(rvAdapter);
                 }
                 else {
-                    rvAdapter.Update(postSummaryList, cardViewClickListener());
+                    rvAdapter.Update(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getActivity()));
                 }
                 swipeContainer.setRefreshing(false);
             }
@@ -132,36 +180,6 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
             }
         };
     }
-
-    public void refresh_click(View view) {
-        layoutErrorTryAgain.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-
-        onRefresh();
-    }
-
-    private View.OnClickListener cardViewClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int childItemPosition = rv.getChildPosition(v);
-                PostSummaryEntity postSummaryEntity = postSummaryList.get(childItemPosition);
-
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("object", Utility.GetJSONString(postSummaryEntity));
-
-                if(!postSummaryEntity.HasPostTitlePic())
-                {
-                    Utility.NavigateTo(ViewPostActivity.class, map);
-                }
-                else {
-                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), v.findViewById(R.id.card_title_pic), getString(R.string.cardTitlePicTransition));
-                    Utility.NavigateTo(ViewPostActivity.class, map, options.toBundle());
-                }
-            }
-        };
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -180,6 +198,15 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_home_list, container, false);
         ButterKnife.inject(this, view);
+
+        tryAgainButton.setOnClickListener(refresh_click());
+
+        fab_auto.setOnClickListener(addPostClick(CategoryType.Automobile));
+        fab_electronics.setOnClickListener(addPostClick(CategoryType.Electronics));
+        fab_furniture.setOnClickListener(addPostClick(CategoryType.Furniture));
+        fab_multiple.setOnClickListener(addPostClick(CategoryType.Multiple));
+        fab_other.setOnClickListener(addPostClick(CategoryType.Others));
+        fab_realestate.setOnClickListener(addPostClick(CategoryType.RealState));
 
         progressBar.setVisibility(View.VISIBLE);
         layoutErrorTryAgain.setVisibility(View.GONE);
@@ -204,6 +231,22 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
         return view;
 
     }
+
+    private View.OnClickListener addPostClick(final CategoryType categoryType) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (categoryType)
+                {
+                    case Multiple:
+                        break;
+                    default:
+                        NavigationHelper.NavigateTo(AddPostActivity.class);
+                }
+            }
+        };
+    }
+
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

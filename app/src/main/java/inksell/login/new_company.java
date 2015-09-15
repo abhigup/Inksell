@@ -1,10 +1,8 @@
 package inksell.login;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import inksell.inksell.R;
 import models.BaseActionBarActivity;
@@ -29,11 +27,17 @@ public class new_company extends BaseActionBarActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_company);
+    protected void initDataAndLayout() {
 
-        ButterKnife.inject(this);
+    }
+
+    @Override
+    protected void initActivity() {
+    }
+
+    @Override
+    protected int getActivityLayout() {
+        return R.layout.activity_new_company;
     }
 
     private boolean validateUserDetails()

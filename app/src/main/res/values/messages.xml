@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="deletePostConfirmation">Do you really want to delete the post?</string>
+    <string name="deletePostSuccess">Post deleted successfully !</string>
+    <string name="deletePostFailure">Error deleting post. Please try again.</string>
+</resources>

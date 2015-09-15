@@ -50,13 +50,13 @@
 
         <Button
             android:layout_below="@+id/txtViewErrorLabel"
+            android:id="@+id/tryAgainButton"
             android:text="@string/ErrorTryAgain"
             android:layout_width="100dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             style="@style/ButtonLightRed"
-            android:onClick="refresh_click"
             >
         </Button>
 

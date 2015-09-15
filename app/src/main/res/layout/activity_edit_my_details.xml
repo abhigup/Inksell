@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="inksell.user.EditMyDetails">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            layout="@layout/loading_error_fragment" />
+
+        <LinearLayout
+            android:id="@+id/edit_user_layout"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/edit_my_image"
+                    />
+
+                <TextView
+                    android:id="@+id/edit_my_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_marginTop="5dp"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/edit_my_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_marginTop="5dp"
+                    android:textSize="12sp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/hintContactEmail"
+                    android:id="@+id/edit_personal_email"
+                    android:theme="@style/MyEditTextTheme" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:hint="@string/hintContactNumber"
+                    android:inputType="phone"
+                    android:id="@+id/edit_phone"
+                    android:theme="@style/MyEditTextTheme"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textPostalAddress"
+                    android:hint="@string/hintContactAddress"
+                    android:id="@+id/edit_address"
+                    android:theme="@style/MyEditTextTheme"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:hint="@string/hintContactCity"
+                    android:id="@+id/edit_city"
+                    android:theme="@style/MyEditTextTheme"/>
+
+                <Button
+                    android:text="@string/save_changes"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    style="@style/ButtonPrimary"
+                    android:id="@+id/save_changes"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="50dp">
+                </Button>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    </ScrollView>
+
+    <include
+        android:layout_below="@+id/toolbar"
+        layout="@layout/loading_fullpage_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

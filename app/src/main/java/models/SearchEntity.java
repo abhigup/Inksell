@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class SearchEntity {
 
-    public String postId;
+    public int postId;
 
     public String title;
 
@@ -15,5 +15,5 @@ public class SearchEntity {
 
     public String userName;
 
-    public String categoryId;
+    public int categoryId;
 }

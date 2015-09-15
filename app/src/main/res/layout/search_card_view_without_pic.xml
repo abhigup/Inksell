@@ -17,7 +17,6 @@
         >
 
         <RelativeLayout
-            android:layout_toRightOf="@+id/card_user_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
@@ -34,7 +33,6 @@
         </RelativeLayout>
 
         <TextView
-            android:layout_toRightOf="@+id/card_user_pic"
             android:id="@+id/person_name"
             android:textColor="@color/half_black"
             android:layout_below="@id/image_layout"
@@ -44,7 +42,6 @@
             />
 
         <TextView
-            android:layout_toRightOf="@+id/card_user_pic"
             android:textColor="@color/half_black"
             android:layout_below="@id/person_name"
             android:layout_width="match_parent"
@@ -52,17 +49,6 @@
             android:id="@+id/posted_on"
             android:textSize="10sp"
             android:layout_marginBottom="5dp"
-            />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_marginLeft="15dp"
-            android:layout_alignBottom="@id/image_layout"
-            android:layout_marginBottom="-15dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="10dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/card_user_pic"
             />
 
     </RelativeLayout>

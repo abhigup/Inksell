@@ -58,4 +58,7 @@ public interface IGetServices {
 
     @GET("/GetFullRealStatePost/{postId}/{userGuid}")
     void getRealEstateFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid, Callback<RealEstateEntity> entityCallback);
+
+    @GET("/DeletePost/{postId}/{userGuid}/{category}")
+    void deletePost(@Path("postId") int postId, @Path("userGuid") String guid, @Path("category") int category, Callback<Integer> callback);
 }

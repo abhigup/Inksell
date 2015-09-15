@@ -53,7 +53,7 @@ public class ViewRealEstateFragment extends BaseViewFragment {
     }
 
     @Override
-    public List<String> getImageUrl() {
+    public List<String> getImageUrls() {
         return propertyEntity.PostImagesUrl;
     }
 

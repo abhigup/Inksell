@@ -59,7 +59,7 @@ public class ViewFurnitureFragment extends BaseViewFragment {
     }
 
     @Override
-    public List<String> getImageUrl() {
+    public List<String> getImageUrls() {
         return furnitureEntity.PostImagesUrl;
     }
 

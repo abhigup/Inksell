@@ -2,10 +2,12 @@ package models;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.ButterKnife;
 import utilities.ConfigurationManager;
 import utilities.Utility;
 
@@ -16,9 +18,33 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
 
     public Map<String, String> intentExtraMap = new HashMap<String, String>();
 
+    protected abstract void initDataAndLayout();
+
+    protected abstract void initActivity();
+
+    protected abstract int getActivityLayout();
+
+    protected View.OnClickListener refresh_click() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        };
+    }
+
+    protected void refresh()
+    {
+        this.initDataAndLayout();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(getActivityLayout());
+
+        ButterKnife.inject(this, this.findViewById(android.R.id.content));
+
         ConfigurationManager.CurrentActivityContext = this;
 
         Bundle extras = getIntent().getExtras();
@@ -29,6 +55,8 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
         {
             this.setIntentExtras();
         }
+        initActivity();
+        initDataAndLayout();
     }
 
     @Override
@@ -41,4 +69,6 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
 
     protected void setIntentExtras()
     {}
+
+
 }

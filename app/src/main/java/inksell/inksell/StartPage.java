@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.util.UUID;
+
 import Constants.AppData;
 import Constants.StorageConstants;
 import butterknife.ButterKnife;
@@ -20,6 +22,7 @@ import services.RestClient;
 import utilities.ConfigurationManager;
 import utilities.FavouritesHelper;
 import utilities.LocalStorageHandler;
+import utilities.NavigationHelper;
 import utilities.Utility;
 
 public class StartPage extends Activity {
@@ -35,8 +38,12 @@ public class StartPage extends Activity {
 
         ButterKnife.inject(this);
 
-        if(Utility.GetUUID(LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class))!=null
-            && LocalStorageHandler.GetData(StorageConstants.UserVerified, boolean.class)==true)
+        UUID UserGUID = Utility.GetUUID(LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class));
+        String isUserVerifiedString = LocalStorageHandler.GetData(StorageConstants.UserVerified, String.class);
+        boolean isUserVerified = (isUserVerifiedString == null)?false:Boolean.valueOf(isUserVerifiedString);
+
+        if(UserGUID !=null
+            && isUserVerified==true)
         {
             AppData.UserGuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
             FavouritesHelper.setFavourites();
@@ -55,27 +62,27 @@ public class StartPage extends Activity {
             @Override
             public void onSuccess(UserEntity userEntity, Response response) {
                 AppData.UserData = userEntity;
-                Utility.NavigateTo(Home.class, true);
+                NavigationHelper.NavigateTo(Home.class, true);
             }
 
             @Override
             public void onFailure(RetrofitError error)
             {
-                Utility.NavigateTo(Home.class, true);
+                NavigationHelper.NavigateTo(Home.class, true);
             }
         });
 
     }
 
     public void register_click(View view) {
-        Utility.NavigateTo(register_activity.class);
+        NavigationHelper.NavigateTo(register_activity.class);
     }
 
     public void verify_click(View view) {
-        Utility.NavigateTo(verify_activity.class);
+        NavigationHelper.NavigateTo(verify_activity.class);
     }
 
     public void already_click(View view) {
-        Utility.NavigateTo(already_activity.class);
+        NavigationHelper.NavigateTo(already_activity.class);
     }
 }

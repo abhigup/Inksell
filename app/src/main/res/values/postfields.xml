@@ -5,6 +5,13 @@
     <string name="usedPeriod">Used Period</string>
     <string name="description">Description</string>
     <string name="contactInformation">Contact Information</string>
+    <string name="addImages">Images</string>
     <string name="address">Address</string>
+
+    <string name="hintContactNumber">Contact Number</string>
+    <string name="hintContactEmail">Contact email</string>
+    <string name="hintContactAddress">Contact Address</string>
+    <string name="hintContactCity">City</string>
+    <string name="title">Title</string>
 
 </resources>

@@ -92,9 +92,10 @@
         android:clickable="true"
         app:backgroundTint="@color/TitlePrimary"
         app:borderWidth="0dp"
-        android:id="@+id/my_fab"
+        android:id="@+id/my_fab_edit"
         app:layout_anchor="@id/my_app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"
-        app:fab_icon="@drawable/ic_call"/>
+        app:fab_icon="@drawable/ic_call"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

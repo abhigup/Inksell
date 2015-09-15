@@ -2,14 +2,11 @@ package utilities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -125,39 +121,6 @@ public class Utility {
     public static String GetResourceString(int resId) {
         return ConfigurationManager.CurrentActivityContext.getString(resId);
     }
-
-    public static void NavigateTo(Class clazz)
-    {
-        NavigateTo(clazz, null);
-    }
-
-    public static void NavigateTo(Class clazz, boolean clearStack)
-    {
-        NavigateTo(clazz, null, clearStack, null);
-    }
-
-    public static void NavigateTo(Class clazz, Map<String, String> map)
-    {
-        NavigateTo(clazz, map, false, null);
-    }
-
-    public static void NavigateTo(Class clazz, Map<String, String> map, Bundle bundle)
-    {
-        NavigateTo(clazz, map, false, bundle);
-    }
-
-    public static void NavigateTo(Class clazz, Map<String, String> map, boolean clearStack, @Nullable Bundle bundle)
-    {
-        Intent intent = new Intent(ConfigurationManager.CurrentActivityContext, clazz);
-        if(clearStack) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        if(map!=null) {
-            intent.putExtra("intentExtra", GetJSONString(map));
-        }
-        ConfigurationManager.CurrentActivityContext.startActivity(intent, bundle);
-    }
-
 
     public static String GetJSONString(Object entity)
     {

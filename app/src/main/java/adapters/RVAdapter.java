@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -28,6 +27,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
     List<PostSummaryEntity> postSummaryEntityList;
 
     boolean isMyPosts = false;
+    boolean isFavPosts = false;
 
     View.OnClickListener cvClickListener;
 
@@ -39,6 +39,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
     public void setIsMyPosts(boolean isMyPosts)
     {
         this.isMyPosts = isMyPosts;
+    }
+    public void setIsFavPosts(boolean isFavPosts)
+    {
+        this.isFavPosts = isFavPosts;
     }
 
     public void Update(List<PostSummaryEntity> persons, View.OnClickListener clickListener)
@@ -75,8 +79,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
             }
         }
 
+        if(isFavPosts)
+        {
+            pvh.fav.setVisibility(View.GONE);
+        }
+
         return pvh;
     }
+
+
 
     @Override
     public int getItemViewType(int position) {
@@ -96,7 +107,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(PostViewHolder postViewHolder, int position) {
+    public void onBindViewHolder(PostViewHolder postViewHolder, final int position) {
         final PostSummaryEntity postSummaryEntity = postSummaryEntityList.get(position);
 
         postViewHolder.cv.setOnClickListener(this.cvClickListener);
@@ -112,29 +123,30 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
         }
 
         Utility.setUserPic(postViewHolder.userPic, postSummaryEntity.UserImageUrl, postSummaryEntity.PostedBy);
-        if(FavouritesHelper.IsFavourite(postSummaryEntity.PostId))
-        {
-            postViewHolder.fav.setChecked(true);
-        }
-        else
-        {
-            postViewHolder.fav.setChecked(false);
-        }
+        postViewHolder.fav.setChecked(postSummaryEntity.isFavourite);
 
-        postViewHolder.fav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        postViewHolder.fav.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+            public void onClick(View v) {
+                PostSummaryEntity post = postSummaryEntityList.get(position);
+                if(FavouritesHelper.IsFavourite(post.PostId))
                 {
-                    FavouritesHelper.AddToFavourites(postSummaryEntity);
+                    post.isFavourite = false;
+                    FavouritesHelper.RemoveFromFavourites(post.PostId);
                 }
                 else
                 {
-                    FavouritesHelper.RemoveFromFavourites(postSummaryEntity.PostId);
+                    post.isFavourite = true;
+                    FavouritesHelper.AddToFavourites(post);
                 }
             }
         });
 
+    }
+
+    public void updateFavourite(List<PostSummaryEntity> postSummaryEntityList) {
+        this.postSummaryEntityList = postSummaryEntityList;
+        this.notifyDataSetChanged();
     }
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {

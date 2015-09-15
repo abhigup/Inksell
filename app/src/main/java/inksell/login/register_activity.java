@@ -1,6 +1,5 @@
 package inksell.login;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import Constants.StorageConstants;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import inksell.inksell.R;
 import models.BaseActionBarActivity;
@@ -24,6 +22,7 @@ import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
+import utilities.NavigationHelper;
 import utilities.Utility;
 
 public class register_activity extends BaseActionBarActivity implements AdapterView.OnItemSelectedListener {
@@ -47,13 +46,14 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
     TextView domain;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_activity);
-
-        ButterKnife.inject(this);
+    protected void initDataAndLayout() {
 
         populateCompanies();
+
+    }
+
+    @Override
+    protected void initActivity() {
 
         companyAdapter = new ArrayAdapter(this, R.layout.spinner_item);
         locationAdapter = new ArrayAdapter(this, R.layout.spinner_item);
@@ -63,7 +63,11 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
 
         locationSpinner.setAdapter(locationAdapter);
         locationSpinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+    }
 
+    @Override
+    protected int getActivityLayout() {
+        return R.layout.activity_register_activity;
     }
 
     private void populateCompanies() {
@@ -106,7 +110,7 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
             public void onSuccess(String s, Response response) {
                 if(Utility.GetUUID(s)!=null) {
                     LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
-                    Utility.NavigateTo(verify_activity.class);
+                    NavigationHelper.NavigateTo(verify_activity.class);
                 }
             }
 
@@ -150,7 +154,7 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
     }
 
     public void cannot_find_click(View view) {
-        Utility.NavigateTo(new_company.class);
+        NavigationHelper.NavigateTo(new_company.class);
     }
 
     @Override

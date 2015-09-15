@@ -55,7 +55,7 @@ public class FavouritesHelper {
     public static List<PostSummaryEntity> getFavourites()
     {
         setFavourites();
-        return postSummaryEntityList;
+        return setFavourites(postSummaryEntityList);
     }
 
     public static void setFavourites()
@@ -84,5 +84,20 @@ public class FavouritesHelper {
         }
 
         return false;
+    }
+
+    public static List<PostSummaryEntity> setFavourites(List<PostSummaryEntity> favourites) {
+        for(int i=0;i<favourites.size();i++)
+        {
+            PostSummaryEntity post = favourites.get(i);
+            if(FavouritesHelper.IsFavourite(post.PostId))
+            {
+                post.isFavourite = true;
+            }
+            else {
+                post.isFavourite = false;
+            }
+        }
+        return favourites;
     }
 }

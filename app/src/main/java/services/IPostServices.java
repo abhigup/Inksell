@@ -3,6 +3,7 @@ package services;
 import java.util.List;
 
 import models.SearchEntity;
+import models.UserEntity;
 import models.VerifyUserEntity;
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -24,5 +25,6 @@ public interface IPostServices {
     @POST("/SearchTextV2/{companyid}/{locationid}/{categoryid}/{userguid}")
     void searchTextV2(@Path("companyid") int companyId, @Path("locationid") int locationId, @Path("categoryid") int categoryId, @Path("userguid") String userGuid, @Body String queryText, Callback<List<SearchEntity>> callback);
 
-
+    @POST("/createUsers")
+    void CreateUpdateUserData(@Body UserEntity userEntity, Callback<Integer> callback);
 }

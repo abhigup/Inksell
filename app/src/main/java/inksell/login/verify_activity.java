@@ -1,12 +1,10 @@
 package inksell.login;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import Constants.AppData;
 import Constants.StorageConstants;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import inksell.inksell.Home;
 import inksell.inksell.R;
@@ -16,6 +14,7 @@ import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
+import utilities.NavigationHelper;
 import utilities.ResponseStatus;
 import utilities.Utility;
 
@@ -28,17 +27,23 @@ public class verify_activity extends BaseActionBarActivity {
     TextView txtCode;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verify_activity);
+    protected void initDataAndLayout() {
 
-        ButterKnife.inject(this);
+    }
+
+    @Override
+    protected void initActivity() {
 
         String uuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
         if(!Utility.IsStringNullorEmpty(uuid))
         {
             guid = uuid;
         }
+    }
+
+    @Override
+    protected int getActivityLayout() {
+        return R.layout.activity_verify_activity;
     }
 
     @Override
@@ -50,21 +55,28 @@ public class verify_activity extends BaseActionBarActivity {
     public void verify_click(View view) {
         if(Utility.IsStringNullorEmpty(guid))
         {
-            Utility.ShowInfoDialog(R.string.ErrorUserNotExists);
+            Utility.ShowInfoDialog(R.string.ErrorNotRegistered);
+            isAlreadyRegistered = false;
             return;
         }
+        else
+        {
+            isAlreadyRegistered = true;
+        }
+
         if(Utility.IsStringNullorEmpty(txtCode.getText().toString()))
         {
             Utility.ShowInfoDialog(R.string.ErrorVerifyEmptyCode);
+            return;
         }
         RestClient.get().verifyNewUser(guid, txtCode.getText().toString(), isAlreadyRegistered?1:0, new InksellCallback<Integer>() {
             @Override
             public void onSuccess(Integer integer, Response response) {
-                if(isAlreadyRegistered && ResponseStatus.values()[integer] == ResponseStatus.UserSuccessfullyVerified)
+                if(ResponseStatus.values()[integer] == ResponseStatus.UserSuccessfullyVerified)
                 {
                     LocalStorageHandler.SaveData(StorageConstants.UserVerified, true);
                     AppData.UserGuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
-                    Utility.NavigateTo(Home.class, true);
+                    NavigationHelper.NavigateTo(Home.class, true);
                 }
             }
 

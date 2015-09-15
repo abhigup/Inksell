@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import Constants.AppData;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import enums.CategoryType;
@@ -27,6 +26,7 @@ import models.UserEntity;
 import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
+import utilities.NavigationHelper;
 import utilities.Utility;
 
 public class Home extends BaseActionBarActivity implements HomeListFragment.OnFragmentInteractionListener{
@@ -49,17 +49,13 @@ public class Home extends BaseActionBarActivity implements HomeListFragment.OnFr
     TextView navHeadName;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-
-        ButterKnife.inject(this);
-
-        init();
+    protected void initDataAndLayout() {
+        loadUserData();
     }
 
-    private void init()
-    {
+    @Override
+    protected void initActivity() {
+
         setupDrawerContent(nvDrawer);
 
         // Set a Toolbar to replace the ActionBar.
@@ -71,9 +67,11 @@ public class Home extends BaseActionBarActivity implements HomeListFragment.OnFr
         ab.setDisplayHomeAsUpEnabled(true);
 
         selectDrawerItem(nvDrawer.getMenu().getItem(0));
-        loadUserData();
+    }
 
-
+    @Override
+    protected int getActivityLayout() {
+        return R.layout.activity_home;
     }
 
     private void loadUserData()
@@ -121,7 +119,7 @@ public class Home extends BaseActionBarActivity implements HomeListFragment.OnFr
                 fragmentClass = FavouriteFragment.class;
                 break;
             case R.id.nav_my_account:
-                Utility.NavigateTo(MyAccount.class);
+                NavigationHelper.NavigateTo(MyAccount.class);
                 return;
             case R.id.nav_logout:
                 Utility.ShowDialog("Are you sure you want to logout?", logout());
@@ -172,7 +170,7 @@ public class Home extends BaseActionBarActivity implements HomeListFragment.OnFr
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
             case R.id.menu_search:
-                Utility.NavigateTo(SearchResultsActivity.class);
+                NavigationHelper.NavigateTo(SearchResultsActivity.class);
                 return true;
             case R.id.filter_all:
                 return setFilteredList(CategoryType.AllCategory);

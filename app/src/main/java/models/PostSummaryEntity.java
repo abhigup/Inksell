@@ -31,6 +31,8 @@ public class PostSummaryEntity {
 
     public String PostDefaultImage;
 
+    public boolean isFavourite;
+
     public boolean HasPostTitlePic()
     {
         return !Utility.IsStringNullorEmpty(PostDefaultImage);

@@ -2,7 +2,8 @@ package inksell.search;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,23 +11,25 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Constants.AppData;
-import butterknife.ButterKnife;
+import adapters.RVAdapter;
 import butterknife.InjectView;
 import inksell.inksell.R;
 import models.BaseActionBarActivity;
 import models.CategoryEntity;
 import models.LocationEntity;
+import models.PostSummaryEntity;
 import models.SearchEntity;
 import retrofit.Callback;
 import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ConfigurationManager;
+import utilities.NavigationHelper;
 import utilities.Utility;
 
 public class SearchResultsActivity extends BaseActionBarActivity {
@@ -34,11 +37,12 @@ public class SearchResultsActivity extends BaseActionBarActivity {
     ArrayAdapter locationAdapter;
     ArrayAdapter categoryAdapter;
 
+    private RVAdapter rvAdapter;
+
+    private List<PostSummaryEntity> postSummaryList;
+
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
-
-    @InjectView(R.id.queryText)
-    TextView queryText;
 
     @InjectView(R.id.search_spncategory)
     Spinner spnCategory;
@@ -46,15 +50,19 @@ public class SearchResultsActivity extends BaseActionBarActivity {
     @InjectView(R.id.search_spnlocation)
     Spinner spnLocation;
 
-//    @InjectView(R.id.searchListRecycleView)
-//    RecyclerView rv;
+    @InjectView(R.id.search_recycler_view)
+    RecyclerView rv;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+    protected void initDataAndLayout() {
+        populateLocations(AppData.UserData.CopmanyId);
 
-        ButterKnife.inject(this);
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void initActivity() {
 
         // Set a Toolbar to replace the ActionBar.
         setSupportActionBar(toolbar);
@@ -66,10 +74,16 @@ public class SearchResultsActivity extends BaseActionBarActivity {
         categoryAdapter = new ArrayAdapter(this, R.layout.spinner_item);
         spnCategory.setAdapter(categoryAdapter);
 
-        populateLocations(AppData.UserData.CopmanyId);
         categoryAdapter.addAll(Utility.getCategoryList());
 
-        handleIntent(getIntent());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    protected int getActivityLayout() {
+        return R.layout.activity_search_results;
     }
 
     @Override
@@ -136,11 +150,35 @@ public class SearchResultsActivity extends BaseActionBarActivity {
         return new InksellCallback<List<SearchEntity>>() {
             @Override
             public void onSuccess(List<SearchEntity> searchEntities, Response response) {
+                postSummaryList = searchEntityToPostSummary(searchEntities);
                 if(!searchEntities.isEmpty()) {
-                    queryText.setText(searchEntities.get(0).title);
+                    if(rvAdapter==null) {
+                        rvAdapter = new RVAdapter(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
+                        rvAdapter.setIsMyPosts(true);
+                        rv.setAdapter(rvAdapter);
+                    }
+                    else {
+                        rvAdapter.Update(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
+                    }
                 }
             }
         };
+    }
+
+    private List<PostSummaryEntity> searchEntityToPostSummary(List<SearchEntity> searchEntities)
+    {
+        List<PostSummaryEntity> postSummaryEntities = new ArrayList<>();
+        for(int i=0; i<searchEntities.size(); i++)
+        {
+            PostSummaryEntity postSummaryEntity = new PostSummaryEntity();
+            postSummaryEntity.categoryid = searchEntities.get(i).categoryId;
+            postSummaryEntity.Postdate = searchEntities.get(i).dateTime;
+            postSummaryEntity.PostId = searchEntities.get(i).postId;
+            postSummaryEntity.Title = searchEntities.get(i).title;
+            postSummaryEntity.PostedBy = searchEntities.get(i).userName;
+            postSummaryEntities.add(postSummaryEntity);
+        }
+        return postSummaryEntities;
     }
 
     private void populateLocations(int companyId) {

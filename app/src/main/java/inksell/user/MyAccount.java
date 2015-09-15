@@ -1,37 +1,37 @@
 package inksell.user;
 
-import android.os.Bundle;
+import android.content.DialogInterface;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import Constants.AppData;
 import adapters.RVAdapter;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import inksell.inksell.R;
-import inksell.posts.view.ViewPostActivity;
 import models.BaseActionBarActivity;
 import models.PostSummaryEntity;
+import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
+import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.SwipableRecyclerView;
 import utilities.Utility;
 
@@ -46,6 +46,9 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
 
     @InjectView(R.id.my_image)
     CircleImageView myImage;
+
+    @InjectView(R.id.my_fab_edit)
+    FloatingActionButton fabEditButton;
 
     @InjectView(R.id.my_name)
     TextView myName;
@@ -65,26 +68,52 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
     @InjectView(R.id.layout_error_tryAgain)
     RelativeLayout layoutErrorTryAgain;
 
+    @InjectView(R.id.tryAgainButton)
+    Button tryAgainButton;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_account);
-        ButterKnife.inject(this);
+    protected void initDataAndLayout() {
+        layoutErrorTryAgain.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+        initMyData();
+
+        loadMyPostsData();
+    }
+
+    @Override
+    protected void initActivity() {
+
+        fabEditButton.setOnClickListener(editFabClicked());
+
+        tryAgainButton.setOnClickListener(refresh_click());
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbarLayout.setTitle(AppData.UserData.Username);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getParent());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(layoutManager);
 
         SwipableRecyclerView.setSwipeBehaviour(rv, this);
+    }
 
-        initMyData();
 
-        loadMyPostsData();
+    @Override
+    protected int getActivityLayout() {
+        return R.layout.activity_my_account;
+    }
+
+
+    private View.OnClickListener editFabClicked() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationHelper.NavigateTo(EditMyDetails.class);
+            }
+        };
     }
 
     private void initMyData() {
@@ -107,13 +136,13 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
                 postSummaryList = postSummaryEntities;
 
                 if(rvAdapter==null) {
-                    RVAdapter adapter = new RVAdapter(postSummaryList, cardViewClickListener());
+                    RVAdapter adapter = new RVAdapter(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
                     adapter.setIsMyPosts(true);
                     rvAdapter = adapter;
-                    rv.setAdapter(adapter);
+                    rv.setAdapter(rvAdapter);
                 }
                 else {
-                    rvAdapter.Update(postSummaryList, cardViewClickListener());
+                    rvAdapter.Update(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
                 }
             }
 
@@ -125,29 +154,6 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
             }
         });
     }
-
-    private View.OnClickListener cardViewClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int childItemPosition = rv.getChildAdapterPosition(v);
-                PostSummaryEntity postSummaryEntity = postSummaryList.get(childItemPosition);
-
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("object", Utility.GetJSONString(postSummaryEntity));
-
-                if(!postSummaryEntity.HasPostTitlePic())
-                {
-                    Utility.NavigateTo(ViewPostActivity.class, map);
-                }
-                else {
-                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getParent(), v.findViewById(R.id.card_title_pic), getString(R.string.cardTitlePicTransition));
-                    Utility.NavigateTo(ViewPostActivity.class, map, options.toBundle());
-                }
-            }
-        };
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -167,16 +173,42 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
         return super.onOptionsItemSelected(item);
     }
 
-    public void refresh_click(View view) {
-        layoutErrorTryAgain.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-
-        loadMyPostsData();
-    }
-
     @Override
     public void onSwiped(int position) {
-        postSummaryList.remove(position);
-        rvAdapter.notifyItemRemoved(position);
+
+        Utility.ShowDialog(getString(R.string.deletePostConfirmation), deletePost(position));
+    }
+
+    private DialogInterface.OnClickListener deletePost(final int position) {
+
+        final PostSummaryEntity entity = postSummaryList.get(position);
+
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        RestClient.get().deletePost(entity.PostId, AppData.UserGuid, entity.categoryid, deletePostCallback(position));
+                        break;
+                }
+            }
+        };
+    }
+
+    private Callback<Integer> deletePostCallback(final int position) {
+        return new InksellCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer integer, Response response) {
+                ResponseStatus status = ResponseStatus.values()[integer];
+                postSummaryList.remove(position);
+                rvAdapter.notifyItemRemoved(position);
+            }
+
+            @Override
+            public void onFailure(RetrofitError error)
+            {
+                Utility.ShowInfoDialog(R.string.deletePostFailure);
+            }
+        };
     }
 }

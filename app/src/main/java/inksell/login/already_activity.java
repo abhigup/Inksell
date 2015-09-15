@@ -1,6 +1,5 @@
 package inksell.login;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -8,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Constants.StorageConstants;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import inksell.inksell.R;
 import models.BaseActionBarActivity;
@@ -17,6 +15,7 @@ import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
+import utilities.NavigationHelper;
 import utilities.Utility;
 
 public class already_activity extends BaseActionBarActivity {
@@ -25,13 +24,18 @@ public class already_activity extends BaseActionBarActivity {
     TextView txtEmail;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_already_activity);
+    protected void initDataAndLayout() {
 
-        ButterKnife.inject(this);
     }
 
+    @Override
+    protected void initActivity() {
+    }
+
+    @Override
+    protected int getActivityLayout() {
+        return R.layout.activity_already_activity;
+    }
 
     public void submit_click(View view) {
         String email = txtEmail.getText().toString();
@@ -48,7 +52,7 @@ public class already_activity extends BaseActionBarActivity {
                     LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
                     Map<String, String> map = new HashMap<String, String>();
                     map.put("isAlreadyRegistered", "true");
-                    Utility.NavigateTo(verify_activity.class, map);
+                    NavigationHelper.NavigateTo(verify_activity.class, map);
                 }
             }
 

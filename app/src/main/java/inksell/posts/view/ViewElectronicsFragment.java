@@ -59,7 +59,7 @@ public class ViewElectronicsFragment extends BaseViewFragment {
     }
 
     @Override
-    public List<String> getImageUrl() {
+    public List<String> getImageUrls() {
         return electronicEntity.PostImagesUrl;
     }
 

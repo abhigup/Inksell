@@ -1,23 +1,28 @@
 package inksell.posts.view;
 
-import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Constants.AppData;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import enums.CategoryType;
+import inksell.common.fullscreen_view;
 import inksell.inksell.R;
 import models.AutomobileEntity;
 import models.BaseActionBarActivity;
@@ -32,6 +37,8 @@ import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ConfigurationManager;
+import utilities.FavouritesHelper;
+import utilities.NavigationHelper;
 import utilities.Utility;
 
 public class ViewPostActivity extends BaseActionBarActivity {
@@ -53,18 +60,32 @@ public class ViewPostActivity extends BaseActionBarActivity {
     @InjectView(R.id.layout_error_tryAgain)
     RelativeLayout layoutErrorTryAgain;
 
+    @InjectView(R.id.view_fav_toggle)
+    ToggleButton favButton;
+
+    @InjectView(R.id.tryAgainButton)
+    Button tryAgainButton;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_post_common);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ButterKnife.inject(this);
-
-        initSummaryView();
+    protected void initDataAndLayout() {
+        layoutErrorTryAgain.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
         loadFullPost();
+    }
 
+    @Override
+    protected void initActivity() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        tryAgainButton.setOnClickListener(refresh_click());
+
+        initSummaryView();
+    }
+
+    @Override
+    protected int getActivityLayout() {
+        return R.layout.activity_view_post_common;
     }
 
     private void initSummaryView() {
@@ -95,6 +116,26 @@ public class ViewPostActivity extends BaseActionBarActivity {
         postTitle.setText(summaryEntity.Title);
 
         postedOn.setText(Utility.StringDateToRelativeStringDate(summaryEntity.Postdate));
+
+        //set Favourite Toggle Button
+        if(FavouritesHelper.IsFavourite(summaryEntity.PostId))
+        {
+            favButton.setChecked(true);
+        }
+
+        favButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    FavouritesHelper.AddToFavourites(summaryEntity);
+                }
+                else
+                {
+                    FavouritesHelper.RemoveFromFavourites(summaryEntity.PostId);
+                }
+            }
+        });
     }
 
     @Override
@@ -146,12 +187,20 @@ public class ViewPostActivity extends BaseActionBarActivity {
                         .add(R.id.view_fragment_container, fragment)
                         .commit();
 
-                if(summaryEntity.HasPostTitlePic() && fragment.getImageUrl()!=null && fragment.getImageUrl().size()>1) {
+                if(fragment.getImageUrls()!=null && fragment.getImageUrls().size()>0) {
                     image_slider.removeAllSliders();
-                    for (int i = 0; i < fragment.getImageUrl().size(); i++) {
+                    for (int i = 0; i < fragment.getImageUrls().size(); i++) {
                         DefaultSliderView sliderImageView = new DefaultSliderView(ConfigurationManager.CurrentActivityContext);
                         sliderImageView
-                                .image(fragment.getImageUrl().get(i)).setScaleType(BaseSliderView.ScaleType.CenterCrop);
+                                .image(fragment.getImageUrls().get(i)).setScaleType(BaseSliderView.ScaleType.CenterCrop);
+                        sliderImageView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                            @Override
+                            public void onSliderClick(BaseSliderView baseSliderView) {
+                                Map<String, String> map = new HashMap<String, String>();
+                                map.put("images", Utility.GetJSONString(fragment.getImageUrls()));
+                                NavigationHelper.NavigateTo(fullscreen_view.class, map);
+                            }
+                        });
                         image_slider.addSlider(sliderImageView);
                     }
 
@@ -159,7 +208,7 @@ public class ViewPostActivity extends BaseActionBarActivity {
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
-                            if (fragment.getImageUrl().size() > 1) {
+                            if (fragment.getImageUrls().size() > 1) {
                                 image_slider.startAutoCycle();
                             }
                         }
@@ -182,7 +231,7 @@ public class ViewPostActivity extends BaseActionBarActivity {
     @Override
     protected void setIntentExtras()
     {
-        summaryEntity = Utility.GetObjectFromJSON(this.intentExtraMap.get("object"), PostSummaryEntity.class);
+        summaryEntity = Utility.GetObjectFromJSON(this.intentExtraMap.get("postSummary"), PostSummaryEntity.class);
     }
 
 
@@ -209,10 +258,5 @@ public class ViewPostActivity extends BaseActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void refresh_click(View view) {
-        layoutErrorTryAgain.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
 
-        loadFullPost();
-    }
 }

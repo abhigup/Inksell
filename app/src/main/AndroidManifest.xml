@@ -64,11 +64,22 @@
         </activity>
         <activity
             android:name="inksell.posts.add.AddPostActivity"
-            android:label="@string/title_activity_add_post" >
+            android:label="@string/title_activity_add_post"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
             android:name="inksell.user.MyAccount"
             android:label="@string/title_activity_my_account"
+            android:theme="@style/AppThemeNoActionBar" >
+        </activity>
+        <activity
+            android:name="inksell.user.EditMyDetails"
+            android:label="@string/title_activity_edit_my_details"
+            android:theme="@style/AppThemeNoActionBar" >
+        </activity>
+        <activity
+            android:name="inksell.common.fullscreen_view"
+            android:label="@string/title_activity_fullscreen_view"
             android:theme="@style/AppThemeNoActionBar">
         </activity>
     </application>

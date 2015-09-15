@@ -23,7 +23,9 @@ public class LocalStorageHandler {
     public static <T> T GetData(String key, Class<T> clazz) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ConfigurationManager.CurrentActivityContext);
         String dataString=sharedPreferences.getString(key, null);
-        if (dataString==null) return null;
+        if (dataString==null) {
+            return null;
+        }
         return Utility.GetObjectFromJSON(dataString, clazz);
     }
 }

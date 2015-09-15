@@ -68,7 +68,7 @@ public class ViewOtherFragment extends BaseViewFragment {
     }
 
     @Override
-    public List<String> getImageUrl() {
+    public List<String> getImageUrls() {
         return otherEntity.PostImagesUrl;
     }
 
