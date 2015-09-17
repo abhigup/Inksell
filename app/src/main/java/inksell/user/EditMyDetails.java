@@ -16,7 +16,7 @@ import Constants.AppData;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import inksell.inksell.R;
-import models.BaseActionBarActivity;
+import inksell.common.BaseActionBarActivity;
 import models.UserEntity;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

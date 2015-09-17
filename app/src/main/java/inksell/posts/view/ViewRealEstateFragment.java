@@ -1,5 +1,6 @@
 package inksell.posts.view;
 
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -63,7 +64,7 @@ public class ViewRealEstateFragment extends BaseViewFragment {
     }
 
     @Override
-    public void initView() {
+    public void initView(View view) {
         rent.setText(Utility.GetLocalCurrencySymbol() + " " + propertyEntity.RentPrice + "  ");
 
         propertyEntity.PostDescription = propertyEntity.PostDescription.replace("\r\n","\n").replace("\r","\n");
@@ -85,6 +86,6 @@ public class ViewRealEstateFragment extends BaseViewFragment {
 
         userEmail.setText(propertyEntity.UserOfficialEmail);
 
-        Utility.setCallAndEmailButton(btnCall, btnEmail, propertyEntity.ContactAddress.ContactNumber, propertyEntity.ContactAddress.ContactEmail);
+        Utility.setCallAndEmailButton(getActivity(), propertyEntity.PostTitle, btnCall, btnEmail, propertyEntity.ContactAddress.ContactNumber, propertyEntity.ContactAddress.ContactEmail);
     }
 }

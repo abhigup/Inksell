@@ -28,4 +28,12 @@ public class LocalStorageHandler {
         }
         return Utility.GetObjectFromJSON(dataString, clazz);
     }
+
+    public static void ClearAll()
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ConfigurationManager.CurrentActivityContext);
+        Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+    }
 }

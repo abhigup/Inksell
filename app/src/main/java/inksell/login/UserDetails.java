@@ -1,7 +1,7 @@
 package inksell.login;
 
 import inksell.inksell.R;
-import models.BaseActionBarActivity;
+import inksell.common.BaseActionBarActivity;
 
 public class UserDetails extends BaseActionBarActivity {
 

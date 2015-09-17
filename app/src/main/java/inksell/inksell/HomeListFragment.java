@@ -2,19 +2,14 @@ package inksell.inksell;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -22,17 +17,14 @@ import android.widget.RelativeLayout;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import Constants.AppData;
 import adapters.RVAdapter;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import enums.CategoryType;
+import inksell.common.BaseFragment;
 import inksell.posts.add.AddPostActivity;
-import inksell.posts.view.ViewPostActivity;
 import models.PostSummaryEntity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -42,18 +34,9 @@ import services.RestClient;
 import utilities.ConfigurationManager;
 import utilities.FavouritesHelper;
 import utilities.NavigationHelper;
-import utilities.Utility;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private CategoryType categoryType;
 
@@ -103,11 +86,46 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        super.onCreate(savedInstanceState);
+    public int getViewResId() {
+        return R.layout.fragment_home_list;
+    }
 
+    @Override
+    public void initFragment() {
+        setHasOptionsMenu(true);
         loadPostsData(CategoryType.AllCategory);
+    }
+
+    @Override
+    public void initView(View view) {
+
+        tryAgainButton.setOnClickListener(refresh_click());
+
+        fab_auto.setOnClickListener(addPostClick(CategoryType.Automobile));
+        fab_electronics.setOnClickListener(addPostClick(CategoryType.Electronics));
+        fab_furniture.setOnClickListener(addPostClick(CategoryType.Furniture));
+        fab_multiple.setOnClickListener(addPostClick(CategoryType.Multiple));
+        fab_other.setOnClickListener(addPostClick(CategoryType.Others));
+        fab_realestate.setOnClickListener(addPostClick(CategoryType.RealState));
+
+        progressBar.setVisibility(View.VISIBLE);
+        layoutErrorTryAgain.setVisibility(View.GONE);
+
+        swipeContainer.setOnRefreshListener(this);
+        swipeContainer.setColorSchemeResources(R.color.TitlePrimaryDark);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (fabMenu.isExpanded()) {
+                    fabMenu.collapse();
+                }
+                return true;
+            }
+        });
+
+        rv.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(ConfigurationManager.CurrentActivityContext);
+        rv.setLayoutManager(llm);
     }
 
     private View.OnClickListener refresh_click() {
@@ -192,45 +210,6 @@ public class HomeListFragment extends Fragment implements SwipeRefreshLayout.OnR
         inflater.inflate(R.menu.home, menu);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_home_list, container, false);
-        ButterKnife.inject(this, view);
-
-        tryAgainButton.setOnClickListener(refresh_click());
-
-        fab_auto.setOnClickListener(addPostClick(CategoryType.Automobile));
-        fab_electronics.setOnClickListener(addPostClick(CategoryType.Electronics));
-        fab_furniture.setOnClickListener(addPostClick(CategoryType.Furniture));
-        fab_multiple.setOnClickListener(addPostClick(CategoryType.Multiple));
-        fab_other.setOnClickListener(addPostClick(CategoryType.Others));
-        fab_realestate.setOnClickListener(addPostClick(CategoryType.RealState));
-
-        progressBar.setVisibility(View.VISIBLE);
-        layoutErrorTryAgain.setVisibility(View.GONE);
-
-        swipeContainer.setOnRefreshListener(this);
-        swipeContainer.setColorSchemeResources(R.color.TitlePrimaryDark);
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (fabMenu.isExpanded()) {
-                    fabMenu.collapse();
-                }
-                return true;
-            }
-        });
-
-        rv.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(ConfigurationManager.CurrentActivityContext);
-        rv.setLayoutManager(llm);
-
-
-        return view;
-
-    }
 
     private View.OnClickListener addPostClick(final CategoryType categoryType) {
         return new View.OnClickListener() {

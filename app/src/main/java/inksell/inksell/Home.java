@@ -21,11 +21,12 @@ import enums.CategoryType;
 import inksell.search.SearchResultsActivity;
 import inksell.user.MyAccount;
 import inksell.user.SubscriptionFragment;
-import models.BaseActionBarActivity;
+import inksell.common.BaseActionBarActivity;
 import models.UserEntity;
 import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
+import utilities.LocalStorageHandler;
 import utilities.NavigationHelper;
 import utilities.Utility;
 
@@ -149,11 +150,7 @@ public class Home extends BaseActionBarActivity implements HomeListFragment.OnFr
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-
-                        break;
-
-                    case DialogInterface.BUTTON_NEGATIVE:
-
+                        LocalStorageHandler.ClearAll();
                         break;
                 }
             }

@@ -8,7 +8,6 @@ import java.util.List;
 import adapters.FullScreenImageAdapter;
 import butterknife.InjectView;
 import inksell.inksell.R;
-import models.BaseActionBarActivity;
 import utilities.Utility;
 
 public class fullscreen_view extends BaseActionBarActivity {

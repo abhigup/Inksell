@@ -25,7 +25,7 @@ import enums.CategoryType;
 import inksell.common.fullscreen_view;
 import inksell.inksell.R;
 import models.AutomobileEntity;
-import models.BaseActionBarActivity;
+import inksell.common.BaseActionBarActivity;
 import models.ElectronicEntity;
 import models.FurnitureEntity;
 import models.IPostEntity;

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="expectedPrice">Expected Price</string>
+    <string name="title">Title</string>
     <string name="actualPrice">Actual Price</string>
     <string name="usedPeriod">Used Period</string>
     <string name="description">Description</string>
@@ -8,10 +10,11 @@
     <string name="addImages">Images</string>
     <string name="address">Address</string>
 
+    <string name="hintContactPerson">Contact Person</string>
     <string name="hintContactNumber">Contact Number</string>
-    <string name="hintContactEmail">Contact email</string>
+    <string name="hintContactEmail">Contact email id</string>
     <string name="hintContactAddress">Contact Address</string>
     <string name="hintContactCity">City</string>
-    <string name="title">Title</string>
 
+    <string name="UseMyContactInfo">Use my contact info</string>
 </resources>

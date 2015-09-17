@@ -1,30 +1,30 @@
 package inksell.user;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import inksell.common.BaseFragment;
 import inksell.inksell.R;
 
-public class SubscriptionFragment extends Fragment {
+public class SubscriptionFragment extends BaseFragment {
 
     public SubscriptionFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public int getViewResId() {
+        return R.layout.fragment_subscription;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_subscription, container, false);
+    public void initFragment() {
+
+    }
+
+    @Override
+    public void initView(View view) {
+
     }
 
     @Override

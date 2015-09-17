@@ -6,7 +6,7 @@ import android.widget.Button;
 
 import butterknife.InjectView;
 import inksell.inksell.R;
-import models.BaseActionBarActivity;
+import inksell.common.BaseActionBarActivity;
 
 public class AddPostActivity extends BaseActionBarActivity {
 

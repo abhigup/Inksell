@@ -20,8 +20,32 @@
                 android:layout_width="match_parent"
                 android:text="@string/addImages"
                 android:textColor="@color/half_black"
-                android:id="@+id/view_post_label_contactInfo"
+                android:id="@+id/add_post_label_images"
                 android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_below="@+id/add_post_label_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:layout_below="@+id/add_post_label_images"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/add_btn_camera"
+                    android:background="@drawable/ic_action_photo_camera"/>
+
+                <Button
+                    android:layout_below="@+id/add_post_label_images"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/add_btn_gallery"
+                    android:background="@drawable/ic_action_photo_library"/>
+
+                </LinearLayout>
 
         </RelativeLayout>
 

@@ -19,7 +19,7 @@ import Constants.AppData;
 import adapters.RVAdapter;
 import butterknife.InjectView;
 import inksell.inksell.R;
-import models.BaseActionBarActivity;
+import inksell.common.BaseActionBarActivity;
 import models.CategoryEntity;
 import models.LocationEntity;
 import models.PostSummaryEntity;

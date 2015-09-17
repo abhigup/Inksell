@@ -23,7 +23,7 @@ import adapters.RVAdapter;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import inksell.inksell.R;
-import models.BaseActionBarActivity;
+import inksell.common.BaseActionBarActivity;
 import models.PostSummaryEntity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -44,11 +44,11 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
 
-    @InjectView(R.id.my_image)
-    CircleImageView myImage;
-
     @InjectView(R.id.my_fab_edit)
     FloatingActionButton fabEditButton;
+
+    @InjectView(R.id.my_image)
+    CircleImageView myImage;
 
     @InjectView(R.id.my_name)
     TextView myName;

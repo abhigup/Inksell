@@ -1,6 +1,7 @@
 package inksell.posts.view;
 
 import android.app.Fragment;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -78,7 +79,7 @@ public class ViewOtherFragment extends BaseViewFragment {
     }
 
     @Override
-    public void initView() {
+    public void initView(View view) {
         price.setText(Utility.GetLocalCurrencySymbol() + " " + otherEntity.ExpectedPrice + "  ");
         usedPeriod.setText(Utility.IsStringNullorEmpty(otherEntity.UsedPeriod)?"-": otherEntity.UsedPeriod);
         otherEntity.PostDescription = otherEntity.PostDescription.replace("\r\n","\n").replace("\r","\n");
@@ -100,6 +101,6 @@ public class ViewOtherFragment extends BaseViewFragment {
 
         userEmail.setText(otherEntity.UserOfficialEmail);
 
-        Utility.setCallAndEmailButton(btnCall, btnEmail, otherEntity.ContactAddress.ContactNumber, otherEntity.ContactAddress.ContactEmail);
+        Utility.setCallAndEmailButton(getActivity(), otherEntity.PostTitle, btnCall, btnEmail, otherEntity.ContactAddress.ContactNumber, otherEntity.ContactAddress.ContactEmail);
     }
 }

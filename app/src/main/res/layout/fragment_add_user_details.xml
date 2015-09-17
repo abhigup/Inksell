@@ -10,19 +10,78 @@
         android:id="@+id/add_user_details_cv"
         >
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp">
+            android:layout_margin="16dp"
+            android:orientation="vertical">
 
-            <TextView android:textSize="14sp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/my_image"
+                />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/my_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/TitlePrimary"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                />
+
+            <EditText android:textSize="15sp"
+                android:layout_marginTop="10dp"
+                style="@style/MyEditTextTheme"
                 android:fontFamily="sans-serif-light"
                 android:layout_width="match_parent"
-                android:text="@string/contactInformation"
-                android:textColor="@color/half_black"
-                android:id="@+id/view_post_label_contactInfo"
+                android:id="@+id/add_post_contact_person"
+                android:hint="@string/hintContactPerson"
                 android:layout_height="wrap_content" />
 
-        </RelativeLayout>
+            <EditText android:textSize="15sp"
+                style="@style/MyEditTextTheme"
+                android:fontFamily="sans-serif-light"
+                android:layout_width="match_parent"
+                android:id="@+id/add_post_contact_number"
+                android:hint="@string/hintContactNumber"
+                android:layout_height="wrap_content" />
+
+            <EditText android:textSize="15sp"
+                style="@style/MyEditTextTheme"
+                android:fontFamily="sans-serif-light"
+                android:layout_width="match_parent"
+                android:id="@+id/add_post_contact_email"
+                android:hint="@string/hintContactEmail"
+                android:layout_height="wrap_content" />
+
+            <EditText android:textSize="15sp"
+                style="@style/MyEditTextTheme"
+                android:fontFamily="sans-serif-light"
+                android:layout_width="match_parent"
+                android:id="@+id/add_post_contact_address"
+                android:hint="@string/hintContactAddress"
+                android:layout_height="wrap_content" />
+
+            <EditText android:textSize="15sp"
+                style="@style/MyEditTextTheme"
+                android:fontFamily="sans-serif-light"
+                android:layout_width="match_parent"
+                android:id="@+id/add_post_contact_city"
+                android:hint="@string/hintContactCity"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:textColor="@color/half_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/UseMyContactInfo"
+                android:id="@+id/checkBoxUseMyContactInfo" />
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>

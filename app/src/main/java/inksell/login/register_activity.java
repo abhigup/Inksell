@@ -12,7 +12,7 @@ import java.util.List;
 import Constants.StorageConstants;
 import butterknife.InjectView;
 import inksell.inksell.R;
-import models.BaseActionBarActivity;
+import inksell.common.BaseActionBarActivity;
 import models.CompanyEntity;
 import models.LocationEntity;
 import models.VerifyUserEntity;

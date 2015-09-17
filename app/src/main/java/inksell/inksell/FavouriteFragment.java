@@ -2,25 +2,21 @@ package inksell.inksell;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import adapters.RVAdapter;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
+import inksell.common.BaseFragment;
 import inksell.posts.view.ViewPostActivity;
 import models.PostSummaryEntity;
 import utilities.FavouritesHelper;
@@ -28,7 +24,7 @@ import utilities.NavigationHelper;
 import utilities.SwipableRecyclerView;
 import utilities.Utility;
 
-public class FavouriteFragment extends Fragment implements SwipableRecyclerView.OnSwipeListener {
+public class FavouriteFragment extends BaseFragment implements SwipableRecyclerView.OnSwipeListener {
 
     private RVAdapter frvAdapter;
 
@@ -37,17 +33,21 @@ public class FavouriteFragment extends Fragment implements SwipableRecyclerView.
     @InjectView(R.id.favouritesListRecycleView)
     RecyclerView frv;
 
-    public FavouriteFragment() {
-        // Required empty public constructor
+    @Override
+    public int getViewResId() {
+        return R.layout.fragment_favourites;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void initView(View view) {
+        initFavList();
+    }
+
+    @Override
+    public void initFragment() {
         setHasOptionsMenu(true);
 
         postSummaryEntityList = FavouritesHelper.getFavourites();
-
     }
 
     private View.OnClickListener cardViewClickListener() {
@@ -70,19 +70,6 @@ public class FavouriteFragment extends Fragment implements SwipableRecyclerView.
                 }
             }
         };
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_favourites, container, false);
-        ButterKnife.inject(this, view);
-
-        initFavList();
-
-        return view;
     }
 
     private void initFavList() {

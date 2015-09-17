@@ -9,7 +9,7 @@ import java.util.Map;
 import Constants.StorageConstants;
 import butterknife.InjectView;
 import inksell.inksell.R;
-import models.BaseActionBarActivity;
+import inksell.common.BaseActionBarActivity;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import services.InksellCallback;

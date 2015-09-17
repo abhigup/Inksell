@@ -1,12 +1,16 @@
 package utilities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -461,7 +465,7 @@ public class Utility {
     }
 
 
-    public static void setCallAndEmailButton(ImageButton btnCall, ImageButton btnEmail, String contactNumber, String contactEmail)
+    public static void setCallAndEmailButton(final Activity activity, final String postTitle, ImageButton btnCall, ImageButton btnEmail, final String contactNumber, final String contactEmail)
     {
         int callBgColor;
         int emailBgColor;
@@ -472,6 +476,16 @@ public class Utility {
         else
         {
             callBgColor = R.color.TitlePrimaryDark;
+            btnCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + contactNumber));
+                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                        activity.startActivity(intent);
+                    }
+                }
+            });
         }
         if(Utility.IsStringNullorEmpty(contactEmail))
         {
@@ -479,7 +493,19 @@ public class Utility {
         }
         else
         {
-            emailBgColor = R.color.TitlePrimaryDark;
+            emailBgColor = R.color.TitlePrimary;
+            btnEmail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+                    intent.putExtra(Intent.EXTRA_EMAIL, contactEmail);
+                    intent.putExtra(Intent.EXTRA_SUBJECT, postTitle);
+                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                        activity.startActivity(intent);
+                    }
+                }
+            });
         }
         btnCall.setBackgroundColor(btnCall.getContext().getResources().getColor(callBgColor));
         btnEmail.setBackgroundColor(btnEmail.getContext().getResources().getColor(emailBgColor));
