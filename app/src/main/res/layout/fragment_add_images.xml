@@ -10,6 +10,7 @@
         android:id="@+id/add_user_details_cv"
         >
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,6 +26,7 @@
 
             <LinearLayout
                 android:layout_below="@+id/add_post_label_images"
+                android:id="@+id/image_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -46,6 +48,16 @@
                     android:background="@drawable/ic_action_photo_library"/>
 
                 </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                android:layout_marginTop="16dp"
+                android:id="@+id/imageRecyclerView"
+                android:layout_below="@+id/image_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:columnWidth="80dp">
+            </android.support.v7.widget.RecyclerView>
 
         </RelativeLayout>
 

@@ -190,6 +190,8 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
                     case DialogInterface.BUTTON_POSITIVE:
                         RestClient.get().deletePost(entity.PostId, AppData.UserGuid, entity.categoryid, deletePostCallback(position));
                         break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        refresh();
                 }
             }
         };

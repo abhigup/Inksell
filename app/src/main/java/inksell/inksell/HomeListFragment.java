@@ -3,12 +3,12 @@ package inksell.inksell;
 import android.app.Activity;
 import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -76,6 +76,9 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     @InjectView(R.id.fab_realestate)
     FloatingActionButton fab_realestate;
 
+    @InjectView(R.id.cvHomeTransparency)
+    CardView cvHomeTransparency;
+
     private RVAdapter rvAdapter;
 
     private List<PostSummaryEntity> postSummaryList;
@@ -99,6 +102,26 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void initView(View view) {
 
+        cvHomeTransparency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabMenu.collapse();
+                cvHomeTransparency.setVisibility(View.GONE);
+            }
+        });
+
+        fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+            @Override
+            public void onMenuExpanded() {
+                cvHomeTransparency.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onMenuCollapsed() {
+                cvHomeTransparency.setVisibility(View.GONE);
+            }
+        });
+
         tryAgainButton.setOnClickListener(refresh_click());
 
         fab_auto.setOnClickListener(addPostClick(CategoryType.Automobile));
@@ -113,16 +136,6 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
 
         swipeContainer.setOnRefreshListener(this);
         swipeContainer.setColorSchemeResources(R.color.TitlePrimaryDark);
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (fabMenu.isExpanded()) {
-                    fabMenu.collapse();
-                }
-                return true;
-            }
-        });
-
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(ConfigurationManager.CurrentActivityContext);
         rv.setLayoutManager(llm);
