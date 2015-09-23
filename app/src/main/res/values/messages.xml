@@ -4,4 +4,6 @@
     <string name="deletePostConfirmation">Do you really want to delete the post?</string>
     <string name="deletePostSuccess">Post deleted successfully !</string>
     <string name="deletePostFailure">Error deleting post. Please try again.</string>
+
+    <string name="removeSubscription">UnSubscribe this tag ?</string>
 </resources>

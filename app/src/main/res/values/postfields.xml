@@ -15,6 +15,6 @@
     <string name="hintContactEmail">Contact email id</string>
     <string name="hintContactAddress">Contact Address</string>
     <string name="hintContactCity">City</string>
-
+    <string name="hintSubscription">Subscription Keyword</string>
     <string name="UseMyContactInfo">Use my contact info</string>
 </resources>

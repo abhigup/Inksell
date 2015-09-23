@@ -1,9 +1,31 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="16dp"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="inksell.user.SubscriptionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/subscriptions_autocomplete_layout">
 
-</FrameLayout>
+        <AutoCompleteTextView
+            android:id="@+id/subscriptions_autocomplete"
+            style="@style/MyEditTextTheme"
+            android:hint="@string/hintSubscription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/subscriptions_autocomplete_layout"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/subscriptions_buttons_layout">
+
+        </LinearLayout>
+
+</RelativeLayout>

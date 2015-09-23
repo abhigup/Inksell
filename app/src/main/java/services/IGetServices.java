@@ -10,6 +10,7 @@ import models.LocationEntity;
 import models.OtherEntity;
 import models.PostSummaryEntity;
 import models.RealEstateEntity;
+import models.TagsEntity;
 import models.UserEntity;
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -61,4 +62,7 @@ public interface IGetServices {
 
     @GET("/DeletePost/{postId}/{userGuid}/{category}")
     void deletePost(@Path("postId") int postId, @Path("userGuid") String guid, @Path("category") int category, Callback<Integer> callback);
+
+    @GET("/getAllTags")
+    void getAllSubscriptionsTags(Callback<List<TagsEntity>> callback);
 }

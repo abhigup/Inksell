@@ -2,8 +2,10 @@ package utilities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -14,10 +16,12 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -87,6 +91,28 @@ public class Utility {
                         alertDialog.show();
                     }
                 }
+        );
+    }
+
+    private static void ShowToast(String message) {
+        Context context = ConfigurationManager.CurrentActivityContext;
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, message, duration);
+        toast.show();
+    }
+
+    public static void ShowToast(int stringResource)
+    {
+        ShowToast(ConfigurationManager.CurrentActivityContext.getString(stringResource));
+    }
+
+    public static int GetPixelsFromDp(int dp) {
+        Resources r = ConfigurationManager.CurrentActivityContext.getResources();
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                r.getDisplayMetrics()
         );
     }
 
@@ -505,7 +531,7 @@ public class Utility {
                 public void onClick(View v) {
                     Intent intent = new Intent(Intent.ACTION_SENDTO);
                     intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-                    intent.putExtra(Intent.EXTRA_EMAIL, contactEmail);
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[] { contactEmail });
                     intent.putExtra(Intent.EXTRA_SUBJECT, postTitle);
                     if (intent.resolveActivity(activity.getPackageManager()) != null) {
                         activity.startActivity(intent);

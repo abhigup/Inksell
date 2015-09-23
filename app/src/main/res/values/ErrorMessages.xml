@@ -30,4 +30,6 @@
     <string name="SucessUnsubscribeSuccess">Tag unsubscribed successfully.</string>
     <string name="ErrorEmptyFields">Please fill the required fields.</string>
 
+    <string name="ErrorSubscriptionAlreadyAdded">Subscription already added !</string>
+    <string name="ErrorSubscriptionLimitReached">Only 3 subscription tags supported.</string>
 </resources>

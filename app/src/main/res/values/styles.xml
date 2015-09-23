@@ -24,6 +24,11 @@
 
     </style>
 
+    <style name="ButtonOvalPink">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/oval_background</item>
+    </style>
+
     <style name="ButtonDarkRed">
         <item name="android:textColor">@color/white</item>
         <item name="android:minWidth">88dp</item>
