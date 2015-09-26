@@ -12,7 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import enums.CategoryType;
 import inksell.inksell.R;
+import inksell.posts.view.ViewMultipleActivity;
 import inksell.posts.view.ViewPostActivity;
 import models.PostSummaryEntity;
 
@@ -64,13 +66,15 @@ public class NavigationHelper {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("postSummary", Utility.GetJSONString(postSummaryEntity));
 
+                Class navClass = CategoryType.values()[postSummaryEntity.categoryid]==CategoryType.Multiple? ViewMultipleActivity.class:ViewPostActivity.class;
+
                 if(!postSummaryEntity.HasPostTitlePic())
                 {
-                    NavigateTo(ViewPostActivity.class, map);
+                    NavigateTo(navClass, map);
                 }
                 else {
                     ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, v.findViewById(R.id.card_title_pic), activity.getString(R.string.cardTitlePicTransition));
-                    NavigateTo(ViewPostActivity.class, map, options.toBundle());
+                    NavigateTo(navClass, map, options.toBundle());
                 }
             }
         };

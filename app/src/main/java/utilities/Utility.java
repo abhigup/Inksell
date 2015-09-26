@@ -54,6 +54,8 @@ public class Utility {
 
     private static Currency currency = Currency.getInstance(ConfigurationManager.CurrentActivityContext.getResources().getConfiguration().locale);
 
+    public static Locale getLocale = ConfigurationManager.CurrentActivityContext.getResources().getConfiguration().locale;
+
     public static void ShowInfoDialog(int resId){
         ShowInfoDialog(GetResourceString(resId));
     }

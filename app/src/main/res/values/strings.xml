@@ -61,5 +61,8 @@
     <string name="title_section3">Section 3</string>
     <string name="title_activity_edit_my_details">My Profile</string>
     <string name="title_activity_fullscreen_view">fullscreen_view</string>
+    <string name="title_activity_add_multiple">Add Multiple Posts</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_view_multiple">ViewMultipleActivity</string>
 
 </resources>

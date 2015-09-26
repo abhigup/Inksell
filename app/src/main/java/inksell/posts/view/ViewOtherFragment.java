@@ -1,6 +1,5 @@
 package inksell.posts.view;
 
-import android.app.Fragment;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -10,19 +9,10 @@ import java.util.List;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import inksell.inksell.R;
-import models.AutomobileEntity;
 import models.IPostEntity;
 import models.OtherEntity;
 import utilities.Utility;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ViewOtherFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ViewOtherFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ViewOtherFragment extends BaseViewFragment {
     @InjectView(R.id.view_other_actualPrice)
     TextView actualPrice;

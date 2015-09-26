@@ -12,4 +12,6 @@ public class StorageConstants {
     public static final String Favourites = "Favourites";
 
     public static final String SubscriptionTagEntities = "SubscriptionTagEntities";
+
+    public static final String AppLoginCount = "AppLoginCount";
 }

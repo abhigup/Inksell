@@ -18,10 +18,10 @@ import Constants.AppData;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import enums.CategoryType;
+import inksell.common.BaseActionBarActivity;
 import inksell.search.SearchResultsActivity;
 import inksell.user.MyAccount;
 import inksell.user.SubscriptionFragment;
-import inksell.common.BaseActionBarActivity;
 import models.UserEntity;
 import retrofit.client.Response;
 import services.InksellCallback;
@@ -31,6 +31,7 @@ import utilities.NavigationHelper;
 import utilities.Utility;
 
 public class Home extends BaseActionBarActivity implements HomeListFragment.OnFragmentInteractionListener{
+
     @InjectView(R.id.drawer_layout)
     DrawerLayout mDrawer;
 
@@ -68,6 +69,7 @@ public class Home extends BaseActionBarActivity implements HomeListFragment.OnFr
         ab.setDisplayHomeAsUpEnabled(true);
 
         selectDrawerItem(nvDrawer.getMenu().getItem(0));
+
     }
 
     @Override

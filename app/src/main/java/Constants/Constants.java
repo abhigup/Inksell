@@ -15,4 +15,6 @@ public class Constants {
 
     public static final String IMAGE_DIR_NAME = "Inksell";
 
+    public static final String HOME_SHOWCASE_ID = "HomeShowcaseId";
+
 }

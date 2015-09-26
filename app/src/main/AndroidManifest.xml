@@ -4,8 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"  />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -36,10 +37,6 @@
             android:label="@string/title_activity_already_activity" >
         </activity>
         <activity
-            android:name="inksell.login.UserDetails"
-            android:label="@string/title_activity_user_details" >
-        </activity>
-        <activity
             android:name="inksell.login.new_company"
             android:label="@string/title_activity_new_company" >
         </activity>
@@ -67,7 +64,7 @@
         <activity
             android:name="inksell.posts.add.AddPostActivity"
             android:label="@string/title_activity_add_post"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="inksell.user.MyAccount"
@@ -82,6 +79,19 @@
         <activity
             android:name="inksell.common.fullscreen_view"
             android:label="@string/title_activity_fullscreen_view"
+            android:theme="@style/AppThemeNoActionBar" >
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBgZ1I0jQ3pddkxn9vEB4UDJcgrIjPYiKc" />
+
+        <activity
+            android:name="inksell.posts.add.AddMultipleActivity"
+            android:label="@string/title_activity_add_multiple">
+        </activity>
+        <activity
+            android:name="inksell.posts.view.ViewMultipleActivity"
             android:theme="@style/AppThemeNoActionBar">
         </activity>
     </application>

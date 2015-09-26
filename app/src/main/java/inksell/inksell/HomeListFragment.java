@@ -17,13 +17,18 @@ import android.widget.RelativeLayout;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Constants.AppData;
+import Constants.Constants;
+import Constants.StorageConstants;
 import adapters.RVAdapter;
 import butterknife.InjectView;
 import enums.CategoryType;
 import inksell.common.BaseFragment;
+import inksell.posts.add.AddMultipleActivity;
 import inksell.posts.add.AddPostActivity;
 import models.PostSummaryEntity;
 import retrofit.Callback;
@@ -31,14 +36,18 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 import utilities.ConfigurationManager;
 import utilities.FavouritesHelper;
+import utilities.LocalStorageHandler;
 import utilities.NavigationHelper;
 
 
 public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private CategoryType categoryType;
+    private Menu homeMenu;
 
     @InjectView(R.id.homeListRecycleView)
     RecyclerView rv;
@@ -83,10 +92,6 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
 
     private List<PostSummaryEntity> postSummaryList;
     private OnFragmentInteractionListener mListener;
-
-    public HomeListFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public int getViewResId() {
@@ -139,6 +144,33 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(ConfigurationManager.CurrentActivityContext);
         rv.setLayoutManager(llm);
+    }
+
+    private void setupFRE()
+    {
+        if(LocalStorageHandler.ContainsKey(StorageConstants.AppLoginCount))
+        {
+            LocalStorageHandler.SaveData(StorageConstants.AppLoginCount, Integer.parseInt(LocalStorageHandler.GetData(StorageConstants.AppLoginCount, String.class)+1));
+        }
+        else
+        {
+            LocalStorageHandler.SaveData(StorageConstants.AppLoginCount,1);
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(500); // half second between each showcase view
+
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), Constants.HOME_SHOWCASE_ID);
+
+            sequence.setConfig(config);
+
+            sequence.addSequenceItem(getActivity().findViewById(R.id.menu_search),
+                    "Search any post within your organisation", "GOT IT");
+
+            sequence.addSequenceItem(getActivity().findViewById(R.id.menu_filter),
+                "Filter posts according to categories", "GOT IT");
+
+
+            sequence.start();
+        }
     }
 
     private View.OnClickListener refresh_click() {
@@ -199,6 +231,12 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
                     rvAdapter.Update(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getActivity()));
                 }
                 swipeContainer.setRefreshing(false);
+                android.os.Handler handler = new android.os.Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        setupFRE();
+                    }
+                }, 600);
             }
 
             @Override
@@ -221,6 +259,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     public void onCreateOptionsMenu(
             Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.home, menu);
+        this.homeMenu = menu;
     }
 
 
@@ -231,9 +270,12 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
                 switch (categoryType)
                 {
                     case Multiple:
+                        NavigationHelper.NavigateTo(AddMultipleActivity.class);
                         break;
                     default:
-                        NavigationHelper.NavigateTo(AddPostActivity.class);
+                        Map<String, String> map = new HashMap<>();
+                        map.put("category", String.valueOf(categoryType.ordinal()));
+                        NavigationHelper.NavigateTo(AddPostActivity.class, map);
                 }
             }
         };

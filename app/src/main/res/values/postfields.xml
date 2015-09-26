@@ -10,6 +10,21 @@
     <string name="addImages">Images</string>
     <string name="address">Address</string>
 
+    <string name="propertyAddress">Property Address</string>
+    <string name="location">Location</string>
+    <string name="rent">For Rent</string>
+    <string name="sale">On Sale</string>
+    <string name="bhk">BHK</string>
+    <string name="rentAmount">Rent</string>
+    <string name="maintenanceAmount">Maintenance</string>
+    <string name="availableFrom">Available From</string>
+    <string name="area">Area (sqft)</string>
+    <string name="water">24x7 Water</string>
+    <string name="power">24x7 Power</string>
+    <string name="internet">Internet</string>
+    <string name="parking">Parking</string>
+    <string name="pricePerSqft">Price/Sqft</string>
+
     <string name="hintContactPerson">Contact Person</string>
     <string name="hintContactNumber">Contact Number</string>
     <string name="hintContactEmail">Contact email id</string>

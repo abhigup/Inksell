@@ -14,16 +14,14 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 import Constants.AppData;
 import adapters.RVAdapter;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
-import inksell.inksell.R;
 import inksell.common.BaseActionBarActivity;
+import inksell.inksell.R;
 import models.PostSummaryEntity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -118,8 +116,7 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
 
     private void initMyData() {
 
-        Picasso.with(this).load(AppData.UserData.UserImageUrl)
-                .into(myImage);
+        Utility.setUserPic(myImage, AppData.UserData.UserImageUrl, AppData.UserData.Username);
 
         myName.setText(AppData.UserData.Username);
         myEmail.setText(AppData.UserData.CorporateEmail);

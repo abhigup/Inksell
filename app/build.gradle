@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "inksell.inksell"
@@ -43,4 +43,8 @@ dependencies {
 
     compile 'com.daimajia.slider:library:1.0.9@aar'
     compile 'com.nineoldandroids:library:2.4.0'
+
+    compile 'com.google.android.gms:play-services:7.8.0'
+
+    compile 'com.github.deano2390:MaterialShowcaseView:1.0.5'
 }

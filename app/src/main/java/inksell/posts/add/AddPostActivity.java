@@ -5,10 +5,14 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import butterknife.InjectView;
-import inksell.inksell.R;
+import enums.CategoryType;
 import inksell.common.BaseActionBarActivity;
+import inksell.inksell.R;
 
 public class AddPostActivity extends BaseActionBarActivity {
+
+    private CategoryType categoryType;
+    private boolean isMultiple;
 
     @InjectView(R.id.add_submit)
     Button submit;
@@ -16,6 +20,13 @@ public class AddPostActivity extends BaseActionBarActivity {
     @Override
     protected void initDataAndLayout() {
 
+    }
+
+    @Override
+    protected void setIntentExtras()
+    {
+        categoryType = CategoryType.values()[Integer.parseInt(intentExtraMap.get("category"))];
+        isMultiple = intentExtraMap.containsKey("multiple");
     }
 
     @Override
@@ -27,13 +38,20 @@ public class AddPostActivity extends BaseActionBarActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        AddPostDetailsFragment addPostDetailsFragment = new AddPostDetailsFragment();
-        AddImagesFragment addImagesFragment = new AddImagesFragment();
-        AddUserDetailsFragment addUserDetailsFragment = new AddUserDetailsFragment();
+        BaseAddFragment addPostDetailsFragment;
 
+        int detailsContainer;
+        if(categoryType==CategoryType.RealState)
+        {
+            addPostDetailsFragment = new AddRealEstateDetailsFragment();
+            AddRealEstateMapFragment addRealEstateMapFragment = new AddRealEstateMapFragment();
+            transaction.add(R.id.add_map_container, addRealEstateMapFragment);
+        }
+        else
+        {
+            addPostDetailsFragment = new AddPostDetailsFragment();
+        }
         transaction.add(R.id.add_post_details_container, addPostDetailsFragment);
-        transaction.add(R.id.add_images_container, addImagesFragment);
-        transaction.add(R.id.add_user_details_container, addUserDetailsFragment);
 
         transaction.commit();
     }

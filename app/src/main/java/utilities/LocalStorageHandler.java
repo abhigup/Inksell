@@ -20,6 +20,12 @@ public class LocalStorageHandler {
         editor.commit();
     }
 
+    public static boolean ContainsKey(String key)
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ConfigurationManager.CurrentActivityContext);
+        return sharedPreferences.contains(key);
+    }
+
     public static <T> T GetData(String key, Class<T> clazz) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ConfigurationManager.CurrentActivityContext);
         String dataString=sharedPreferences.getString(key, null);

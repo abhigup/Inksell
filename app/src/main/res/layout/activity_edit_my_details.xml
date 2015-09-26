@@ -19,11 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            layout="@layout/loading_error_fragment" />
-
         <LinearLayout
             android:id="@+id/edit_user_layout"
             android:layout_marginTop="16dp"
@@ -128,5 +123,10 @@
         layout="@layout/loading_fullpage_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <include android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        layout="@layout/loading_error_fragment" />
 
 </RelativeLayout>

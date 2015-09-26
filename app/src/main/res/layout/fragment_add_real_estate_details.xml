@@ -1,0 +1,201 @@
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="@android:color/white"
+    card_view:cardElevation="2sp"
+    card_view:cardUseCompatPadding="true"
+    android:id="@+id/add_real_estate_details_cv"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:textOn="@string/rent"
+                        android:textOff="@string/rent"
+                        android:checked="true"
+                        android:textColor="@color/toggle_primary_text"
+                        android:background="@drawable/toggle_primary"
+                        android:id="@+id/add_rent_btn"/>
+
+            <ToggleButton
+                android:background="@drawable/toggle_primary"
+                android:textColor="@color/toggle_primary_text"
+                android:layout_width="wrap_content"
+                android:textOff="@string/sale"
+                android:textOn="@string/sale"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:id="@+id/add_sale_btn"/>
+
+        </LinearLayout>
+
+        <EditText android:textSize="30sp"
+            style="@style/MyEditTextTheme"
+            android:fontFamily="sans-serif-light"
+            android:layout_width="match_parent"
+            android:id="@+id/add_post_title"
+            android:hint="@string/title"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText android:textSize="15sp"
+                    android:layout_weight="1"
+                    style="@style/MyEditTextTheme"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="match_parent"
+                    android:id="@+id/add_post_rent"
+                    android:hint="@string/rentAmount"
+                    android:layout_height="wrap_content" />
+
+                <EditText android:textSize="15sp"
+                    android:layout_weight="1"
+                    style="@style/MyEditTextTheme"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="match_parent"
+                    android:id="@+id/add_post_maintenance"
+                    android:hint="@string/maintenanceAmount"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText android:textSize="15sp"
+                    android:layout_weight="1"
+                    style="@style/MyEditTextTheme"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="match_parent"
+                    android:id="@+id/add_post_bhk"
+                    android:hint="@string/bhk"
+                    android:layout_height="wrap_content" />
+
+                <TextView android:textSize="15sp"
+                    style="@android:style/Widget.EditText"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_width="match_parent"
+                    android:id="@+id/add_post_availability"
+                    android:hint="@string/availableFrom"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <EditText android:textSize="15sp"
+            android:layout_weight="1"
+            android:inputType="textMultiLine"
+            style="@style/MyEditTextTheme"
+            android:fontFamily="sans-serif-light"
+            android:layout_width="match_parent"
+            android:id="@+id/add_post_area"
+            android:hint="@string/area"
+            android:layout_height="0dp" />
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ToggleButton
+                android:padding="5dp"
+                android:background="@drawable/toggle_primary"
+                android:drawableTop="@drawable/water"
+                android:textColor="@color/toggle_primary_text"
+                android:textOff="@string/water"
+                android:textOn="@string/water"
+                android:textSize="8sp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"/>
+
+            <ToggleButton
+                android:padding="5dp"
+                android:layout_marginLeft="5dp"
+                android:drawableTop="@drawable/power"
+                android:textOff="@string/power"
+                android:textOn="@string/power"
+                android:textSize="8sp"
+                android:layout_width="wrap_content"
+                android:background="@drawable/toggle_primary"
+                android:textColor="@color/toggle_primary_text"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <ToggleButton
+                android:padding="5dp"
+                android:drawablePadding="5dp"
+                android:layout_marginLeft="5dp"
+                android:drawableTop="@drawable/wifi"
+                android:textOff="@string/internet"
+                android:textOn="@string/internet"
+                android:textSize="8sp"
+                android:layout_width="wrap_content"
+                android:background="@drawable/toggle_primary"
+                android:textColor="@color/toggle_primary_text"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <ToggleButton
+                android:padding="5dp"
+                android:drawablePadding="5dp"
+                android:drawableTop="@drawable/parking"
+                android:textOff="@string/parking"
+                android:textOn="@string/parking"
+                android:textSize="8sp"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:background="@drawable/toggle_primary"
+                android:textColor="@color/toggle_primary_text"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:inputType="textMultiLine"
+            style="@style/MyEditTextTheme"
+            android:fontFamily="sans-serif-light"
+            android:layout_width="match_parent"
+            android:singleLine="false"
+            android:id="@+id/add_post_description"
+            android:hint="@string/description"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
