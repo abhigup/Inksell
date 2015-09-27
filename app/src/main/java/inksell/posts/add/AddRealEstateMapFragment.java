@@ -25,7 +25,7 @@ public class AddRealEstateMapFragment extends BaseAddFragment {
     }
 
     @Override
-    public void initView(View view) {
+    public void initViewAfterSettingEditableView(View view) {
 
     }
 

@@ -37,4 +37,6 @@ public class PostSummaryEntity {
     {
         return !Utility.IsStringNullorEmpty(PostDefaultImage);
     }
+
+    public boolean isEditable = false;
 }

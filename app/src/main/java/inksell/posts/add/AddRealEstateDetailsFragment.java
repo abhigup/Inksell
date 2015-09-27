@@ -57,7 +57,7 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
     }
 
     @Override
-    public void initView(View view) {
+    public void initViewAfterSettingEditableView(View view) {
         rent_btn.setOnCheckedChangeListener(changeChecker);
         sale_btn.setOnCheckedChangeListener(changeChecker);
 

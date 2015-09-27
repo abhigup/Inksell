@@ -51,7 +51,7 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
     }
 
     @Override
-    public void initView(View view) {
+    public void initViewAfterSettingEditableView(View view) {
         btnCamera.setOnClickListener(dispatchTakePictureIntent());
         btnGallery.setOnClickListener(dispatchPickFromGallery());
 

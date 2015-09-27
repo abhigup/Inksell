@@ -25,10 +25,13 @@ import utilities.Utility;
 
 public class AddPostActivity extends BaseActionBarActivity {
 
-    IPostEntity iPostEntity = null;
+    private IPostEntity iPostEntity = null;
+    private IPostEntity editableEntity = null;
 
     private CategoryType categoryType;
     private boolean isMultiple;
+    private boolean forEdit;
+
 
     @InjectView(R.id.add_submit)
     Button submit;
@@ -54,6 +57,11 @@ public class AddPostActivity extends BaseActionBarActivity {
     {
         categoryType = CategoryType.values()[Integer.parseInt(intentExtraMap.get("category"))];
         isMultiple = intentExtraMap.containsKey("multiple");
+        forEdit = Boolean.parseBoolean(this.intentExtraMap.get("forEdit"));
+
+        if(forEdit) {
+            editableEntity = (IPostEntity)Utility.GetObjectFromJSON(this.intentExtraMap.get("entity"), Utility.getClassFromCategory(categoryType));
+        }
     }
 
     @Override
@@ -71,6 +79,7 @@ public class AddPostActivity extends BaseActionBarActivity {
         {
             addPostDetailsFragment = new AddRealEstateDetailsFragment();
             addRealEstateMapFragment = new AddRealEstateMapFragment();
+
             transaction.add(R.id.add_map_container, addRealEstateMapFragment);
         }
         else
@@ -78,8 +87,18 @@ public class AddPostActivity extends BaseActionBarActivity {
             addPostDetailsFragment = new AddPostDetailsFragment();
         }
         transaction.add(R.id.add_post_details_container, addPostDetailsFragment);
+
         userDetailsFragment = (BaseAddFragment)getSupportFragmentManager().findFragmentById(R.id.add_user_details_container);
         imagesFragment = (BaseAddFragment)getSupportFragmentManager().findFragmentById(R.id.add_images_container);
+
+        if(forEdit) {
+            addPostDetailsFragment.setData(editableEntity, categoryType);
+            userDetailsFragment.setData(editableEntity, categoryType);
+            imagesFragment.setData(editableEntity, categoryType);
+            if(addRealEstateMapFragment!=null) {
+                addRealEstateMapFragment.setData(editableEntity, categoryType);
+            }
+        }
 
         transaction.commit();
     }

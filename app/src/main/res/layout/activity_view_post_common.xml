@@ -8,8 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,7 +16,8 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/view_image_layout">
 
             <com.daimajia.slider.library.SliderLayout
                 android:id="@+id/view_post_image_slider"
@@ -27,29 +27,30 @@
                 android:minHeight="200dp"
                 />
 
-        <RelativeLayout
+            <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/image_gradient_rev">
 
-        <ToggleButton
-                android:id="@+id/view_fav_toggle"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/check"
-                android:layout_margin="10dp"
-                android:textOn=""
-                android:textOff=""
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:layout_centerVertical="true"/>
+                <ToggleButton
+                        android:id="@+id/view_fav_toggle"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/check"
+                        android:layout_margin="10dp"
+                        android:textOn=""
+                        android:textOff=""
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_centerVertical="true"/>
 
             </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_below="@+id/view_image_layout"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
@@ -97,9 +98,28 @@
 
         </RelativeLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:src="@drawable/ic_action_mode_edit"
+        android:clickable="true"
+        app:backgroundTint="@color/pink"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="26dp"
+        android:layout_marginRight="26dp"
+        android:layout_marginEnd="10dp"
+        app:borderWidth="0dp"
+        android:id="@+id/view_fab_edit"
+        android:visibility="gone"
+        />
+
 </RelativeLayout>
 
 

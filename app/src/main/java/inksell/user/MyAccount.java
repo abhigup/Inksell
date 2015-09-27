@@ -130,26 +130,33 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
                 layoutErrorTryAgain.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
 
-                postSummaryList = postSummaryEntities;
+                postSummaryList = setIsEditable(postSummaryEntities);
 
-                if(rvAdapter==null) {
+                if (rvAdapter == null) {
                     RVAdapter adapter = new RVAdapter(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
                     adapter.setIsMyPosts(true);
                     rvAdapter = adapter;
                     rv.setAdapter(rvAdapter);
-                }
-                else {
+                } else {
                     rvAdapter.Update(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
                 }
             }
 
             @Override
-            public void onFailure(RetrofitError error)
-            {
+            public void onFailure(RetrofitError error) {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private List<PostSummaryEntity> setIsEditable(List<PostSummaryEntity> entities)
+    {
+        for(int i=0;i<entities.size();i++)
+        {
+            entities.get(i).isEditable = true;
+        }
+        return entities;
     }
 
     @Override

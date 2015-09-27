@@ -14,8 +14,11 @@ import java.util.Map;
 
 import enums.CategoryType;
 import inksell.inksell.R;
+import inksell.posts.add.AddMultipleActivity;
+import inksell.posts.add.AddPostActivity;
 import inksell.posts.view.ViewMultipleActivity;
 import inksell.posts.view.ViewPostActivity;
+import models.IPostEntity;
 import models.PostSummaryEntity;
 
 /**
@@ -53,6 +56,32 @@ public class NavigationHelper {
             intent.putExtra("intentExtra", Utility.GetJSONString(map));
         }
         ConfigurationManager.CurrentActivityContext.startActivity(intent, bundle);
+    }
+
+    public static View.OnClickListener addPostClick(final CategoryType categoryType) {
+        return addPostClick(categoryType, false, null);
+    }
+
+    public static View.OnClickListener addPostClick(final CategoryType categoryType, final boolean forEdit, final IPostEntity entity) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (categoryType)
+                {
+                    case Multiple:
+                        NavigationHelper.NavigateTo(AddMultipleActivity.class);
+                        break;
+                    default:
+                        Map<String, String> map = new HashMap<>();
+                        map.put("category", String.valueOf(categoryType.ordinal()));
+                        map.put("forEdit", String.valueOf(forEdit));
+                        if(entity!=null && forEdit) {
+                            map.put("entity", Utility.GetJSONString(entity));
+                        }
+                        NavigationHelper.NavigateTo(AddPostActivity.class, map);
+                }
+            }
+        };
     }
 
 

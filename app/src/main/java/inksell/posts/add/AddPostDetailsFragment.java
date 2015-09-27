@@ -8,8 +8,12 @@ import android.widget.EditText;
 import butterknife.InjectView;
 import enums.CategoryType;
 import inksell.inksell.R;
+import models.AutomobileEntity;
+import models.ElectronicEntity;
+import models.FurnitureEntity;
 import models.IPostEntity;
 import models.OtherEntity;
+import models.RealEstateEntity;
 import utilities.Utility;
 
 /**
@@ -43,8 +47,34 @@ public class AddPostDetailsFragment extends BaseAddFragment {
     }
 
     @Override
-    public void initView(View view) {
+    public void initViewAfterSettingEditableView(View view) {
+        setEditableData();
+    }
 
+    public void setEditableData() {
+        postTitle.setEnabled(false);
+        switch (categoryType) {
+            case Electronics:
+                ElectronicEntity electronicEntity = (ElectronicEntity)iPostEntity;
+                postTitle.setText(electronicEntity.PostTitle);
+                break;
+            case Automobile:
+                AutomobileEntity automobileEntity = (AutomobileEntity)iPostEntity;
+                postTitle.setText(automobileEntity.PostTitle);
+                break;
+            case Furniture:
+                FurnitureEntity furnitureEntity = (FurnitureEntity)iPostEntity;
+                postTitle.setText(furnitureEntity.PostTitle);
+                break;
+            case RealState:
+                RealEstateEntity realEstateEntity = (RealEstateEntity)iPostEntity;
+                postTitle.setText(realEstateEntity.PostTitle);
+                break;
+            case Others:
+                OtherEntity otherEntity = (OtherEntity)iPostEntity;
+                postTitle.setText(otherEntity.PostTitle);
+                break;
+        }
     }
 
     @Override
@@ -57,13 +87,41 @@ public class AddPostDetailsFragment extends BaseAddFragment {
 
         switch (categoryType)
         {
-            case Others:
-                OtherEntity otherEntity = (OtherEntity) iPostEntity;
-                otherEntity.PostTitle = postTitle.getText().toString();
-                otherEntity.UsedPeriod = usedPeriod.getText().toString();
-                otherEntity.ActualPrice = usedPeriod.getText().toString();
-                otherEntity.ExpectedPrice = usedPeriod.getText().toString();
-                otherEntity.PostDescription = description.getText().toString();
+            case Electronics: {
+                ElectronicEntity entity = (ElectronicEntity) iPostEntity;
+                entity.PostTitle = postTitle.getText().toString();
+                entity.UsedPeriod = usedPeriod.getText().toString();
+                entity.ActualPrice = usedPeriod.getText().toString();
+                entity.ExpectedPrice = usedPeriod.getText().toString();
+                entity.PostDescription = description.getText().toString();
+            }
+                break;
+            case Automobile: {
+                AutomobileEntity entity = (AutomobileEntity) iPostEntity;
+                entity.PostTitle = postTitle.getText().toString();
+                entity.UsedPeriod = usedPeriod.getText().toString();
+                entity.ActualPrice = usedPeriod.getText().toString();
+                entity.ExpectedPrice = usedPeriod.getText().toString();
+                entity.PostDescription = description.getText().toString();
+            }
+                break;
+            case Furniture: {
+                FurnitureEntity entity = (FurnitureEntity) iPostEntity;
+                entity.PostTitle = postTitle.getText().toString();
+                entity.UsedPeriod = usedPeriod.getText().toString();
+                entity.ActualPrice = usedPeriod.getText().toString();
+                entity.ExpectedPrice = usedPeriod.getText().toString();
+                entity.PostDescription = description.getText().toString();
+            }
+                break;
+            case Others: {
+                OtherEntity entity = (OtherEntity) iPostEntity;
+                entity.PostTitle = postTitle.getText().toString();
+                entity.UsedPeriod = usedPeriod.getText().toString();
+                entity.ActualPrice = usedPeriod.getText().toString();
+                entity.ExpectedPrice = usedPeriod.getText().toString();
+                entity.PostDescription = description.getText().toString();
+            }
                 break;
         }
         return true;

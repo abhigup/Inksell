@@ -43,7 +43,12 @@ import java.util.UUID;
 import Constants.InksellConstants;
 import enums.CategoryType;
 import inksell.inksell.R;
+import models.AutomobileEntity;
 import models.CategoryEntity;
+import models.ElectronicEntity;
+import models.FurnitureEntity;
+import models.OtherEntity;
+import models.RealEstateEntity;
 
 /**
  * Created by Abhinav on 08/04/15.
@@ -627,4 +632,24 @@ public class Utility {
         long TICKS_AT_EPOCH = 621355968000000000L;
         return System.currentTimeMillis()*10000 + TICKS_AT_EPOCH;
     }
+
+    public static Class getClassFromCategory(CategoryType categoryType)
+    {
+        switch (categoryType)
+        {
+            case Electronics:
+                return ElectronicEntity.class;
+            case Automobile:
+                return AutomobileEntity.class;
+            case Furniture:
+                return FurnitureEntity.class;
+            case RealState:
+                return RealEstateEntity.class;
+            case Others:
+                return OtherEntity.class;
+            default:
+                return null;
+        }
+    }
+
 }

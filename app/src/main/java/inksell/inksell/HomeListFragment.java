@@ -17,9 +17,7 @@ import android.widget.RelativeLayout;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import Constants.AppData;
 import Constants.InksellConstants;
@@ -28,8 +26,6 @@ import adapters.RVAdapter;
 import butterknife.InjectView;
 import enums.CategoryType;
 import inksell.common.BaseFragment;
-import inksell.posts.add.AddMultipleActivity;
-import inksell.posts.add.AddPostActivity;
 import models.PostSummaryEntity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -129,12 +125,12 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
 
         tryAgainButton.setOnClickListener(refresh_click());
 
-        fab_auto.setOnClickListener(addPostClick(CategoryType.Automobile));
-        fab_electronics.setOnClickListener(addPostClick(CategoryType.Electronics));
-        fab_furniture.setOnClickListener(addPostClick(CategoryType.Furniture));
-        fab_multiple.setOnClickListener(addPostClick(CategoryType.Multiple));
-        fab_other.setOnClickListener(addPostClick(CategoryType.Others));
-        fab_realestate.setOnClickListener(addPostClick(CategoryType.RealState));
+        fab_auto.setOnClickListener(NavigationHelper.addPostClick(CategoryType.Automobile));
+        fab_electronics.setOnClickListener(NavigationHelper.addPostClick(CategoryType.Electronics));
+        fab_furniture.setOnClickListener(NavigationHelper.addPostClick(CategoryType.Furniture));
+        fab_multiple.setOnClickListener(NavigationHelper.addPostClick(CategoryType.Multiple));
+        fab_other.setOnClickListener(NavigationHelper.addPostClick(CategoryType.Others));
+        fab_realestate.setOnClickListener(NavigationHelper.addPostClick(CategoryType.RealState));
 
         progressBar.setVisibility(View.VISIBLE);
         layoutErrorTryAgain.setVisibility(View.GONE);
@@ -262,24 +258,6 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
         this.homeMenu = menu;
     }
 
-
-    private View.OnClickListener addPostClick(final CategoryType categoryType) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (categoryType)
-                {
-                    case Multiple:
-                        NavigationHelper.NavigateTo(AddMultipleActivity.class);
-                        break;
-                    default:
-                        Map<String, String> map = new HashMap<>();
-                        map.put("category", String.valueOf(categoryType.ordinal()));
-                        NavigationHelper.NavigateTo(AddPostActivity.class, map);
-                }
-            }
-        };
-    }
 
 
     public void onButtonPressed(Uri uri) {

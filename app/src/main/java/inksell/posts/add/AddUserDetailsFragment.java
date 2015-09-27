@@ -60,7 +60,7 @@ public class AddUserDetailsFragment extends BaseAddFragment {
     }
 
     @Override
-    public void initView(View view) {
+    public void initViewAfterSettingEditableView(View view) {
 
         Picasso.with(getActivity()).load(AppData.UserData.UserImageUrl)
                 .into(myImage);

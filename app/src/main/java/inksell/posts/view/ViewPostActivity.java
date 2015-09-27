@@ -1,6 +1,7 @@
 package inksell.posts.view;
 
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +45,7 @@ import utilities.Utility;
 public class ViewPostActivity extends BaseActionBarActivity {
 
     private PostSummaryEntity summaryEntity;
+    private IPostEntity iPostEntity = null;
 
     @InjectView(R.id.view_post_image_slider)
     SliderLayout image_slider;
@@ -65,6 +67,9 @@ public class ViewPostActivity extends BaseActionBarActivity {
 
     @InjectView(R.id.tryAgainButton)
     Button tryAgainButton;
+
+    @InjectView(R.id.view_fab_edit)
+    FloatingActionButton fabEdit;
 
     @Override
     protected void initDataAndLayout() {
@@ -182,37 +187,54 @@ public class ViewPostActivity extends BaseActionBarActivity {
                 layoutErrorTryAgain.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
 
-                fragment.setData((IPostEntity)t);
+                iPostEntity = (IPostEntity)t;
+                fragment.setData(iPostEntity);
+
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.view_fragment_container, fragment)
                         .commit();
 
-                if(fragment.getImageUrls()!=null && fragment.getImageUrls().size()>0) {
-                    image_slider.removeAllSliders();
-                    for (int i = 0; i < fragment.getImageUrls().size(); i++) {
-                        DefaultSliderView sliderImageView = new DefaultSliderView(ConfigurationManager.CurrentActivityContext);
-                        sliderImageView
-                                .image(fragment.getImageUrls().get(i)).setScaleType(BaseSliderView.ScaleType.CenterCrop);
-                        sliderImageView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                            @Override
-                            public void onSliderClick(BaseSliderView baseSliderView) {
-                                Map<String, String> map = new HashMap<String, String>();
-                                map.put("images", Utility.GetJSONString(fragment.getImageUrls()));
-                                NavigationHelper.NavigateTo(fullscreen_view.class, map);
-                            }
-                        });
-                        image_slider.addSlider(sliderImageView);
-                    }
 
+                //Set fab edit button
+                if(summaryEntity.isEditable)
+                {
+                    fabEdit.setVisibility(View.VISIBLE);
+                    fabEdit.setOnClickListener(NavigationHelper.addPostClick(CategoryType.values()[summaryEntity.categoryid], true, iPostEntity));
+                }
+                else
+                {
+                    fabEdit.setVisibility(View.GONE);
+                }
+
+                //Set Image Slider View
+                if (fragment.getImageUrls() != null && fragment.getImageUrls().size() > 0) {
 
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
+
+                            image_slider.removeAllSliders();
+                                for (int i = 0; i < fragment.getImageUrls().size(); i++) {
+                                    DefaultSliderView sliderImageView = new DefaultSliderView(ConfigurationManager.CurrentActivityContext);
+                                    sliderImageView
+                                            .image(fragment.getImageUrls().get(i)).setScaleType(BaseSliderView.ScaleType.CenterCrop);
+
+                                    sliderImageView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                                        @Override
+                                        public void onSliderClick(BaseSliderView baseSliderView) {
+                                            Map<String, String> map = new HashMap<String, String>();
+                                            map.put("images", Utility.GetJSONString(fragment.getImageUrls()));
+                                            NavigationHelper.NavigateTo(fullscreen_view.class, map);
+                                        }
+                                    });
+                                    image_slider.addSlider(sliderImageView);
+                                }
+
                             if (fragment.getImageUrls().size() > 1) {
                                 image_slider.startAutoCycle();
                             }
                         }
-                    }, 5000);
+                    }, 900);
 
 
                 }
