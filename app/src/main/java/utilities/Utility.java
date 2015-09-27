@@ -40,7 +40,7 @@ import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import Constants.Constants;
+import Constants.InksellConstants;
 import enums.CategoryType;
 import inksell.inksell.R;
 import models.CategoryEntity;
@@ -96,7 +96,7 @@ public class Utility {
         );
     }
 
-    private static void ShowToast(String message) {
+    public static void ShowToast(String message) {
         Context context = ConfigurationManager.CurrentActivityContext;
         int duration = Toast.LENGTH_SHORT;
 
@@ -151,7 +151,7 @@ public class Utility {
         boolean isEmpty = IsStringNullorEmpty(editText.getText().toString());
         if(isEmpty)
         {
-            ShowInfoDialog(editText.getHint().toString());
+            ShowToast(editText.getHint().toString() + " is required.");
         }
         return isEmpty;
     }
@@ -221,7 +221,7 @@ public class Utility {
     public static Date StringDateToDate(String StrDate)
     {
         Date dateToReturn = null;
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATEFORMAT);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(InksellConstants.DATEFORMAT);
 
         try
         {
@@ -237,7 +237,7 @@ public class Utility {
 
     private static String GetUTCdatetimeAsString()
     {
-        final SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATEFORMAT);
+        final SimpleDateFormat sdf = new SimpleDateFormat(InksellConstants.DATEFORMAT);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         final String utcTime = sdf.format(new Date());
 
@@ -247,7 +247,7 @@ public class Utility {
     public static String StringDateToRelativeStringDate(String strDate)
     {
         Date dateToReturn = null;
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATEFORMAT);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(InksellConstants.DATEFORMAT);
         try
         {
             dateToReturn = (Date)dateFormat.parse(strDate);
@@ -335,6 +335,7 @@ public class Utility {
                 break;
             case SomeErrorOccured:
                 displayMessage = R.string.ErrorSomeErrorOccured;
+                processFurther = true;
                 break;
             case PartialUserAddedSuccess:
                 displayMessage = 1;
@@ -600,13 +601,13 @@ public class Utility {
         File mediaStorageDir = new File(
                 Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                Constants.IMAGE_DIR_NAME);
+                InksellConstants.IMAGE_DIR_NAME);
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 Log.d("", "Oops! Failed create "
-                        + Constants.IMAGE_DIR_NAME + " directory");
+                        + InksellConstants.IMAGE_DIR_NAME + " directory");
                 return null;
             }
         }
@@ -619,5 +620,11 @@ public class Utility {
                     + "IMG_" + timeStamp + ".jpg");
 
         return mediaFile;
+    }
+
+    public static long getTicks()
+    {
+        long TICKS_AT_EPOCH = 621355968000000000L;
+        return System.currentTimeMillis()*10000 + TICKS_AT_EPOCH;
     }
 }

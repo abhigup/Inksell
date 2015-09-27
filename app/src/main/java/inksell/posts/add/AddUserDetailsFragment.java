@@ -13,7 +13,12 @@ import com.squareup.picasso.Picasso;
 import Constants.AppData;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import enums.CategoryType;
 import inksell.inksell.R;
+import models.ContactAddressEntity;
+import models.IPostEntity;
+import models.OtherEntity;
+import utilities.Utility;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,5 +81,30 @@ public class AddUserDetailsFragment extends BaseAddFragment {
             }
         });
 
+    }
+
+    @Override
+    public boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType) {
+        if(Utility.IsStringNullorEmpty(contactEmail.getText().toString()) && Utility.IsStringNullorEmpty(contactNumber.getText().toString()))
+        {
+            Utility.ShowToast(R.string.ErrorEmailOrNumberRequired);
+            return false;
+        }
+
+        ContactAddressEntity contactAddressEntity = new ContactAddressEntity();
+        contactAddressEntity.Address = contactAddress.getText().toString();
+        contactAddressEntity.City = contactCity.getText().toString();
+        contactAddressEntity.ContactEmail = contactEmail.getText().toString();
+        contactAddressEntity.contactName = contactPerson.getText().toString();
+        contactAddressEntity.ContactNumber = contactNumber.getText().toString();
+
+        switch (categoryType)
+        {
+            case Others:
+                OtherEntity otherEntity = (OtherEntity) iPostEntity;
+                otherEntity.ContactAddress = contactAddressEntity;
+                break;
+        }
+        return true;
     }
 }

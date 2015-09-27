@@ -14,11 +14,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import butterknife.InjectView;
+import enums.CategoryType;
 import inksell.inksell.R;
+import models.IPostEntity;
 import utilities.ConfigurationManager;
 import utilities.Utility;
 
 public class AddRealEstateDetailsFragment extends BaseAddFragment {
+
 
     enum PropertyType
     {
@@ -144,5 +147,10 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
         {
             title.setText("Rent");
         }
+    }
+
+    @Override
+    public boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType) {
+        return false;
     }
 }

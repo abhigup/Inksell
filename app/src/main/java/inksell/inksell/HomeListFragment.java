@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import Constants.AppData;
-import Constants.Constants;
+import Constants.InksellConstants;
 import Constants.StorageConstants;
 import adapters.RVAdapter;
 import butterknife.InjectView;
@@ -150,7 +150,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     {
         if(LocalStorageHandler.ContainsKey(StorageConstants.AppLoginCount))
         {
-            LocalStorageHandler.SaveData(StorageConstants.AppLoginCount, Integer.parseInt(LocalStorageHandler.GetData(StorageConstants.AppLoginCount, String.class)+1));
+            LocalStorageHandler.SaveData(StorageConstants.AppLoginCount, Long.parseLong(LocalStorageHandler.GetData(StorageConstants.AppLoginCount, String.class))+1);
         }
         else
         {
@@ -158,7 +158,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
             ShowcaseConfig config = new ShowcaseConfig();
             config.setDelay(500); // half second between each showcase view
 
-            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), Constants.HOME_SHOWCASE_ID);
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), InksellConstants.HOME_SHOWCASE_ID);
 
             sequence.setConfig(config);
 

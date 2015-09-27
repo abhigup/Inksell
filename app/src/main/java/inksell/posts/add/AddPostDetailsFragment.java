@@ -6,7 +6,11 @@ import android.view.View;
 import android.widget.EditText;
 
 import butterknife.InjectView;
+import enums.CategoryType;
 import inksell.inksell.R;
+import models.IPostEntity;
+import models.OtherEntity;
+import utilities.Utility;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,5 +45,27 @@ public class AddPostDetailsFragment extends BaseAddFragment {
     @Override
     public void initView(View view) {
 
+    }
+
+    @Override
+    public boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType) {
+
+        if(Utility.IsEditTextNullorEmpty(postTitle))
+        {
+            return false;
+        }
+
+        switch (categoryType)
+        {
+            case Others:
+                OtherEntity otherEntity = (OtherEntity) iPostEntity;
+                otherEntity.PostTitle = postTitle.getText().toString();
+                otherEntity.UsedPeriod = usedPeriod.getText().toString();
+                otherEntity.ActualPrice = usedPeriod.getText().toString();
+                otherEntity.ExpectedPrice = usedPeriod.getText().toString();
+                otherEntity.PostDescription = description.getText().toString();
+                break;
+        }
+        return true;
     }
 }

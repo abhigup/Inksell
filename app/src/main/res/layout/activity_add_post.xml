@@ -1,5 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/background"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,51 +6,59 @@
     tools:context="inksell.posts.add.AddPostActivity"
     >
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/add_post_details_container" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <fragment
-                android:id="@+id/add_images_container"
-                android:name="inksell.posts.add.AddImagesFragment"
-                tools:layout="@layout/fragment_add_images"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add_post_details_container" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/add_map_container" />
+                <fragment
+                    android:id="@+id/add_images_container"
+                    android:name="inksell.posts.add.AddImagesFragment"
+                    tools:layout="@layout/fragment_add_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-            <fragment
-                android:id="@+id/add_user_details_container"
-                android:name="inksell.posts.add.AddUserDetailsFragment"
-                tools:layout="@layout/fragment_add_user_details"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add_map_container" />
 
-            <Button
-                android:layout_margin="5dp"
-                android:text="@string/submit"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                style="@style/ButtonPrimary"
-                android:id="@+id/add_submit"
-                android:layout_marginTop="10dp" />
+                <fragment
+                    android:id="@+id/add_user_details_container"
+                    android:name="inksell.posts.add.AddUserDetailsFragment"
+                    tools:layout="@layout/fragment_add_user_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-        </LinearLayout>
+                <Button
+                    android:layout_margin="5dp"
+                    android:text="@string/submit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    style="@style/ButtonPrimary"
+                    android:id="@+id/add_submit"
+                    android:layout_marginTop="10dp" />
+
+            </LinearLayout>
 
         </ScrollView>
+</FrameLayout>
+    <include
+        layout="@layout/loading_fullpage_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -6,4 +6,6 @@
     <string name="deletePostFailure">Error deleting post. Please try again.</string>
 
     <string name="removeSubscription">UnSubscribe this tag ?</string>
+
+    <string name="discardAddPost">Discard current post?</string>
 </resources>

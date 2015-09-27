@@ -32,4 +32,7 @@
 
     <string name="ErrorSubscriptionAlreadyAdded">Subscription already added !</string>
     <string name="ErrorSubscriptionLimitReached">Only 3 subscription tags supported.</string>
+
+    <string name="ErrorEmailOrNumberRequired">Either e-mail or contact number is required.</string>
+    <string name="ErrorImageUploadFailed">Image Upload Failed!</string>
 </resources>

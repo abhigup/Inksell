@@ -2,6 +2,7 @@ package services;
 
 import java.util.List;
 
+import models.OtherEntity;
 import models.SearchEntity;
 import models.UserEntity;
 import models.VerifyUserEntity;
@@ -27,4 +28,7 @@ public interface IPostServices {
 
     @POST("/createUsers")
     void CreateUpdateUserData(@Body UserEntity userEntity, Callback<Integer> callback);
+
+    @POST("/addOtherPost/{isMultiple}")
+    void addOtherPost(@Body OtherEntity iPostEntity, @Path("isMultiple") Integer isMultiple, Callback<Integer> callback);
 }

@@ -6,7 +6,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.util.concurrent.TimeUnit;
 
-import Constants.Constants;
+import Constants.InksellConstants;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
@@ -43,7 +43,7 @@ public class RestClient {
         okHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
 
         Gson gson = new GsonBuilder()
-                .setDateFormat(Constants.DATEFORMAT)
+                .setDateFormat(InksellConstants.DATEFORMAT)
                 .create();
         GsonConverter gsonConverter = new GsonConverter(gson);
         RestAdapter.Builder getbuilder = new RestAdapter.Builder()
