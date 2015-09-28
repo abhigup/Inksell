@@ -6,63 +6,24 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="fill_vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <!--<android.support.v4.widget.NestedScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="fill_vertical"-->
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-        <RelativeLayout
-            android:layout_below="@+id/view_image_layout"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/view_post_card_view"
-            android:background="@color/white">
+        <!--<RelativeLayout-->
+            <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:id="@+id/view_post_card_view"-->
+            <!--android:background="@color/white">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:id="@+id/view_common_data"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                >
+           <!-- -->
 
-                <TextView android:textSize="25sp"
-                    android:gravity="center"
-                    android:text="hello"
-                    android:fontFamily="sans-serif-light"
-                    android:layout_width="match_parent"
-                    android:id="@+id/view_post_title"
-                    android:layout_height="wrap_content" />
+        <!--</RelativeLayout>-->
 
-                <TextView android:textSize="12sp"
-                    android:gravity="center"
-                    android:fontFamily="sans-serif-light"
-                    android:layout_width="match_parent"
-                    android:id="@+id/view_post_postedon"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_below="@+id/view_common_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/view_fragment_container">
-
-            </FrameLayout>
-
-            <include android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/view_common_data"
-                layout="@layout/loading_error_fragment" />
-
-        </RelativeLayout>
-
-    </android.support.v4.widget.NestedScrollView>
+    <!--</android.support.v4.widget.NestedScrollView>-->
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/my_app_bar_layout"
@@ -99,21 +60,74 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:src="@drawable/ic_action_mode_edit"
-        android:clickable="true"
-        app:backgroundTint="@color/pink"
-        app:layout_anchor="@id/my_app_bar_layout"
-        app:layout_anchorGravity="bottom|right|end"
-        android:layout_marginRight="16dp"
-        app:borderWidth="0dp"
-        android:id="@+id/view_fab_edit"
-        android:visibility="gone"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view_post_card_view"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
+        <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="fill_vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/view_common_data"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    >
+
+                    <TextView android:textSize="25sp"
+                        android:text="hello"
+                        android:gravity="center"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:id="@+id/view_post_title"
+                        android:layout_height="wrap_content" />
+
+                    <TextView android:textSize="12sp"
+                        android:gravity="center"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:id="@+id/view_post_postedon"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_below="@+id/view_common_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/view_fragment_container">
+
+                </FrameLayout>
+
+                <include android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/view_common_data"
+                    layout="@layout/loading_error_fragment" />
+
+                <View
+                    android:layout_below="@id/view_fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"></View>
+
+        </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:gravity="bottom"
@@ -129,16 +143,15 @@
             android:layout_weight="1"
             android:scaleType="fitCenter"
             android:padding="8dp"
-            android:background="@color/TitlePrimary"
             android:layout_height="40dp"
-            android:textColor="@color/white"
             android:src="@drawable/ic_call"
-            android:id="@+id/view_post_call">
+            android:id="@+id/view_post_call"
+            style="@style/ButtonPrimary">
         </ImageButton>
 
-        <View android:layout_height="50dp"
-        android:layout_width="1px"
-        android:background="@android:color/transparent"/>
+        <View android:layout_height="40dp"
+            android:layout_width="1px"
+            android:background="@android:color/transparent"/>
 
         <ImageButton
             android:layout_centerHorizontal="true"
@@ -146,15 +159,31 @@
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:padding="8dp"
-            android:background="@color/TitlePrimary"
             android:layout_height="40dp"
-            android:textColor="@color/white"
             android:src="@drawable/ic_email"
-            android:id="@+id/view_post_email">
+            android:id="@+id/view_post_email"
+            style="@style/ButtonPrimary">
         </ImageButton>
 
 
     </LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:src="@drawable/ic_action_mode_edit"
+        android:clickable="true"
+        app:backgroundTint="@color/pink"
+        app:layout_anchor="@id/my_app_bar_layout"
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_marginRight="16dp"
+        app:borderWidth="0dp"
+        android:id="@+id/view_fab_edit"
+        android:visibility="gone"
+        />
 
 
 </android.support.design.widget.CoordinatorLayout>
