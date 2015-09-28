@@ -15,8 +15,8 @@ import com.squareup.picasso.Picasso;
 import Constants.AppData;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
-import inksell.inksell.R;
 import inksell.common.BaseActionBarActivity;
+import inksell.inksell.R;
 import models.UserEntity;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -125,6 +125,11 @@ public class EditMyDetails extends BaseActionBarActivity {
     protected int getActivityLayout() {
         return R.layout.activity_edit_my_details;
     }
+//
+//    @Override
+//    protected DraggerPosition getDragPosition() {
+//        return DraggerPosition.LEFT;
+//    }
 
     private void loadUserData()
     {

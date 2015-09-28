@@ -64,6 +64,11 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
 
     }
 
+    @Override
+    public void setEditableView(View view) {
+
+    }
+
     private View.OnClickListener dispatchPickFromGallery() {
         return new View.OnClickListener() {
             @Override

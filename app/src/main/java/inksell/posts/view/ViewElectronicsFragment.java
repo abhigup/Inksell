@@ -1,7 +1,6 @@
 package inksell.posts.view;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -42,13 +41,7 @@ public class ViewElectronicsFragment extends BaseViewFragment {
     @InjectView(R.id.view_post_address)
     TextView contactAddress;
 
-    @InjectView(R.id.view_post_call)
-    ImageButton btnCall;
-
-    @InjectView(R.id.view_post_email)
-    ImageButton btnEmail;
-
-    private ElectronicEntity electronicEntity;
+    private ElectronicEntity entity;
 
     public ViewElectronicsFragment() {
         // Required empty public constructor
@@ -56,12 +49,23 @@ public class ViewElectronicsFragment extends BaseViewFragment {
 
     @Override
     public void setData(IPostEntity postEntity) {
-        electronicEntity = (ElectronicEntity)postEntity;
+        entity = (ElectronicEntity)postEntity;
     }
 
     @Override
     public List<String> getImageUrls() {
-        return electronicEntity.PostImagesUrl;
+        return entity.PostImagesUrl;
+    }
+
+    @Override
+    public String[] getEmailAndCall() {
+        if(entity ==null)
+            return null;
+
+        String[] str = new String[2];
+        str[0] = entity.ContactAddress.ContactEmail;
+        str[1] = entity.ContactAddress.ContactNumber;
+        return str;
     }
 
     @Override
@@ -71,28 +75,26 @@ public class ViewElectronicsFragment extends BaseViewFragment {
 
     @Override
     public void initView(View view) {
-        price.setText(Utility.GetLocalCurrencySymbol() + " " + electronicEntity.ExpectedPrice + "  ");
-        usedPeriod.setText(Utility.IsStringNullorEmpty(electronicEntity.UsedPeriod)?"-":electronicEntity.UsedPeriod);
-        electronicEntity.PostDescription = electronicEntity.PostDescription.replace("\r\n","\n").replace("\r","\n");
-        description.setText(Utility.IsStringNullorEmpty(electronicEntity.PostDescription)?"-":electronicEntity.PostDescription);
-        actualPrice.setText(Utility.IsStringNullorEmpty(electronicEntity.ActualPrice)?"-":(Utility.GetLocalCurrencySymbol() + " " + electronicEntity.ActualPrice));
-        Utility.setUserPic(userPic, electronicEntity.UserImageUrl, electronicEntity.PostedBy);
-        postedBy.setText(electronicEntity.PostedBy);
-        contactName.setText(electronicEntity.ContactAddress.contactName);
+        price.setText(Utility.GetLocalCurrencySymbol() + " " + entity.ExpectedPrice + "  ");
+        usedPeriod.setText(Utility.IsStringNullorEmpty(entity.UsedPeriod)?"-": entity.UsedPeriod);
+        entity.PostDescription = entity.PostDescription.replace("\r\n","\n").replace("\r","\n");
+        description.setText(Utility.IsStringNullorEmpty(entity.PostDescription)?"-": entity.PostDescription);
+        actualPrice.setText(Utility.IsStringNullorEmpty(entity.ActualPrice) ? "-" : (Utility.GetLocalCurrencySymbol() + " " + entity.ActualPrice));
+        Utility.setUserPic(userPic, entity.UserImageUrl, entity.PostedBy);
+        postedBy.setText(entity.PostedBy);
+        contactName.setText(entity.ContactAddress.contactName);
 
-        String address = Utility.IsStringNullorEmpty(electronicEntity.ContactAddress.Address)
-                ?(Utility.IsStringNullorEmpty(electronicEntity.ContactAddress.City)
+        String address = Utility.IsStringNullorEmpty(entity.ContactAddress.Address)
+                ?(Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                     ?"-"
-                    :electronicEntity.ContactAddress.City)
-                :electronicEntity.ContactAddress.Address +
-                        (Utility.IsStringNullorEmpty(electronicEntity.ContactAddress.City)
+                    : entity.ContactAddress.City)
+                : entity.ContactAddress.Address +
+                        (Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                             ?""
-                            : "\n" + electronicEntity.ContactAddress.City);
+                            : "\n" + entity.ContactAddress.City);
         contactAddress.setText(address);
 
-        userEmail.setText(electronicEntity.UserOfficialEmail);
-
-        Utility.setCallAndEmailButton(getActivity(), electronicEntity.PostTitle, btnCall, btnEmail, electronicEntity.ContactAddress.ContactNumber, electronicEntity.ContactAddress.ContactEmail);
+        userEmail.setText(entity.UserOfficialEmail);
     }
 
 }

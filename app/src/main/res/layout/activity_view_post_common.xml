@@ -1,59 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/view_image_layout">
-
-            <com.daimajia.slider.library.SliderLayout
-                android:id="@+id/view_post_image_slider"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:transitionName="@string/cardTitlePicTransition"
-                android:minHeight="200dp"
-                />
-
-            <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/image_gradient_rev">
-
-                <ToggleButton
-                        android:id="@+id/view_fav_toggle"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/check"
-                        android:layout_margin="10dp"
-                        android:textOn=""
-                        android:textOff=""
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:layout_centerVertical="true"/>
-
-            </RelativeLayout>
-        </RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="fill_vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
             android:layout_below="@+id/view_image_layout"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:id="@+id/view_post_card_view"
             android:background="@color/white">
 
@@ -69,6 +32,7 @@
 
                 <TextView android:textSize="25sp"
                     android:gravity="center"
+                    android:text="hello"
                     android:fontFamily="sans-serif-light"
                     android:layout_width="match_parent"
                     android:id="@+id/view_post_title"
@@ -98,9 +62,42 @@
 
         </RelativeLayout>
 
-        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
-    </ScrollView>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/my_app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/my_collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:expandedTitleTextAppearance="@android:color/transparent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary"
+            android:fitsSystemWindows="true">
+
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/view_post_image_slider"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:transitionName="@string/cardTitlePicTransition"
+                />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -109,17 +106,55 @@
         android:src="@drawable/ic_action_mode_edit"
         android:clickable="true"
         app:backgroundTint="@color/pink"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="26dp"
-        android:layout_marginRight="26dp"
-        android:layout_marginEnd="10dp"
+        app:layout_anchor="@id/my_app_bar_layout"
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_marginRight="16dp"
         app:borderWidth="0dp"
         android:id="@+id/view_fab_edit"
         android:visibility="gone"
         />
 
-</RelativeLayout>
+
+    <LinearLayout
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        >
+
+        <ImageButton
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:padding="8dp"
+            android:background="@color/TitlePrimary"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:src="@drawable/ic_call"
+            android:id="@+id/view_post_call">
+        </ImageButton>
+
+        <View android:layout_height="50dp"
+        android:layout_width="1px"
+        android:background="@android:color/transparent"/>
+
+        <ImageButton
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerInside"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:background="@color/TitlePrimary"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:src="@drawable/ic_email"
+            android:id="@+id/view_post_email">
+        </ImageButton>
 
 
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

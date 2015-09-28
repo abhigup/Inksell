@@ -13,6 +13,7 @@ public abstract class BaseAddFragment extends BaseFragment {
 
     protected IPostEntity iPostEntity;
     protected CategoryType categoryType;
+    protected boolean forEdit = false;
 
     @Override
     public void initFragment()
@@ -21,11 +22,16 @@ public abstract class BaseAddFragment extends BaseFragment {
     @Override
     public void initView(View view)
     {
+        if(forEdit)
+        {
+            setEditableView(view);
+        }
         initViewAfterSettingEditableView(view);
     }
 
     public void setData(IPostEntity entity, CategoryType type)
     {
+        forEdit = true;
         iPostEntity = entity;
         categoryType = type;
     }
@@ -33,5 +39,7 @@ public abstract class BaseAddFragment extends BaseFragment {
     public abstract boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType);
 
     public abstract void initViewAfterSettingEditableView(View view);
+
+    public abstract void setEditableView(View view);
 
 }

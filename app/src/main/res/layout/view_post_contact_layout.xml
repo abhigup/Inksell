@@ -64,45 +64,4 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        >
-
-        <ImageButton
-            android:layout_centerHorizontal="true"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:padding="8dp"
-            android:background="@android:color/holo_red_dark"
-            android:layout_height="50dp"
-            android:textColor="@color/white"
-            android:src="@drawable/ic_call"
-            android:id="@+id/view_post_call">
-        </ImageButton>
-
-        <!--<View android:layout_height="50dp"-->
-            <!--android:layout_width="1px"-->
-            <!--android:background="@color/button_material_light"/>-->
-
-        <ImageButton
-            android:layout_centerHorizontal="true"
-            android:scaleType="centerInside"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:padding="8dp"
-            android:background="@android:color/holo_red_light"
-            android:layout_height="50dp"
-            android:textColor="@color/white"
-            android:src="@drawable/ic_email"
-            android:id="@+id/view_post_email">
-        </ImageButton>
-
-
-    </LinearLayout>
-
-
 </LinearLayout>

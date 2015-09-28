@@ -1,7 +1,6 @@
 package inksell.posts.view;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -41,13 +40,7 @@ public class ViewOtherFragment extends BaseViewFragment {
     @InjectView(R.id.view_post_address)
     TextView contactAddress;
 
-    @InjectView(R.id.view_post_call)
-    ImageButton btnCall;
-
-    @InjectView(R.id.view_post_email)
-    ImageButton btnEmail;
-
-    private OtherEntity otherEntity;
+    private OtherEntity entity;
 
     public ViewOtherFragment() {
         // Required empty public constructor
@@ -55,12 +48,23 @@ public class ViewOtherFragment extends BaseViewFragment {
 
     @Override
     public void setData(IPostEntity postEntity) {
-        otherEntity = (OtherEntity)postEntity;
+        entity = (OtherEntity)postEntity;
     }
 
     @Override
     public List<String> getImageUrls() {
-        return otherEntity.PostImagesUrl;
+        return entity.PostImagesUrl;
+    }
+
+    @Override
+    public String[] getEmailAndCall() {
+        if(entity==null)
+            return null;
+
+        String[] str = new String[2];
+        str[0] = entity.ContactAddress.ContactEmail;
+        str[1] = entity.ContactAddress.ContactNumber;
+        return str;
     }
 
     @Override
@@ -70,27 +74,26 @@ public class ViewOtherFragment extends BaseViewFragment {
 
     @Override
     public void initView(View view) {
-        price.setText(Utility.GetLocalCurrencySymbol() + " " + otherEntity.ExpectedPrice + "  ");
-        usedPeriod.setText(Utility.IsStringNullorEmpty(otherEntity.UsedPeriod)?"-": otherEntity.UsedPeriod);
-        otherEntity.PostDescription = otherEntity.PostDescription.replace("\r\n","\n").replace("\r","\n");
-        description.setText(Utility.IsStringNullorEmpty(otherEntity.PostDescription)?"-": otherEntity.PostDescription);
-        actualPrice.setText(Utility.IsStringNullorEmpty(otherEntity.ActualPrice)?"-":(Utility.GetLocalCurrencySymbol() + " " + otherEntity.ActualPrice));
-        Utility.setUserPic(userPic, otherEntity.UserImageUrl, otherEntity.PostedBy);
-        postedBy.setText(otherEntity.PostedBy);
-        contactName.setText(otherEntity.ContactAddress.contactName);
+        price.setText(Utility.GetLocalCurrencySymbol() + " " + entity.ExpectedPrice + "  ");
+        usedPeriod.setText(Utility.IsStringNullorEmpty(entity.UsedPeriod)?"-": entity.UsedPeriod);
+        entity.PostDescription = entity.PostDescription.replace("\r\n","\n").replace("\r","\n");
+        description.setText(Utility.IsStringNullorEmpty(entity.PostDescription)?"-": entity.PostDescription);
+        actualPrice.setText(Utility.IsStringNullorEmpty(entity.ActualPrice) ? "-" : (Utility.GetLocalCurrencySymbol() + " " + entity.ActualPrice));
+        Utility.setUserPic(userPic, entity.UserImageUrl, entity.PostedBy);
+        postedBy.setText(entity.PostedBy);
+        contactName.setText(entity.ContactAddress.contactName);
 
-        String address = Utility.IsStringNullorEmpty(otherEntity.ContactAddress.Address)
-                ?(Utility.IsStringNullorEmpty(otherEntity.ContactAddress.City)
+        String address = Utility.IsStringNullorEmpty(entity.ContactAddress.Address)
+                ?(Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                 ?"-"
-                : otherEntity.ContactAddress.City)
-                : otherEntity.ContactAddress.Address +
-                (Utility.IsStringNullorEmpty(otherEntity.ContactAddress.City)
+                : entity.ContactAddress.City)
+                : entity.ContactAddress.Address +
+                (Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                         ?""
-                        : "\n" + otherEntity.ContactAddress.City);
+                        : "\n" + entity.ContactAddress.City);
         contactAddress.setText(address);
 
-        userEmail.setText(otherEntity.UserOfficialEmail);
+        userEmail.setText(entity.UserOfficialEmail);
 
-        Utility.setCallAndEmailButton(getActivity(), otherEntity.PostTitle, btnCall, btnEmail, otherEntity.ContactAddress.ContactNumber, otherEntity.ContactAddress.ContactEmail);
     }
 }

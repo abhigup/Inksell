@@ -45,7 +45,8 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
-        <activity android:name="inksell.posts.view.ViewPostActivity" >
+        <activity android:name="inksell.posts.view.ViewPostActivity"
+            android:theme="@style/AppThemeNoActionBar">
         </activity>
         <activity
             android:name="inksell.search.SearchResultsActivity"

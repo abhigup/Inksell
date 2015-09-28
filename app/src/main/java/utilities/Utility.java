@@ -1,6 +1,5 @@
 package utilities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -154,9 +153,9 @@ public class Utility {
     public static boolean IsEditTextNullorEmpty(EditText editText)
     {
         boolean isEmpty = IsStringNullorEmpty(editText.getText().toString());
-        if(isEmpty)
+        if(isEmpty && editText.getHint()!=null)
         {
-            ShowToast(editText.getHint().toString() + " is required.");
+            ShowToast(editText.getHint() + " is required.");
         }
         return isEmpty;
     }
@@ -505,7 +504,7 @@ public class Utility {
     }
 
 
-    public static void setCallAndEmailButton(final Activity activity, final String postTitle, ImageButton btnCall, ImageButton btnEmail, final String contactNumber, final String contactEmail)
+    public static void setCallAndEmailButton(final String postTitle, ImageButton btnCall, ImageButton btnEmail, final String contactNumber, final String contactEmail)
     {
         int callBgColor;
         int emailBgColor;
@@ -515,14 +514,14 @@ public class Utility {
         }
         else
         {
-            callBgColor = R.color.TitlePrimaryDark;
+            callBgColor = R.color.TitlePrimary;
             btnCall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(Intent.ACTION_CALL);
                     intent.setData(Uri.parse("tel:" + contactNumber));
-                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                        activity.startActivity(intent);
+                    if (intent.resolveActivity(ConfigurationManager.CurrentActivityContext.getPackageManager()) != null) {
+                        ConfigurationManager.CurrentActivityContext.startActivity(intent);
                     }
                 }
             });
@@ -541,8 +540,8 @@ public class Utility {
                     intent.setData(Uri.parse("mailto:")); // only email apps should handle this
                     intent.putExtra(Intent.EXTRA_EMAIL, new String[] { contactEmail });
                     intent.putExtra(Intent.EXTRA_SUBJECT, postTitle);
-                    if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                        activity.startActivity(intent);
+                    if (intent.resolveActivity(ConfigurationManager.CurrentActivityContext.getPackageManager()) != null) {
+                        ConfigurationManager.CurrentActivityContext.startActivity(intent);
                     }
                 }
             });

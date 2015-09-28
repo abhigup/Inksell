@@ -48,10 +48,10 @@ public class AddPostDetailsFragment extends BaseAddFragment {
 
     @Override
     public void initViewAfterSettingEditableView(View view) {
-        setEditableData();
     }
 
-    public void setEditableData() {
+    @Override
+    public void setEditableView(View view) {
         postTitle.setEnabled(false);
         switch (categoryType) {
             case Electronics:
@@ -82,6 +82,7 @@ public class AddPostDetailsFragment extends BaseAddFragment {
 
         if(Utility.IsEditTextNullorEmpty(postTitle))
         {
+            Utility.ShowToast(R.string.ErrorTitleIsRequired);
             return false;
         }
 

@@ -1,7 +1,6 @@
 package inksell.posts.view;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -36,13 +35,7 @@ public class ViewRealEstateFragment extends BaseViewFragment {
     @InjectView(R.id.view_post_address)
     TextView contactAddress;
 
-    @InjectView(R.id.view_post_call)
-    ImageButton btnCall;
-
-    @InjectView(R.id.view_post_email)
-    ImageButton btnEmail;
-
-    private RealEstateEntity propertyEntity;
+    private RealEstateEntity entity;
 
     public ViewRealEstateFragment() {
         // Required empty public constructor
@@ -50,12 +43,23 @@ public class ViewRealEstateFragment extends BaseViewFragment {
 
     @Override
     public void setData(IPostEntity postEntity) {
-        propertyEntity = (RealEstateEntity)postEntity;
+        entity = (RealEstateEntity)postEntity;
     }
 
     @Override
     public List<String> getImageUrls() {
-        return propertyEntity.PostImagesUrl;
+        return entity.PostImagesUrl;
+    }
+
+    @Override
+    public String[] getEmailAndCall() {
+        if(entity==null)
+            return null;
+
+        String[] str = new String[2];
+        str[0] = entity.ContactAddress.ContactEmail;
+        str[1] = entity.ContactAddress.ContactNumber;
+        return str;
     }
 
     @Override
@@ -65,27 +69,26 @@ public class ViewRealEstateFragment extends BaseViewFragment {
 
     @Override
     public void initView(View view) {
-        rent.setText(Utility.GetLocalCurrencySymbol() + " " + propertyEntity.RentPrice + "  ");
+        rent.setText(Utility.GetLocalCurrencySymbol() + " " + entity.RentPrice + "  ");
 
-        propertyEntity.PostDescription = propertyEntity.PostDescription.replace("\r\n","\n").replace("\r","\n");
-        description.setText(Utility.IsStringNullorEmpty(propertyEntity.PostDescription)?"-": propertyEntity.PostDescription);
+        entity.PostDescription = entity.PostDescription.replace("\r\n","\n").replace("\r","\n");
+        description.setText(Utility.IsStringNullorEmpty(entity.PostDescription) ? "-" : entity.PostDescription);
 
-        Utility.setUserPic(userPic, propertyEntity.UserImageUrl, propertyEntity.PostedBy);
-        postedBy.setText(propertyEntity.PostedBy);
-        contactName.setText(propertyEntity.ContactAddress.contactName);
+        Utility.setUserPic(userPic, entity.UserImageUrl, entity.PostedBy);
+        postedBy.setText(entity.PostedBy);
+        contactName.setText(entity.ContactAddress.contactName);
 
-        String address = Utility.IsStringNullorEmpty(propertyEntity.ContactAddress.Address)
-                ?(Utility.IsStringNullorEmpty(propertyEntity.ContactAddress.City)
+        String address = Utility.IsStringNullorEmpty(entity.ContactAddress.Address)
+                ?(Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                 ?"-"
-                : propertyEntity.ContactAddress.City)
-                : propertyEntity.ContactAddress.Address +
-                (Utility.IsStringNullorEmpty(propertyEntity.ContactAddress.City)
+                : entity.ContactAddress.City)
+                : entity.ContactAddress.Address +
+                (Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                         ?""
-                        : "\n" + propertyEntity.ContactAddress.City);
+                        : "\n" + entity.ContactAddress.City);
         contactAddress.setText(address);
 
-        userEmail.setText(propertyEntity.UserOfficialEmail);
+        userEmail.setText(entity.UserOfficialEmail);
 
-        Utility.setCallAndEmailButton(getActivity(), propertyEntity.PostTitle, btnCall, btnEmail, propertyEntity.ContactAddress.ContactNumber, propertyEntity.ContactAddress.ContactEmail);
     }
 }

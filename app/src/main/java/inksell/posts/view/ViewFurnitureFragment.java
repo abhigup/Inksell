@@ -1,7 +1,6 @@
 package inksell.posts.view;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -42,13 +41,7 @@ public class ViewFurnitureFragment extends BaseViewFragment {
     @InjectView(R.id.view_post_address)
     TextView contactAddress;
 
-    @InjectView(R.id.view_post_call)
-    ImageButton btnCall;
-
-    @InjectView(R.id.view_post_email)
-    ImageButton btnEmail;
-
-    private FurnitureEntity furnitureEntity;
+    private FurnitureEntity entity;
 
     public ViewFurnitureFragment() {
         // Required empty public constructor
@@ -56,12 +49,23 @@ public class ViewFurnitureFragment extends BaseViewFragment {
 
     @Override
     public void setData(IPostEntity postEntity) {
-        furnitureEntity = (FurnitureEntity)postEntity;
+        entity = (FurnitureEntity)postEntity;
     }
 
     @Override
     public List<String> getImageUrls() {
-        return furnitureEntity.PostImagesUrl;
+        return entity.PostImagesUrl;
+    }
+
+    @Override
+    public String[] getEmailAndCall() {
+        if(entity==null)
+            return null;
+
+        String[] str = new String[2];
+        str[0] = entity.ContactAddress.ContactEmail;
+        str[1] = entity.ContactAddress.ContactNumber;
+        return str;
     }
 
     @Override
@@ -71,29 +75,27 @@ public class ViewFurnitureFragment extends BaseViewFragment {
 
     @Override
     public void initView(View view) {
-        price.setText(Utility.GetLocalCurrencySymbol() + " " + furnitureEntity.ExpectedPrice + "  ");
-        usedPeriod.setText(Utility.IsStringNullorEmpty(furnitureEntity.UsedPeriod)?"-": furnitureEntity.UsedPeriod);
-        furnitureEntity.PostDescription = furnitureEntity.PostDescription.replace("\r\n","\n").replace("\r","\n");
-        description.setText(Utility.IsStringNullorEmpty(furnitureEntity.PostDescription)?"-": furnitureEntity.PostDescription);
-        actualPrice.setText(Utility.IsStringNullorEmpty(furnitureEntity.ActualPrice)?"-":(Utility.GetLocalCurrencySymbol() + " " + furnitureEntity.ActualPrice));
+        price.setText(Utility.GetLocalCurrencySymbol() + " " + entity.ExpectedPrice + "  ");
+        usedPeriod.setText(Utility.IsStringNullorEmpty(entity.UsedPeriod)?"-": entity.UsedPeriod);
+        entity.PostDescription = entity.PostDescription.replace("\r\n","\n").replace("\r","\n");
+        description.setText(Utility.IsStringNullorEmpty(entity.PostDescription)?"-": entity.PostDescription);
+        actualPrice.setText(Utility.IsStringNullorEmpty(entity.ActualPrice) ? "-" : (Utility.GetLocalCurrencySymbol() + " " + entity.ActualPrice));
 
-        Utility.setUserPic(userPic, furnitureEntity.UserImageUrl, furnitureEntity.PostedBy);
+        Utility.setUserPic(userPic, entity.UserImageUrl, entity.PostedBy);
 
-        postedBy.setText(furnitureEntity.PostedBy);
-        contactName.setText(furnitureEntity.ContactAddress.contactName);
+        postedBy.setText(entity.PostedBy);
+        contactName.setText(entity.ContactAddress.contactName);
 
-        String address = Utility.IsStringNullorEmpty(furnitureEntity.ContactAddress.Address)
-                ?(Utility.IsStringNullorEmpty(furnitureEntity.ContactAddress.City)
+        String address = Utility.IsStringNullorEmpty(entity.ContactAddress.Address)
+                ?(Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                 ?"-"
-                : furnitureEntity.ContactAddress.City)
-                : furnitureEntity.ContactAddress.Address +
-                (Utility.IsStringNullorEmpty(furnitureEntity.ContactAddress.City)
+                : entity.ContactAddress.City)
+                : entity.ContactAddress.Address +
+                (Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                         ?""
-                        : "\n" + furnitureEntity.ContactAddress.City);
+                        : "\n" + entity.ContactAddress.City);
         contactAddress.setText(address);
 
-        userEmail.setText(furnitureEntity.UserOfficialEmail);
-
-        Utility.setCallAndEmailButton(getActivity(), furnitureEntity.PostTitle, btnCall, btnEmail, furnitureEntity.ContactAddress.ContactNumber, furnitureEntity.ContactAddress.ContactEmail);
+        userEmail.setText(entity.UserOfficialEmail);
     }
 }

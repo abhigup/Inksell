@@ -2,12 +2,12 @@ package inksell.posts.add;
 
 
 import android.app.DatePickerDialog;
+import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.text.SimpleDateFormat;
@@ -44,7 +44,7 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
     EditText title;
 
     @InjectView(R.id.add_post_availability)
-    TextView availableFrom;
+    EditText availableFrom;
 
     public AddRealEstateDetailsFragment() {
         // Required empty public constructor
@@ -69,7 +69,7 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
                 }
             }
         });
-
+        availableFrom.setInputType(InputType.TYPE_NULL);
         availableFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,13 +78,20 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
         });
     }
 
+    @Override
+    public void setEditableView(View view) {
+
+    }
+
     private void openDateFragment(View v)
     {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         new DatePickerDialog(ConfigurationManager.CurrentActivityContext, date, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {

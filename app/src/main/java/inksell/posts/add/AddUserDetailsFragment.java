@@ -84,6 +84,11 @@ public class AddUserDetailsFragment extends BaseAddFragment {
     }
 
     @Override
+    public void setEditableView(View view) {
+
+    }
+
+    @Override
     public boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType) {
         if(Utility.IsStringNullorEmpty(contactEmail.getText().toString()) && Utility.IsStringNullorEmpty(contactNumber.getText().toString()))
         {

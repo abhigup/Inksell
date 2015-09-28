@@ -14,6 +14,8 @@ public abstract class BaseViewFragment extends BaseFragment {
 
     public abstract List<String> getImageUrls();
 
+    public abstract String[] getEmailAndCall();
+
     @Override
     public void initFragment()
     {}

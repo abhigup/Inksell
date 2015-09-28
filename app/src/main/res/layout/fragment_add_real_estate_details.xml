@@ -44,6 +44,10 @@
 
         </LinearLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
         <EditText android:textSize="30sp"
             style="@style/MyEditTextTheme"
             android:fontFamily="sans-serif-light"
@@ -51,6 +55,7 @@
             android:id="@+id/add_post_title"
             android:hint="@string/title"
             android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,23 +67,31 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
                 <EditText android:textSize="15sp"
-                    android:layout_weight="1"
                     style="@style/MyEditTextTheme"
-                    android:fontFamily="sans-serif-light"
                     android:layout_width="match_parent"
                     android:id="@+id/add_post_rent"
                     android:hint="@string/rentAmount"
+                    android:singleLine="true"
                     android:layout_height="wrap_content" />
+                </android.support.design.widget.TextInputLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
                 <EditText android:textSize="15sp"
-                    android:layout_weight="1"
                     style="@style/MyEditTextTheme"
-                    android:fontFamily="sans-serif-light"
                     android:layout_width="match_parent"
                     android:id="@+id/add_post_maintenance"
                     android:hint="@string/maintenanceAmount"
+                    android:singleLine="true"
                     android:layout_height="wrap_content" />
+                </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
 
@@ -87,39 +100,52 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
                 <EditText android:textSize="15sp"
-                    android:layout_weight="1"
                     style="@style/MyEditTextTheme"
-                    android:fontFamily="sans-serif-light"
                     android:layout_width="match_parent"
                     android:id="@+id/add_post_bhk"
                     android:hint="@string/bhk"
+                    android:singleLine="true"
                     android:layout_height="wrap_content" />
+                </android.support.design.widget.TextInputLayout>
 
-                <TextView android:textSize="15sp"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                <EditText android:textSize="15sp"
                     style="@android:style/Widget.EditText"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-light"
                     android:layout_width="match_parent"
                     android:id="@+id/add_post_availability"
                     android:hint="@string/availableFrom"
+                    android:singleLine="true"
                     android:layout_height="wrap_content" />
 
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
 
 
         </LinearLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText android:textSize="15sp"
             android:layout_weight="1"
             android:inputType="textMultiLine"
-            style="@style/MyEditTextTheme"
             android:fontFamily="sans-serif-light"
             android:layout_width="match_parent"
             android:id="@+id/add_post_area"
             android:hint="@string/area"
-            android:layout_height="0dp" />
+            android:singleLine="true"
+            android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:layout_marginTop="10dp"
@@ -182,18 +208,20 @@
 
         </LinearLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
         <EditText
-            android:layout_marginTop="10dp"
             android:textSize="15sp"
-            android:layout_weight="1"
             android:inputType="textMultiLine"
             style="@style/MyEditTextTheme"
-            android:fontFamily="sans-serif-light"
             android:layout_width="match_parent"
             android:singleLine="false"
             android:id="@+id/add_post_description"
             android:hint="@string/description"
-            android:layout_height="0dp" />
+            android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
 

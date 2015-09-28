@@ -1,17 +1,19 @@
 package inksell.posts.view;
 
 import android.os.Handler;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -23,10 +25,10 @@ import java.util.Map;
 import Constants.AppData;
 import butterknife.InjectView;
 import enums.CategoryType;
+import inksell.common.BaseActionBarActivity;
 import inksell.common.fullscreen_view;
 import inksell.inksell.R;
 import models.AutomobileEntity;
-import inksell.common.BaseActionBarActivity;
 import models.ElectronicEntity;
 import models.FurnitureEntity;
 import models.IPostEntity;
@@ -62,14 +64,23 @@ public class ViewPostActivity extends BaseActionBarActivity {
     @InjectView(R.id.layout_error_tryAgain)
     RelativeLayout layoutErrorTryAgain;
 
-    @InjectView(R.id.view_fav_toggle)
-    ToggleButton favButton;
-
     @InjectView(R.id.tryAgainButton)
     Button tryAgainButton;
 
     @InjectView(R.id.view_fab_edit)
     FloatingActionButton fabEdit;
+
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @InjectView(R.id.view_post_call)
+    ImageButton btnCall;
+
+    @InjectView(R.id.view_post_email)
+    ImageButton btnEmail;
+
+    @InjectView(R.id.my_collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Override
     protected void initDataAndLayout() {
@@ -81,7 +92,19 @@ public class ViewPostActivity extends BaseActionBarActivity {
 
     @Override
     protected void initActivity() {
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Set fab edit button
+        if(!summaryEntity.isEditable)
+        {
+            CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fabEdit.getLayoutParams();
+            p.setAnchorId(View.NO_ID);
+            fabEdit.setLayoutParams(p);
+            fabEdit.setVisibility(View.GONE);
+        }
+
+        collapsingToolbarLayout.setTitle("");
 
         tryAgainButton.setOnClickListener(refresh_click());
 
@@ -114,33 +137,11 @@ public class ViewPostActivity extends BaseActionBarActivity {
         }
         image_slider.addSlider(defaultSliderView);
         image_slider.stopAutoCycle();
-        if(image_slider.getChildCount()>1) {
-            image_slider.startAutoCycle();
-        }
 
         postTitle.setText(summaryEntity.Title);
 
         postedOn.setText(Utility.StringDateToRelativeStringDate(summaryEntity.Postdate));
 
-        //set Favourite Toggle Button
-        if(FavouritesHelper.IsFavourite(summaryEntity.PostId))
-        {
-            favButton.setChecked(true);
-        }
-
-        favButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
-                    FavouritesHelper.AddToFavourites(summaryEntity);
-                }
-                else
-                {
-                    FavouritesHelper.RemoveFromFavourites(summaryEntity.PostId);
-                }
-            }
-        });
     }
 
     @Override
@@ -194,16 +195,15 @@ public class ViewPostActivity extends BaseActionBarActivity {
                         .add(R.id.view_fragment_container, fragment)
                         .commit();
 
+                if(fragment.getEmailAndCall()!=null) {
+                    Utility.setCallAndEmailButton(summaryEntity.Title, btnCall, btnEmail, fragment.getEmailAndCall()[1], fragment.getEmailAndCall()[0]);
+                }
 
-                //Set fab edit button
+                //Set Edit FAB Button
                 if(summaryEntity.isEditable)
                 {
                     fabEdit.setVisibility(View.VISIBLE);
                     fabEdit.setOnClickListener(NavigationHelper.addPostClick(CategoryType.values()[summaryEntity.categoryid], true, iPostEntity));
-                }
-                else
-                {
-                    fabEdit.setVisibility(View.GONE);
                 }
 
                 //Set Image Slider View
@@ -265,6 +265,22 @@ public class ViewPostActivity extends BaseActionBarActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_favourite);
+        if(FavouritesHelper.IsFavourite(summaryEntity.PostId))
+        {
+            item.setChecked(true);
+            item.setIcon(R.drawable.ic_favorite_on);
+        }
+        else {
+            item.setChecked(false);
+            item.setIcon(R.drawable.ic_favorite_off);
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -276,9 +292,19 @@ public class ViewPostActivity extends BaseActionBarActivity {
                 return true;
             case R.id.action_forward:
                 return true;
+            case R.id.action_favourite:
+                item.setChecked(!item.isChecked());
+                if(item.isChecked())
+                {
+                    FavouritesHelper.AddToFavourites(summaryEntity);
+                    item.setIcon(R.drawable.ic_favorite_on);
+                }
+                else
+                {
+                    FavouritesHelper.RemoveFromFavourites(summaryEntity.PostId);
+                    item.setIcon(R.drawable.ic_favorite_off);
+                }
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

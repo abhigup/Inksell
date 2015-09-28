@@ -30,6 +30,11 @@ public class AddRealEstateMapFragment extends BaseAddFragment {
     }
 
     @Override
+    public void setEditableView(View view) {
+
+    }
+
+    @Override
     public boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType) {
         return false;
     }

@@ -1,7 +1,6 @@
 package inksell.posts.view;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -41,13 +40,7 @@ public class ViewAutomobileFragment extends BaseViewFragment {
     @InjectView(R.id.view_post_address)
     TextView contactAddress;
 
-    @InjectView(R.id.view_post_call)
-    ImageButton btnCall;
-
-    @InjectView(R.id.view_post_email)
-    ImageButton btnEmail;
-
-    private AutomobileEntity automobileEntity;
+    private AutomobileEntity entity;
 
     public ViewAutomobileFragment() {
         // Required empty public constructor
@@ -55,12 +48,23 @@ public class ViewAutomobileFragment extends BaseViewFragment {
 
     @Override
     public void setData(IPostEntity postEntity) {
-        automobileEntity = (AutomobileEntity)postEntity;
+        entity = (AutomobileEntity)postEntity;
     }
 
     @Override
     public List<String> getImageUrls() {
-        return automobileEntity.PostImagesUrl;
+        return entity.PostImagesUrl;
+    }
+
+    @Override
+    public String[] getEmailAndCall() {
+        if(entity==null)
+            return null;
+
+        String[] str = new String[2];
+        str[0] = entity.ContactAddress.ContactEmail;
+        str[1] = entity.ContactAddress.ContactNumber;
+        return str;
     }
 
     @Override
@@ -70,27 +74,26 @@ public class ViewAutomobileFragment extends BaseViewFragment {
 
     @Override
     public void initView(View view) {
-        price.setText(Utility.GetLocalCurrencySymbol() + " " + automobileEntity.ExpectedPrice + "  ");
-        usedPeriod.setText(Utility.IsStringNullorEmpty(automobileEntity.UsedPeriod)?"-": automobileEntity.UsedPeriod);
-        automobileEntity.PostDescription = automobileEntity.PostDescription.replace("\r\n","\n").replace("\r","\n");
-        description.setText(Utility.IsStringNullorEmpty(automobileEntity.PostDescription)?"-": automobileEntity.PostDescription);
-        actualPrice.setText(Utility.IsStringNullorEmpty(automobileEntity.ActualPrice)?"-":(Utility.GetLocalCurrencySymbol() + " " + automobileEntity.ActualPrice));
-        Utility.setUserPic(userPic, automobileEntity.UserImageUrl, automobileEntity.PostedBy);
-        postedBy.setText(automobileEntity.PostedBy);
-        contactName.setText(automobileEntity.ContactAddress.contactName);
+        price.setText(Utility.GetLocalCurrencySymbol() + " " + entity.ExpectedPrice + "  ");
+        usedPeriod.setText(Utility.IsStringNullorEmpty(entity.UsedPeriod)?"-": entity.UsedPeriod);
+        entity.PostDescription = entity.PostDescription.replace("\r\n","\n").replace("\r","\n");
+        description.setText(Utility.IsStringNullorEmpty(entity.PostDescription)?"-": entity.PostDescription);
+        actualPrice.setText(Utility.IsStringNullorEmpty(entity.ActualPrice) ? "-" : (Utility.GetLocalCurrencySymbol() + " " + entity.ActualPrice));
+        Utility.setUserPic(userPic, entity.UserImageUrl, entity.PostedBy);
+        postedBy.setText(entity.PostedBy);
+        contactName.setText(entity.ContactAddress.contactName);
 
-        String address = Utility.IsStringNullorEmpty(automobileEntity.ContactAddress.Address)
-                ?(Utility.IsStringNullorEmpty(automobileEntity.ContactAddress.City)
+        String address = Utility.IsStringNullorEmpty(entity.ContactAddress.Address)
+                ?(Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                 ?"-"
-                : automobileEntity.ContactAddress.City)
-                : automobileEntity.ContactAddress.Address +
-                (Utility.IsStringNullorEmpty(automobileEntity.ContactAddress.City)
+                : entity.ContactAddress.City)
+                : entity.ContactAddress.Address +
+                (Utility.IsStringNullorEmpty(entity.ContactAddress.City)
                         ?""
-                        : "\n" + automobileEntity.ContactAddress.City);
+                        : "\n" + entity.ContactAddress.City);
         contactAddress.setText(address);
 
-        userEmail.setText(automobileEntity.UserOfficialEmail);
+        userEmail.setText(entity.UserOfficialEmail);
 
-        Utility.setCallAndEmailButton(getActivity(), automobileEntity.PostTitle, btnCall, btnEmail, automobileEntity.ContactAddress.ContactNumber, automobileEntity.ContactAddress.ContactEmail);
     }
 }
