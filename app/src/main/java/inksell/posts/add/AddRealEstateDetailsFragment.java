@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ToggleButton;
 
 import java.text.SimpleDateFormat;
@@ -46,6 +47,22 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
     @InjectView(R.id.add_post_availability)
     EditText availableFrom;
 
+    @InjectView(R.id.water_btn)
+    ImageButton waterBtn;
+    private boolean isWater = false;
+
+    @InjectView(R.id.power_btn)
+    ImageButton powerBtn;
+    private boolean isPower = false;
+
+    @InjectView(R.id.internet_btn)
+    ImageButton internetBtn;
+    private boolean isInternet = false;
+
+    @InjectView(R.id.parking_btn)
+    ImageButton parkingBtn;
+    private boolean isParking = false;
+
     public AddRealEstateDetailsFragment() {
         // Required empty public constructor
     }
@@ -60,6 +77,11 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
     public void initViewAfterSettingEditableView(View view) {
         rent_btn.setOnCheckedChangeListener(changeChecker);
         sale_btn.setOnCheckedChangeListener(changeChecker);
+
+        waterBtn.setOnClickListener(toggleBtn);
+        powerBtn.setOnClickListener(toggleBtn);
+        internetBtn.setOnClickListener(toggleBtn);
+        parkingBtn.setOnClickListener(toggleBtn);
 
         availableFrom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -82,6 +104,76 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
     public void setEditableView(View view) {
 
     }
+
+
+    View.OnClickListener toggleBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId())
+            {
+                case R.id.water_btn:
+                    isWater = !isWater;
+                    toggleWaterButton();
+                    break;
+                case R.id.power_btn:
+                    isPower = !isPower;
+                    togglePowerButton();
+                    break;
+                case R.id.internet_btn:
+                    isInternet = !isInternet;
+                    toggleInternetButton();
+                    break;
+                case R.id.parking_btn:
+                    isParking = !isParking;
+                    toggleParkingButton();
+            }
+        }
+    };
+
+    private void toggleWaterButton()
+    {
+        if(isWater) {
+            waterBtn.setBackgroundResource(android.R.color.holo_blue_bright);
+        }
+        else
+        {
+            waterBtn.setBackgroundResource(R.color.background);
+        }
+    }
+
+    private void togglePowerButton()
+    {
+        if(isPower) {
+            powerBtn.setBackgroundResource(android.R.color.holo_orange_light);
+        }
+        else
+        {
+            powerBtn.setBackgroundResource(R.color.background);
+        }
+    }
+
+    private void toggleInternetButton()
+    {
+        if(isInternet) {
+            internetBtn.setBackgroundResource(android.R.color.holo_blue_dark);
+        }
+        else
+        {
+            internetBtn.setBackgroundResource(R.color.background);
+        }
+    }
+
+    private void toggleParkingButton()
+    {
+        if(isParking) {
+            parkingBtn.setBackgroundResource(android.R.color.holo_red_light);
+        }
+        else
+        {
+            parkingBtn.setBackgroundResource(R.color.background);
+        }
+    }
+
 
     private void openDateFragment(View v)
     {
@@ -114,6 +206,8 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Utility.getLocale);
         availableFrom.setText(sdf.format(myCalendar.getTime()));
     }
+
+
 
     CompoundButton.OnCheckedChangeListener changeChecker = new CompoundButton.OnCheckedChangeListener() {
 

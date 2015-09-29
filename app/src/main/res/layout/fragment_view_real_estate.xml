@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="inksell.posts.view.ViewRealEstateFragment">
+    android:layout_height="match_parent" tools:context="inksell.posts.view.ViewRealEstateFragment"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,18 +13,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:textColor="@color/TitlePrimaryDark"
-                android:id="@+id/view_property_rent"
+            <TextView android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-light"
+                android:layout_width="match_parent"
+                android:text="@string/propertyAddress"
+                android:textColor="@color/labelTextColor"
+                android:id="@+id/view_property_label_property_address"
                 android:layout_height="wrap_content" />
 
+            <TextView android:textSize="14sp"
+                android:layout_below="@+id/view_property_label_property_address"
+                android:fontFamily="sans-serif-light"
+                android:singleLine="false"
+                android:layout_width="match_parent"
+                android:id="@+id/view_property_property_address"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/view_property_property_address"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"
+                android:id="@+id/line_below_property_address"/>
+
             <LinearLayout
-                android:layout_below="@+id/view_property_rent"
+                android:layout_below="@id/line_below_property_address"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:id="@+id/view_property_linearTable">
+                android:id="@+id/view_property_linearTable1">
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -31,57 +51,351 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left">
 
-                    <TextView android:textSize="12sp"
+                    <TextView android:textSize="10sp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif-light"
                         android:layout_width="match_parent"
-                        android:text="@string/actualPrice"
-                        android:textColor="@color/half_black"
-                        android:id="@+id/view_property_label_actualprice"
+                        android:text="@string/rentAmount"
+                        android:textColor="@color/labelTextColor"
+                        android:id="@+id/view_property_label_rent"
                         android:layout_height="wrap_content" />
 
                     <TextView android:textSize="14sp"
-                        android:layout_below="@+id/view_property_label_actualprice"
+                        android:layout_below="@+id/view_property_label_rent"
                         android:fontFamily="sans-serif-light"
                         android:layout_width="match_parent"
-                        android:id="@+id/view_property_actualPrice"
+                        android:id="@+id/view_property_rent"
                         android:layout_height="wrap_content" />
 
                 </RelativeLayout>
 
+                <View
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/background" />
+
                 <RelativeLayout
                     android:layout_width="0dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right">
 
-                    <TextView android:textSize="12sp"
+                    <TextView android:textSize="10sp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif-light"
                         android:layout_width="match_parent"
-                        android:textColor="@color/half_black"
-                        android:text="@string/usedPeriod"
-                        android:id="@+id/view_property_label_usedperiod"
+                        android:textColor="@color/labelTextColor"
+                        android:text="@string/maintenanceAmount"
+                        android:id="@+id/view_property_label_maintenance"
                         android:layout_height="wrap_content" />
 
                     <TextView android:textSize="14sp"
-                        android:layout_below="@+id/view_property_label_usedperiod"
+                        android:layout_below="@+id/view_property_label_maintenance"
                         android:fontFamily="sans-serif-light"
                         android:layout_width="match_parent"
-                        android:id="@+id/view_property_usedperiod"
+                        android:id="@+id/view_property_maintenance"
                         android:layout_height="wrap_content" />
 
                 </RelativeLayout>
 
             </LinearLayout>
 
-            <TextView android:textSize="12sp"
-                android:layout_below="@+id/view_property_linearTable"
+            <View
+                android:layout_below="@+id/view_property_linearTable1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/background"
+                android:id="@+id/line_below_lt1"/>
+
+            <LinearLayout
+                android:layout_below="@id/line_below_lt1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/view_property_linearTable2">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left">
+
+                    <TextView android:textSize="10sp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:text="@string/bhk"
+                        android:textColor="@color/labelTextColor"
+                        android:id="@+id/view_property_label_bhk"
+                        android:layout_height="wrap_content" />
+
+                    <TextView android:textSize="14sp"
+                        android:layout_below="@+id/view_property_label_bhk"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:id="@+id/view_property_bhk"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/background" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+
+                    <TextView android:textSize="10sp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/labelTextColor"
+                        android:text="@string/availableFrom"
+                        android:id="@+id/view_property_label_available"
+                        android:layout_height="wrap_content" />
+
+                    <TextView android:textSize="14sp"
+                        android:layout_below="@+id/view_property_label_available"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:id="@+id/view_property_available"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_below="@+id/view_property_linearTable2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/background"
+                android:id="@+id/line_below_lt2"/>
+
+            <LinearLayout
+                android:layout_below="@id/line_below_lt2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/view_property_linearTable3">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left">
+
+                    <TextView android:textSize="10sp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:text="@string/area"
+                        android:textColor="@color/labelTextColor"
+                        android:id="@+id/view_property_label_area"
+                        android:layout_height="wrap_content" />
+
+                    <TextView android:textSize="14sp"
+                        android:layout_below="@+id/view_property_label_area"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:id="@+id/view_property_area"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/background" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+
+                    <TextView android:textSize="10sp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/labelTextColor"
+                        android:text="@string/furnishing"
+                        android:id="@+id/view_property_label_furnishing"
+                        android:layout_height="wrap_content" />
+
+                    <TextView android:textSize="14sp"
+                        android:layout_below="@+id/view_property_label_furnishing"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="match_parent"
+                        android:id="@+id/view_property_furnishing"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_below="@+id/view_property_linearTable3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/background"
+                android:id="@+id/line_below_lt3"/>
+
+            <TextView android:textSize="10sp"
+                android:layout_below="@+id/line_below_lt3"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-light"
+                android:layout_width="match_parent"
+                android:text="@string/features"
+                android:textColor="@color/labelTextColor"
+                android:id="@+id/view_property_label_features"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_below="@id/view_property_label_features"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/view_property_linearTable4">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/water_btn"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/background"
+                        android:src="@drawable/water"
+                        android:textColor="@color/toggle_primary_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/water_btn"
+                        android:textColor="@color/half_black"
+                        android:textSize="8sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/water"/>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/power_btn"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/background"
+                        android:src="@drawable/power"
+                        android:textColor="@color/toggle_primary_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:layout_below="@+id/power_btn"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/half_black"
+                        android:textSize="8sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/power"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/internet_btn"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/background"
+                        android:src="@drawable/wifi"
+                        android:textColor="@color/toggle_primary_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:layout_below="@+id/internet_btn"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/half_black"
+                        android:textSize="8sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/internet"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/parking_btn"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/background"
+                        android:src="@drawable/parking"
+                        android:textColor="@color/toggle_primary_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:layout_below="@+id/parking_btn"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/half_black"
+                        android:textSize="8sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/parking"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_below="@+id/view_property_linearTable4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/background"
+                android:id="@+id/line_below_lt4"/>
+
+            <TextView android:textSize="10sp"
+                android:layout_below="@+id/line_below_lt4"
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-light"
                 android:layout_width="match_parent"
                 android:text="@string/description"
-                android:textColor="@color/half_black"
+                android:textColor="@color/labelTextColor"
                 android:id="@+id/view_property_label_description"
                 android:layout_height="wrap_content" />
 
@@ -93,9 +407,26 @@
                 android:id="@+id/view_property_description"
                 android:layout_height="wrap_content"/>
 
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/view_property_description"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"
+                android:id="@+id/line_below_description"/>
+
         </RelativeLayout>
 
-        <include android:layout_width="match_parent"
+        <fragment
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:id="@+id/map"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"/>
+
+        <include
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             layout="@layout/view_post_contact_layout" />
 

@@ -2,7 +2,6 @@ package inksell.inksell;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -10,14 +9,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import adapters.RVAdapter;
 import butterknife.InjectView;
 import inksell.common.BaseFragment;
-import inksell.posts.view.ViewPostActivity;
 import models.PostSummaryEntity;
 import utilities.FavouritesHelper;
 import utilities.NavigationHelper;
@@ -50,40 +46,18 @@ public class FavouriteFragment extends BaseFragment implements SwipableRecyclerV
         postSummaryEntityList = FavouritesHelper.getFavourites();
     }
 
-    private View.OnClickListener cardViewClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int childItemPosition = frv.getChildAdapterPosition(v);
-                PostSummaryEntity postSummaryEntity = FavouritesHelper.getFavourites().get(childItemPosition);
-
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("postSummary", Utility.GetJSONString(postSummaryEntity));
-
-                if(!postSummaryEntity.HasPostTitlePic())
-                {
-                    NavigationHelper.NavigateTo(ViewPostActivity.class, map);
-                }
-                else {
-                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), v.findViewById(R.id.card_title_pic), getString(R.string.cardTitlePicTransition));
-                    NavigationHelper.NavigateTo(ViewPostActivity.class, map, options.toBundle());
-                }
-            }
-        };
-    }
-
     private void initFavList() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         frv.setLayoutManager(layoutManager);
 
         if(frvAdapter ==null) {
-            frvAdapter = new RVAdapter(postSummaryEntityList, cardViewClickListener());
+            frvAdapter = new RVAdapter(postSummaryEntityList, NavigationHelper.cardViewClickListener(frv, postSummaryEntityList, getActivity()));
             frvAdapter.setIsFavPosts(true);
             frv.setAdapter(frvAdapter);
         }
         else {
-            frvAdapter.Update(postSummaryEntityList, cardViewClickListener());
+            frvAdapter.Update(postSummaryEntityList, NavigationHelper.cardViewClickListener(frv, postSummaryEntityList, getActivity()));
         }
 
         SwipableRecyclerView.setSwipeBehaviour(frv, this);

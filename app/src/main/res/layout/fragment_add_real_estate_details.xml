@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
         <EditText android:textSize="30sp"
+            android:paddingTop="0dp"
             style="@style/MyEditTextTheme"
             android:fontFamily="sans-serif-light"
             android:layout_width="match_parent"
@@ -153,58 +154,106 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ToggleButton
-                android:padding="5dp"
-                android:background="@drawable/toggle_primary"
-                android:drawableTop="@drawable/water"
-                android:textColor="@color/toggle_primary_text"
-                android:textOff="@string/water"
-                android:textOn="@string/water"
-                android:textSize="8sp"
-                android:layout_height="wrap_content"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
-            <ToggleButton
-                android:padding="5dp"
-                android:layout_marginLeft="5dp"
-                android:drawableTop="@drawable/power"
-                android:textOff="@string/power"
-                android:textOn="@string/power"
-                android:textSize="8sp"
-                android:layout_width="wrap_content"
-                android:background="@drawable/toggle_primary"
-                android:textColor="@color/toggle_primary_text"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                <ImageButton
+                    android:id="@+id/water_btn"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/background"
+                    android:src="@drawable/water"
+                    android:textColor="@color/toggle_primary_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"/>
 
-            <ToggleButton
-                android:padding="5dp"
-                android:drawablePadding="5dp"
-                android:layout_marginLeft="5dp"
-                android:drawableTop="@drawable/wifi"
-                android:textOff="@string/internet"
-                android:textOn="@string/internet"
-                android:textSize="8sp"
-                android:layout_width="wrap_content"
-                android:background="@drawable/toggle_primary"
-                android:textColor="@color/toggle_primary_text"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/water_btn"
+                    android:textColor="@color/half_black"
+                    android:textSize="8sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/water"/>
+            </RelativeLayout>
 
-            <ToggleButton
-                android:padding="5dp"
-                android:drawablePadding="5dp"
-                android:drawableTop="@drawable/parking"
-                android:textOff="@string/parking"
-                android:textOn="@string/parking"
-                android:textSize="8sp"
-                android:layout_marginLeft="5dp"
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:background="@drawable/toggle_primary"
-                android:textColor="@color/toggle_primary_text"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/power_btn"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/background"
+                    android:src="@drawable/power"
+                    android:textColor="@color/toggle_primary_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_below="@+id/power_btn"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/half_black"
+                    android:textSize="8sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/power"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/internet_btn"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/background"
+                    android:src="@drawable/wifi"
+                    android:textColor="@color/toggle_primary_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_below="@+id/internet_btn"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/half_black"
+                    android:textSize="8sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/internet"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/parking_btn"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/background"
+                    android:src="@drawable/parking"
+                    android:textColor="@color/toggle_primary_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_below="@+id/parking_btn"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/half_black"
+                    android:textSize="8sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/parking"/>
+            </RelativeLayout>
 
         </LinearLayout>
 

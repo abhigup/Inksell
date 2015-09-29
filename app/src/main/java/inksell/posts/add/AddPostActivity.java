@@ -86,10 +86,13 @@ public class AddPostActivity extends BaseActionBarActivity {
         {
             addPostDetailsFragment = new AddPostDetailsFragment();
         }
-        transaction.add(R.id.add_post_details_container, addPostDetailsFragment);
 
-        userDetailsFragment = (BaseAddFragment)getSupportFragmentManager().findFragmentById(R.id.add_user_details_container);
-        imagesFragment = (BaseAddFragment)getSupportFragmentManager().findFragmentById(R.id.add_images_container);
+        userDetailsFragment = new AddUserDetailsFragment();
+        imagesFragment = new AddImagesFragment();
+
+        transaction.add(R.id.add_post_details_container, addPostDetailsFragment);
+        transaction.add(R.id.add_images_container, imagesFragment);
+        transaction.add(R.id.add_user_details_container, userDetailsFragment);
 
         if(forEdit) {
             addPostDetailsFragment.setData(editableEntity, categoryType);

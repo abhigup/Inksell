@@ -32,6 +32,8 @@ public class RealEstateEntity implements IPostEntity {
 
     public boolean IsParking;
 
+    public boolean IsPowerBackup;
+
     public String Bhk;
 
     public boolean IsInternet;

@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="inksell.posts.view.ViewOtherFragment">
 
@@ -18,8 +19,16 @@
                 android:id="@+id/view_other_price"
                 android:layout_height="wrap_content" />
 
-            <LinearLayout
+            <View
                 android:layout_below="@+id/view_other_price"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/background"
+                android:id="@+id/line_below_price"/>
+
+            <LinearLayout
+                android:layout_below="@+id/line_below_price"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -31,12 +40,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left">
 
-                    <TextView android:textSize="12sp"
+                    <TextView android:textSize="10sp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif-light"
                         android:layout_width="match_parent"
                         android:text="@string/actualPrice"
-                        android:textColor="@color/half_black"
+                        android:textColor="@color/labelTextColor"
                         android:id="@+id/view_other_label_actualprice"
                         android:layout_height="wrap_content" />
 
@@ -49,17 +58,26 @@
 
                 </RelativeLayout>
 
+                <View
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/background" />
+
                 <RelativeLayout
+                    android:layout_marginLeft="16dp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right">
 
-                    <TextView android:textSize="12sp"
+                    <TextView android:textSize="10sp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif-light"
                         android:layout_width="match_parent"
-                        android:textColor="@color/half_black"
+                        android:textColor="@color/labelTextColor"
                         android:text="@string/usedPeriod"
                         android:id="@+id/view_other_label_usedperiod"
                         android:layout_height="wrap_content" />
@@ -75,13 +93,21 @@
 
             </LinearLayout>
 
-            <TextView android:textSize="12sp"
+            <View
                 android:layout_below="@+id/view_other_linearTable"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"
+                android:layout_marginTop="5dp"
+                android:id="@+id/line_below_contact"/>
+
+            <TextView android:textSize="10sp"
+                android:layout_below="@+id/line_below_contact"
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-light"
                 android:layout_width="match_parent"
                 android:text="@string/description"
-                android:textColor="@color/half_black"
+                android:textColor="@color/labelTextColor"
                 android:id="@+id/view_other_label_description"
                 android:layout_height="wrap_content" />
 
@@ -93,7 +119,14 @@
                 android:id="@+id/view_other_description"
                 android:layout_height="wrap_content"/>
 
-            </RelativeLayout>
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/view_other_description"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"/>
+
+        </RelativeLayout>
 
         <include android:layout_width="match_parent"
             android:layout_height="match_parent"

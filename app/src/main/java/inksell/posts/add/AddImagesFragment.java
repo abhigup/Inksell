@@ -52,9 +52,10 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
 
     @Override
     public void initViewAfterSettingEditableView(View view) {
-        btnCamera.setOnClickListener(dispatchTakePictureIntent());
-        btnGallery.setOnClickListener(dispatchPickFromGallery());
-
+        if(!forEdit) {
+            btnCamera.setOnClickListener(dispatchTakePictureIntent());
+            btnGallery.setOnClickListener(dispatchPickFromGallery());
+        }
         LinearLayoutManager itemslayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         itemslayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         imageRecyclerView.setLayoutManager(itemslayoutManager);
@@ -66,7 +67,17 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
 
     @Override
     public void setEditableView(View view) {
+        btnCamera.setOnClickListener(editImageEdit());
+        btnGallery.setOnClickListener(editImageEdit());
+    }
 
+    private View.OnClickListener editImageEdit() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utility.ShowToast("This feature is currently not available in Edit Mode.");
+            }
+        };
     }
 
     private View.OnClickListener dispatchPickFromGallery() {

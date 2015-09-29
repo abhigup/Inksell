@@ -23,24 +23,20 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/add_post_details_container" />
 
-                <fragment
-                    android:id="@+id/add_images_container"
-                    android:name="inksell.posts.add.AddImagesFragment"
-                    tools:layout="@layout/fragment_add_images"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add_images_container" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/add_map_container" />
 
-                <fragment
-                    android:id="@+id/add_user_details_container"
-                    android:name="inksell.posts.add.AddUserDetailsFragment"
-                    tools:layout="@layout/fragment_add_user_details"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add_user_details_container" />
 
                 <Button
                     android:layout_margin="5dp"

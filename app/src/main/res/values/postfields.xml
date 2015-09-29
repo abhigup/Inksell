@@ -19,11 +19,13 @@
     <string name="maintenanceAmount">Maintenance</string>
     <string name="availableFrom">Available From</string>
     <string name="area">Area (sqft)</string>
+    <string name="furnishing">Furnishing</string>
     <string name="water">24x7 Water</string>
     <string name="power">24x7 Power</string>
     <string name="internet">Internet</string>
     <string name="parking">Parking</string>
     <string name="pricePerSqft">Price/Sqft</string>
+    <string name="features">Features</string>
 
     <string name="hintContactPerson">Contact Person</string>
     <string name="hintContactNumber">Contact Number</string>

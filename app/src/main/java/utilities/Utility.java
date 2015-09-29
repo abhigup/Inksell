@@ -41,6 +41,7 @@ import java.util.UUID;
 
 import Constants.InksellConstants;
 import enums.CategoryType;
+import enums.FurnishingType;
 import inksell.inksell.R;
 import models.AutomobileEntity;
 import models.CategoryEntity;
@@ -148,6 +149,18 @@ public class Utility {
             return true;
         }
         return false;
+    }
+
+    public static String getStringValue(String str)
+    {
+        if(IsStringNullorEmpty(str))
+        {
+            return "-";
+        }
+        else
+        {
+            return str;
+        }
     }
 
     public static boolean IsEditTextNullorEmpty(EditText editText)
@@ -649,6 +662,20 @@ public class Utility {
             default:
                 return null;
         }
+    }
+
+    public static String getFurnishedString(FurnishingType type)
+    {
+        switch (type)
+        {
+            case UnFurnished:
+                return "UnFurnished";
+            case SemiFurnished:
+                return "Semi-Furnished";
+            case FullyFurnished:
+                return "Fully Furnished";
+        }
+        return "";
     }
 
 }

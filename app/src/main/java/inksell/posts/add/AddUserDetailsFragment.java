@@ -15,9 +15,13 @@ import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import enums.CategoryType;
 import inksell.inksell.R;
+import models.AutomobileEntity;
 import models.ContactAddressEntity;
+import models.ElectronicEntity;
+import models.FurnitureEntity;
 import models.IPostEntity;
 import models.OtherEntity;
+import models.RealEstateEntity;
 import utilities.Utility;
 
 /**
@@ -85,7 +89,32 @@ public class AddUserDetailsFragment extends BaseAddFragment {
 
     @Override
     public void setEditableView(View view) {
+        switch (categoryType) {
+            case Electronics:
+                setContactDetails(((ElectronicEntity)iPostEntity).ContactAddress);
+                break;
+            case Automobile:
+                setContactDetails(((AutomobileEntity)iPostEntity).ContactAddress);
+                break;
+            case Furniture:
+                setContactDetails(((FurnitureEntity)iPostEntity).ContactAddress);
+                break;
+            case RealState:
+                setContactDetails(((RealEstateEntity)iPostEntity).ContactAddress);
+                break;
+            case Others:
+                setContactDetails(((OtherEntity)iPostEntity).ContactAddress);
+                break;
+        }
+    }
 
+    private void setContactDetails(ContactAddressEntity contactAddressEntity)
+    {
+        contactPerson.setText(contactAddressEntity.contactName);
+        contactAddress.setText(contactAddressEntity.Address);
+        contactNumber.setText(contactAddressEntity.ContactNumber);
+        contactCity.setText(contactAddressEntity.City);
+        contactEmail.setText(contactAddressEntity.ContactEmail);
     }
 
     @Override
