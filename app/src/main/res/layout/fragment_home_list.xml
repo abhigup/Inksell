@@ -59,6 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
+            fab:fab_icon="@drawable/furniture"
             fab:fab_title="@string/category_furniture"
             fab:fab_colorPressed="@color/white_pressed" />
 
@@ -70,6 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
+            fab:fab_icon="@drawable/realestate"
             fab:fab_title="@string/category_realestate"
             fab:fab_colorPressed="@color/white_pressed"/>
 
@@ -79,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
+            fab:fab_icon="@drawable/electronics"
             fab:fab_title="@string/category_electronics"
             fab:fab_colorPressed="@color/white_pressed"/>
 
@@ -88,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
+            fab:fab_icon="@drawable/auto"
             fab:fab_title="@string/category_autos"
             fab:fab_colorPressed="@color/white_pressed"/>
 
@@ -97,6 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
+            fab:fab_icon="@drawable/other"
             fab:fab_title="@string/category_other"
             fab:fab_colorPressed="@color/white_pressed"/>
 
@@ -106,6 +111,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
+            fab:fab_icon="@drawable/multiple"
             fab:fab_title="@string/category_multiple"
             fab:fab_colorPressed="@color/white_pressed"/>
 
