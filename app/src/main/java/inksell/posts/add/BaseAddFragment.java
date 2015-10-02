@@ -1,5 +1,7 @@
 package inksell.posts.add;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import enums.CategoryType;
@@ -16,17 +18,17 @@ public abstract class BaseAddFragment extends BaseFragment {
     protected boolean forEdit = false;
 
     @Override
-    public void initFragment()
+    public void initFragment(Bundle savedInstanceState)
     {}
 
     @Override
-    public void initView(View view)
+    public void initView(LayoutInflater inflater, View view, Bundle savedInstanceState)
     {
         if(forEdit)
         {
-            setEditableView(view);
+            setEditableView(inflater, view, savedInstanceState);
         }
-        initViewAfterSettingEditableView(view);
+        initViewAfterSettingEditableView(inflater, view, savedInstanceState);
     }
 
     public void setData(IPostEntity entity, CategoryType type)
@@ -38,8 +40,8 @@ public abstract class BaseAddFragment extends BaseFragment {
 
     public abstract boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType);
 
-    public abstract void initViewAfterSettingEditableView(View view);
+    public abstract void initViewAfterSettingEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState);
 
-    public abstract void setEditableView(View view);
+    public abstract void setEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState);
 
 }

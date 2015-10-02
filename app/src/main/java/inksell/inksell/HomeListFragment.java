@@ -2,10 +2,12 @@ package inksell.inksell;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -95,13 +97,13 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void initFragment() {
+    public void initFragment(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         loadPostsData(CategoryType.AllCategory);
     }
 
     @Override
-    public void initView(View view) {
+    public void initView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
 
         cvHomeTransparency.setOnClickListener(new View.OnClickListener() {
             @Override

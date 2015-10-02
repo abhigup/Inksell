@@ -27,8 +27,7 @@
     <string name="action_search">Search</string>
     <string name="title_activity_user_details">Profile</string>
     <string name="title_activity_new_company">Register</string>
-    <string name="ErrorUnSubscribeFailed">Error unsubscribing tag. Please try again later.</string>
-    <string name="ErrorPostSoldOutUpdateFailed">Error updating post status. Please try again later.</string>
+
     <string name="ErrorTryAgain">Try Again</string>
 
 <!-- TODO: Remove or change this placeholder text -->
@@ -64,5 +63,8 @@
     <string name="title_activity_add_multiple">Add Multiple Posts</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_view_multiple">ViewMultipleActivity</string>
+    <string name="title_activity_map">MapActivity</string>
 
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
 </resources>

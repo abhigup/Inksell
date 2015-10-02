@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -51,7 +53,7 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
     }
 
     @Override
-    public void initViewAfterSettingEditableView(View view) {
+    public void initViewAfterSettingEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         if(!forEdit) {
             btnCamera.setOnClickListener(dispatchTakePictureIntent());
             btnGallery.setOnClickListener(dispatchPickFromGallery());
@@ -66,7 +68,7 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
     }
 
     @Override
-    public void setEditableView(View view) {
+    public void setEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         btnCamera.setOnClickListener(editImageEdit());
         btnGallery.setOnClickListener(editImageEdit());
     }

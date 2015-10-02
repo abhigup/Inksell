@@ -36,4 +36,7 @@
     <string name="ErrorTitleIsRequired">Title is required.</string>
     <string name="ErrorEmailOrNumberRequired">Either e-mail or contact number is required.</string>
     <string name="ErrorImageUploadFailed">Image Upload Failed!</string>
+
+    <string name="ErrorUnSubscribeFailed">Error unsubscribing tag. Please try again later.</string>
+    <string name="ErrorPostSoldOutUpdateFailed">Error updating post status. Please try again later.</string>
 </resources>

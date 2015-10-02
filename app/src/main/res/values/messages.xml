@@ -8,4 +8,8 @@
     <string name="removeSubscription">UnSubscribe this tag ?</string>
 
     <string name="discardAddPost">Discard current post?</string>
+
+    <string name="mapMessage">Click on marker for navigate options.</string>
+
+    <string name="emptyMapMessage">Please select your property location.</string>
 </resources>

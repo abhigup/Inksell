@@ -94,6 +94,7 @@ public class ViewPostActivity extends BaseActionBarActivity {
     protected void initActivity() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //Set fab edit button
         if(!summaryEntity.isEditable)
@@ -104,7 +105,9 @@ public class ViewPostActivity extends BaseActionBarActivity {
             fabEdit.setVisibility(View.GONE);
         }
 
+        collapsingToolbarLayout.setTitleEnabled(false);
         collapsingToolbarLayout.setTitle("");
+        toolbar.setTitle("");
 
         tryAgainButton.setOnClickListener(refresh_click());
 

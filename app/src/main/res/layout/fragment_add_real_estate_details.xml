@@ -140,7 +140,6 @@
         <EditText android:textSize="15sp"
             android:layout_weight="1"
             android:inputType="textMultiLine"
-            android:fontFamily="sans-serif-light"
             android:layout_width="match_parent"
             android:id="@+id/add_post_area"
             android:hint="@string/area"

@@ -11,6 +11,7 @@ import android.graphics.Matrix;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,6 +25,9 @@ import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -57,9 +61,23 @@ import models.RealEstateEntity;
 
 public class Utility {
 
-    private static Currency currency = Currency.getInstance(ConfigurationManager.CurrentActivityContext.getResources().getConfiguration().locale);
+    private static Resources getResources = ConfigurationManager.CurrentActivityContext.getResources();
 
-    public static Locale getLocale = ConfigurationManager.CurrentActivityContext.getResources().getConfiguration().locale;
+    private static Currency getCurrency()
+    {
+        if(getResources==null)
+            return  null;
+
+        return Currency.getInstance(getResources.getConfiguration().locale);
+    }
+
+    public static Locale getLocale()
+    {
+        if(getResources!=null) {
+            return getResources.getConfiguration().locale;
+        }
+        return null;
+    }
 
     public static void ShowInfoDialog(int resId){
         ShowInfoDialog(GetResourceString(resId));
@@ -503,7 +521,7 @@ public class Utility {
 
     public static String GetLocalCurrencySymbol()
     {
-        return currency.getSymbol();
+        return getCurrency().getSymbol();
     }
 
     public static void WaitFor(int milliSeconds)
@@ -676,6 +694,15 @@ public class Utility {
                 return "Fully Furnished";
         }
         return "";
+    }
+
+    public static void setMap(Bundle bundle,MapView mapView, OnMapReadyCallback onMapReadyCallback)
+    {
+        mapView.onCreate(bundle);
+        mapView.onResume();
+        MapsInitializer.initialize(ConfigurationManager.CurrentActivityContext);
+
+        mapView.getMapAsync(onMapReadyCallback);
     }
 
 }

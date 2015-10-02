@@ -13,6 +13,10 @@ public class InksellConstants {
 
     public static final int REQUEST_IMAGE_CAPTURE =2;
 
+    public static final int REQUEST_CHECK_SETTINGS = 1000;
+
+    public static final int REQUEST_MAP_RESULT = 1001;
+
     public static final String IMAGE_DIR_NAME = "Inksell";
 
     public static final String HOME_SHOWCASE_ID = "HomeShowcaseId";

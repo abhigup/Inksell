@@ -3,6 +3,8 @@ package inksell.user;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,7 +46,7 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     }
 
     @Override
-    public void initFragment() {
+    public void initFragment(Bundle savedInstanceState) {
         tagsEntityList = new ArrayList<>();
         tagsAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_item);
     }
@@ -70,7 +72,7 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     }
 
     @Override
-    public void initView(View view) {
+    public void initView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         autoCompleteTextView.setOnItemClickListener(this);
         GetAllSubscriptionTags(0);
         setSubscriptionListFromLocal();

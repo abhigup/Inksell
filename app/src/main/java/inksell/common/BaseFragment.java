@@ -15,14 +15,14 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract int getViewResId();
 
-    public abstract void initFragment();
+    public abstract void initFragment(Bundle savedInstanceState);
 
-    public abstract void initView(View view);
+    public abstract void initView(LayoutInflater inflater, View view, Bundle savedInstanceState);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.initFragment();
+        this.initFragment(savedInstanceState);
     }
 
     @Override
@@ -31,7 +31,7 @@ public abstract class BaseFragment extends Fragment {
     {
         View view = inflater.inflate(getViewResId(), container, false);
         ButterKnife.inject(this, view);
-        initView(view);
+        initView(inflater, view, savedInstanceState);
         return view;
     }
 }

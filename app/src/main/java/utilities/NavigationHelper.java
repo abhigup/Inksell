@@ -55,8 +55,22 @@ public class NavigationHelper {
         if(map!=null) {
             intent.putExtra("intentExtra", Utility.GetJSONString(map));
         }
+
         ConfigurationManager.CurrentActivityContext.startActivity(intent, bundle);
     }
+
+    public static void StartActivityForResult(Activity activity, int requestCode, Class clazz, Map<String, String> map)
+    {
+        Intent intent = new Intent(ConfigurationManager.CurrentActivityContext, clazz);
+
+        if(map!=null) {
+            intent.putExtra("intentExtra", Utility.GetJSONString(map));
+        }
+
+        activity.startActivityForResult(intent, requestCode, null);
+    }
+
+
 
     public static View.OnClickListener addPostClick(final CategoryType categoryType) {
         return addPostClick(categoryType, false, null);

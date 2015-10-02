@@ -1,6 +1,7 @@
 package inksell.user;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -90,6 +91,7 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbarLayout.setTitle(AppData.UserData.Username);
+        collapsingToolbarLayout.setExpandedTitleColor(Color.argb(0,255,255,255));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

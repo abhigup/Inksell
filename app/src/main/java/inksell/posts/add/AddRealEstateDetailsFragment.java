@@ -2,7 +2,9 @@ package inksell.posts.add;
 
 
 import android.app.DatePickerDialog;
+import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
@@ -74,7 +76,7 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
     }
 
     @Override
-    public void initViewAfterSettingEditableView(View view) {
+    public void initViewAfterSettingEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         rent_btn.setOnCheckedChangeListener(changeChecker);
         sale_btn.setOnCheckedChangeListener(changeChecker);
 
@@ -101,7 +103,7 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
     }
 
     @Override
-    public void setEditableView(View view) {
+    public void setEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
 
     }
 
@@ -140,6 +142,8 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
             waterBtn.setBackgroundResource(R.color.background);
         }
     }
+
+
 
     private void togglePowerButton()
     {
@@ -203,7 +207,7 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
     private void updateLabel() {
 
         String myFormat = "dd/MM/yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Utility.getLocale);
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Utility.getLocale());
         availableFrom.setText(sdf.format(myCalendar.getTime()));
     }
 

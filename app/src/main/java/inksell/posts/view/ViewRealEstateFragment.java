@@ -1,8 +1,18 @@
 package inksell.posts.view;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -14,7 +24,7 @@ import models.IPostEntity;
 import models.RealEstateEntity;
 import utilities.Utility;
 
-public class ViewRealEstateFragment extends BaseViewFragment {
+public class ViewRealEstateFragment extends BaseViewFragment implements OnMapReadyCallback {
 
     @InjectView(R.id.view_property_rent)
     TextView rent;
@@ -71,6 +81,9 @@ public class ViewRealEstateFragment extends BaseViewFragment {
     ImageButton parkingBtn;
     private boolean isParking = false;
 
+    @InjectView(R.id.view_map)
+    MapView mapView;
+
     private RealEstateEntity entity;
 
     public ViewRealEstateFragment() {
@@ -104,7 +117,7 @@ public class ViewRealEstateFragment extends BaseViewFragment {
     }
 
     @Override
-    public void initView(View view) {
+    public void initView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
 
         rent.setText(Utility.GetLocalCurrencySymbol() + " " + entity.RentPrice + "  ");
         maintenance.setText(Utility.getStringValue(entity.MaintenancePrice));
@@ -136,6 +149,8 @@ public class ViewRealEstateFragment extends BaseViewFragment {
         userEmail.setText(entity.UserOfficialEmail);
 
         toggleFeatures();
+
+        Utility.setMap(savedInstanceState, mapView, this);
     }
 
     private void toggleFeatures()
@@ -193,5 +208,44 @@ public class ViewRealEstateFragment extends BaseViewFragment {
         {
             parkingBtn.setBackgroundResource(R.color.background);
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        if(entity.latitude!=0 && entity.longitude!=0) {
+            LatLng latLng = new LatLng(entity.latitude, entity.longitude);
+
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(entity.latitude, entity.longitude)).title(entity.PostTitle));
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(13).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory()
+    {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }

@@ -2,6 +2,8 @@ package inksell.posts.add;
 
 
 import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
@@ -47,11 +49,11 @@ public class AddPostDetailsFragment extends BaseAddFragment {
     }
 
     @Override
-    public void initViewAfterSettingEditableView(View view) {
+    public void initViewAfterSettingEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
     }
 
     @Override
-    public void setEditableView(View view) {
+    public void setEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         postTitle.setEnabled(false);
         switch (categoryType) {
             case Electronics:

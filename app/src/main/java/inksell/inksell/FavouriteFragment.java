@@ -2,8 +2,10 @@ package inksell.inksell;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,12 +37,12 @@ public class FavouriteFragment extends BaseFragment implements SwipableRecyclerV
     }
 
     @Override
-    public void initView(View view) {
+    public void initView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         initFavList();
     }
 
     @Override
-    public void initFragment() {
+    public void initFragment(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
         postSummaryEntityList = FavouritesHelper.getFavourites();

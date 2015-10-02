@@ -2,6 +2,8 @@ package inksell.posts.add;
 
 
 import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -64,7 +66,7 @@ public class AddUserDetailsFragment extends BaseAddFragment {
     }
 
     @Override
-    public void initViewAfterSettingEditableView(View view) {
+    public void initViewAfterSettingEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
 
         Picasso.with(getActivity()).load(AppData.UserData.UserImageUrl)
                 .into(myImage);
@@ -88,7 +90,7 @@ public class AddUserDetailsFragment extends BaseAddFragment {
     }
 
     @Override
-    public void setEditableView(View view) {
+    public void setEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         switch (categoryType) {
             case Electronics:
                 setContactDetails(((ElectronicEntity)iPostEntity).ContactAddress);

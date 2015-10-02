@@ -1,5 +1,7 @@
 package inksell.posts.view;
 
+import android.os.Bundle;
+
 import java.util.List;
 
 import inksell.common.BaseFragment;
@@ -17,6 +19,6 @@ public abstract class BaseViewFragment extends BaseFragment {
     public abstract String[] getEmailAndCall();
 
     @Override
-    public void initFragment()
+    public void initFragment(Bundle savedInstanceState)
     {}
 }

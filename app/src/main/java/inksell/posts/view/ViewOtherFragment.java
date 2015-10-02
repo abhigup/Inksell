@@ -1,5 +1,7 @@
 package inksell.posts.view;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -73,7 +75,7 @@ public class ViewOtherFragment extends BaseViewFragment {
     }
 
     @Override
-    public void initView(View view) {
+    public void initView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         price.setText(Utility.GetLocalCurrencySymbol() + " " + entity.ExpectedPrice + "  ");
         usedPeriod.setText(Utility.IsStringNullorEmpty(entity.UsedPeriod)?"-": entity.UsedPeriod);
         entity.PostDescription = entity.PostDescription.replace("\r\n","\n").replace("\r","\n");
