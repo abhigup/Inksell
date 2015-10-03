@@ -1,12 +1,6 @@
 package inksell.posts.add;
 
 import android.content.Intent;
-import android.content.IntentSender;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -14,40 +8,22 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 import Constants.InksellConstants;
-import adapters.PlaceAutocompleteAdapter;
 import butterknife.InjectView;
 import inksell.common.BaseFragmentActivity;
 import inksell.inksell.R;
+import models.ILocationCallbacks;
+import utilities.LocationWrapper;
 import utilities.Utility;
 
-public class MapActivity extends BaseFragmentActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<LocationSettingsResult>, GoogleMap.OnCameraChangeListener {
+public class MapActivity extends BaseFragmentActivity implements ILocationCallbacks, GoogleMap.OnCameraChangeListener {
 
     @InjectView(R.id.map_autocomplete)
     AutoCompleteTextView mAutocompleteView;
@@ -61,18 +37,17 @@ public class MapActivity extends BaseFragmentActivity implements LocationListene
     @InjectView(R.id.button_clear)
     ImageButton clear;
 
+    @InjectView(R.id.my_location_btn)
+    ImageButton myLocationBtn;
+
     LatLng propertyLatLng;
+    String defaultPropertyAddress;
 
     GoogleMap map;
-    private LocationRequest mLocationRequest;
 
-    private GoogleApiClient mGoogleApiClient;
-
-    private PlaceAutocompleteAdapter mAdapter;
-    public static final String TAG = MapActivity.class.getSimpleName();
-
-    private LatLngBounds latLngBounds;
     private boolean setFromPrediction = false;
+
+    private LocationWrapper locationWrapper;
 
     @Override
     protected void initDataAndLayout() {
@@ -83,17 +58,7 @@ public class MapActivity extends BaseFragmentActivity implements LocationListene
     protected void initActivity(){
         setUpMapIfNeeded();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .addApi(Places.GEO_DATA_API)
-                .build();
-
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+        locationWrapper = new LocationWrapper(this, this, propertyLatLng);
 
         cancel.setOnClickListener(clickListener);
 
@@ -105,7 +70,7 @@ public class MapActivity extends BaseFragmentActivity implements LocationListene
 
         clear.setOnClickListener(clickListener);
 
-        checkLocationSettings();
+        locationWrapper.checkLocationSettings();
 
     }
 
@@ -148,49 +113,21 @@ public class MapActivity extends BaseFragmentActivity implements LocationListene
              The adapter stores each Place suggestion in a AutocompletePrediction from which we
              read the place ID and title.
               */
-            final AutocompletePrediction item = mAdapter.getItem(position);
+            final AutocompletePrediction item = locationWrapper.getItemAtPosition(position);
+            if(item==null)
+                return;
+
             final String placeId = item.getPlaceId();
-            /*
-             Issue a request to the Places Geo Data API to retrieve a Place object with additional
-             details about the place.
-              */
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+            locationWrapper.updateLocationFromPlaceId(placeId);
+
+            //Close Keyboard
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     };
 
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                // Request did not complete successfully
-                Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
-                places.release();
-                return;
-            }
-            // Get the Place object from the buffer.
-            final Place place = places.get(0);
-            propertyLatLng = place.getLatLng();
 
-            handleNewLocation();
-            places.release();
-        }
-    };
 
-    private void checkLocationSettings()
-    {
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(mLocationRequest);
-        builder.setAlwaysShow(true);
-
-        PendingResult<LocationSettingsResult> result =
-                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
-        result.setResultCallback(this);
-    }
 
     @Override
     protected int getActivityLayout() {
@@ -206,8 +143,11 @@ public class MapActivity extends BaseFragmentActivity implements LocationListene
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == InksellConstants.REQUEST_CHECK_SETTINGS && resultCode == RESULT_OK)
         {
-
-
+            myLocationBtn.setVisibility(View.VISIBLE);
+        }
+        if (requestCode == InksellConstants.REQUEST_CHECK_SETTINGS && resultCode == RESULT_CANCELED)
+        {
+            onBackPressed();
         }
     }
 
@@ -216,6 +156,7 @@ public class MapActivity extends BaseFragmentActivity implements LocationListene
     {
         double lat = Double.parseDouble(intentExtraMap.get("lat"));
         double lng = Double.parseDouble(intentExtraMap.get("lng"));
+        defaultPropertyAddress = intentExtraMap.get("address");
         if(lat!=0 && lng!=0) {
             propertyLatLng = new LatLng(lat, lng);
         }
@@ -232,114 +173,54 @@ public class MapActivity extends BaseFragmentActivity implements LocationListene
             map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
 
+            map.setOnCameraChangeListener(this);
+            map.setMyLocationEnabled(true);
+
+            myLocationBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    locationWrapper.onLocationChanged(map.getMyLocation());
+                }
+            });
         }
     }
+
 
     @Override
-    public void onLocationChanged(Location location) {
-        propertyLatLng = new LatLng(location.getLatitude(),
-                location.getLongitude());
-        handleNewLocation();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (location == null) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) this);
-        }
-        else {
-            propertyLatLng = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-            handleNewLocation();
-        }
-    }
-
-    private void handleNewLocation() {
+    public void loadDefaultLocation(LatLng latLng) {
+        propertyLatLng = latLng;
+        setFromPrediction = true;
+        mAutocompleteView.setText(defaultPropertyAddress);
         zoom();
-        latLngBounds = new LatLngBounds(propertyLatLng, propertyLatLng);
-        map.setOnCameraChangeListener(this);
-        if(mAdapter==null) {
-            mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, latLngBounds,
-                    null);
-            mAutocompleteView.setAdapter(mAdapter);
-        }
-        else
-        {
-            mAdapter.setBounds(latLngBounds);
-        }
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        locationWrapper.updateAdapterBounds(mAutocompleteView, latLng);
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
+    public void handleNewLocation(LatLng latLng) {
+        propertyLatLng = latLng;
+        zoom();
+        locationWrapper.updateAdapterBounds(mAutocompleteView, latLng);
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
-        mGoogleApiClient.connect();
+        if(locationWrapper!=null) {
+            locationWrapper.onResume();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        if (mGoogleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            mGoogleApiClient.disconnect();
+        if(locationWrapper!=null) {
+            locationWrapper.onPause();
         }
     }
 
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (connectionResult.hasResolution()) {
-            try {
-                // Start an Activity that tries to resolve the error
-                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
-            } catch (IntentSender.SendIntentException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
-        }
-    }
-
-    @Override
-    public void onResult(LocationSettingsResult locationSettingsResult) {
-        final Status status = locationSettingsResult.getStatus();
-        switch (status.getStatusCode()) {
-            case LocationSettingsStatusCodes.SUCCESS:
-
-                // NO need to show the dialog;
-
-                break;
-
-            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                //  Location settings are not satisfied. Show the user a dialog
-
-                try {
-                    // Show the dialog by calling startResolutionForResult(), and check the result
-                    // in onActivityResult().
-
-                    status.startResolutionForResult(this, InksellConstants.REQUEST_CHECK_SETTINGS);
-
-                } catch (IntentSender.SendIntentException e) {
-
-                    //unable to execute request
-                }
-                break;
-
-            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                // Location settings are inadequate, and cannot be fixed here. Dialog not created
-                break;
-        }
-    }
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
@@ -347,48 +228,10 @@ public class MapActivity extends BaseFragmentActivity implements LocationListene
         if(!setFromPrediction) {
             mAutocompleteView.setFocusable(false);
             mAutocompleteView.setFocusableInTouchMode(false);
-            mAutocompleteView.setText(getReverseGeocodeAddress(propertyLatLng));
+            mAutocompleteView.setText(LocationWrapper.getReverseGeocodeAddress(propertyLatLng));
             mAutocompleteView.setFocusable(true);
             mAutocompleteView.setFocusableInTouchMode(true);
         }
         setFromPrediction = false;
-    }
-
-    private String getReverseGeocodeAddress(LatLng latlng)
-    {
-        Address address = null;
-        try {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(
-                    latlng.latitude,
-                    latlng.longitude,
-                    1);
-            address = (addresses==null || addresses.size()==0)?null:addresses.get(0);
-        } catch (IOException ioException) {
-
-        } catch (IllegalArgumentException illegalArgumentException) {
-
-        }
-
-        if(address==null)
-        {
-            return null;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-            if (i > 0) {
-                sb.append(',');
-            }
-
-            String line = address.getAddressLine(i);
-            if (Utility.IsStringNullorEmpty(line)) {
-
-            } else {
-                sb.append(line);
-            }
-        }
-
-        return sb.toString();
     }
 }

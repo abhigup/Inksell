@@ -1,7 +1,6 @@
 package inksell.inksell;
 
-import android.app.Activity;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -18,6 +17,13 @@ import android.widget.RelativeLayout;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -28,6 +34,7 @@ import adapters.RVAdapter;
 import butterknife.InjectView;
 import enums.CategoryType;
 import inksell.common.BaseFragment;
+import models.ILocationCallbacks;
 import models.PostSummaryEntity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -39,12 +46,14 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 import utilities.ConfigurationManager;
 import utilities.FavouritesHelper;
 import utilities.LocalStorageHandler;
+import utilities.LocationWrapper;
 import utilities.NavigationHelper;
+import utilities.Utility;
 
 
-public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, OnMapReadyCallback, ILocationCallbacks {
 
-    private CategoryType categoryType;
+    public CategoryType categoryType;
     private Menu homeMenu;
 
     @InjectView(R.id.homeListRecycleView)
@@ -86,10 +95,18 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     @InjectView(R.id.cvHomeTransparency)
     CardView cvHomeTransparency;
 
-    private RVAdapter rvAdapter;
+    @InjectView(R.id.real_estate_fab)
+    android.support.design.widget.FloatingActionButton realEstateFab;
 
+    @InjectView(R.id.real_estate_map)
+    MapView mapView;
+
+    LocationWrapper locationWrapper;
+    GoogleMap map;
+
+    private RVAdapter rvAdapter;
+    private boolean isMap = false;
     private List<PostSummaryEntity> postSummaryList;
-    private OnFragmentInteractionListener mListener;
 
     @Override
     public int getViewResId() {
@@ -125,6 +142,14 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
             }
         });
 
+        realEstateFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMap = !isMap;
+                setRealEstateMapList();
+            }
+        });
+
         tryAgainButton.setOnClickListener(refresh_click());
 
         fab_auto.setOnClickListener(NavigationHelper.addPostClick(CategoryType.Automobile));
@@ -142,6 +167,25 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(ConfigurationManager.CurrentActivityContext);
         rv.setLayoutManager(llm);
+    }
+
+    private void setRealEstateMapList() {
+
+        if(realEstateFab!=null)
+        {
+            if(isMap)
+            {
+                mapView.setVisibility(View.VISIBLE);
+                realEstateFab.setImageResource(R.drawable.ic_list);
+
+                Utility.setMap(null, mapView, this);
+            }
+            else
+            {
+                realEstateFab.setImageResource(R.drawable.ic_map);
+                mapView.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void setupFRE()
@@ -186,6 +230,21 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     private void loadPostsData(CategoryType type)
     {
         this.categoryType = type;
+        isMap = false;
+        setRealEstateMapList();
+
+        if(fabMenu!=null) {
+            if (categoryType == categoryType.RealState) {
+                fabMenu.setVisibility(View.GONE);
+                realEstateFab.setVisibility(View.VISIBLE);
+            } else if (categoryType == CategoryType.AllCategory) {
+                fabMenu.setVisibility(View.VISIBLE);
+                realEstateFab.setVisibility(View.GONE);
+            } else {
+                fabMenu.setVisibility(View.GONE);
+                realEstateFab.setVisibility(View.GONE);
+            }
+        }
 
         int lastPostid = 0;
 
@@ -207,6 +266,9 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
         if(rvAdapter!=null) {
             postSummaryList = FavouritesHelper.setFavourites(postSummaryList);
             rvAdapter.updateFavourite(postSummaryList);
+        }
+        if(locationWrapper!=null) {
+            locationWrapper.onResume();
         }
     }
 
@@ -261,28 +323,9 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
 
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -295,21 +338,54 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
         loadPostsData(type);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        map.setOnCameraChangeListener(cameraChangeListener());
+        LocationWrapper locationWrapper = new LocationWrapper(getActivity(), this, null);
+        locationWrapper.onResume();
+        locationWrapper.checkLocationSettings();
     }
 
+    private GoogleMap.OnCameraChangeListener cameraChangeListener() {
+        return new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+
+            }
+        };
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == InksellConstants.REQUEST_CHECK_SETTINGS && resultCode == getActivity().RESULT_OK)
+        {
+        }
+    }
+
+    @Override
+    public void loadDefaultLocation(LatLng latLng) {
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(locationWrapper!=null) {
+            locationWrapper.onPause();
+        }
+    }
+
+    private void zoom(LatLng latLng) {
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
+                15));
+    }
+
+    @Override
+    public void handleNewLocation(LatLng latLng) {
+        map.addMarker(new MarkerOptions().position(latLng));
+        zoom(latLng);
+    }
 }
 
 

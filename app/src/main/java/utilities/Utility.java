@@ -79,6 +79,7 @@ public class Utility {
         return null;
     }
 
+
     public static void ShowInfoDialog(int resId){
         ShowInfoDialog(GetResourceString(resId));
     }

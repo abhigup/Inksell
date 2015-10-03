@@ -43,6 +43,7 @@
 
             <ImageButton
                 android:layout_margin="5dp"
+                android:scaleType="centerInside"
                 android:id="@+id/button_clear"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
@@ -55,6 +56,19 @@
         </RelativeLayout>
     </RelativeLayout>
 
+    <ImageButton
+        android:id="@+id/my_location_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/background_transparent"
+        android:padding="10dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        android:src="@drawable/ic_my_location"/>
 
     <LinearLayout
         android:orientation="horizontal"

@@ -1,7 +1,6 @@
 package inksell.inksell;
 
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -30,7 +29,7 @@ import utilities.LocalStorageHandler;
 import utilities.NavigationHelper;
 import utilities.Utility;
 
-public class Home extends BaseActionBarActivity implements HomeListFragment.OnFragmentInteractionListener{
+public class Home extends BaseActionBarActivity{
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout mDrawer;
@@ -203,16 +202,18 @@ public class Home extends BaseActionBarActivity implements HomeListFragment.OnFr
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
     public void onBackPressed()
     {
         if(mDrawer.isDrawerOpen(GravityCompat.START))
         {
             mDrawer.closeDrawers();
+            return;
+        }
+        HomeListFragment homeListFragment = (HomeListFragment)
+                getSupportFragmentManager().findFragmentById(R.id.flContent);
+        if(homeListFragment.categoryType!=CategoryType.AllCategory)
+        {
+            homeListFragment.setFilteredList(CategoryType.AllCategory);
             return;
         }
         super.onBackPressed();

@@ -121,6 +121,7 @@ public class AddRealEstateMapFragment extends BaseAddFragment implements OnMapRe
                 Map<String , String> map = new HashMap<>();
                 map.put("lat", propertyLatLng!=null?String.valueOf(propertyLatLng.latitude):"0");
                 map.put("lng", propertyLatLng!=null?String.valueOf(propertyLatLng.longitude):"0");
+                map.put("address", propertyAddress.getText().toString());
                 NavigationHelper.StartActivityForResultFromFragment(fragment, InksellConstants.REQUEST_MAP_RESULT, MapActivity.class, map);
             }
         };

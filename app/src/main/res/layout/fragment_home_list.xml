@@ -35,6 +35,12 @@
 
     </FrameLayout>
 
+    <com.google.android.gms.maps.MapView
+        android:visibility="gone"
+        android:id="@+id/real_estate_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:fab="http://schemas.android.com/apk/res-auto"
@@ -49,9 +55,7 @@
         fab:fab_addButtonColorPressed="@color/pink_pressed"
         fab:fab_addButtonPlusIconColor="@color/white"
         fab:fab_labelStyle="@style/menu_labels_style"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp">
+        android:layout_margin="10dp">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_furniture"
@@ -117,11 +121,25 @@
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
+    <android.support.design.widget.FloatingActionButton
+        android:visibility="gone"
+        android:layout_margin="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:src="@drawable/ic_map"
+        android:clickable="true"
+        app:backgroundTint="@color/white"
+        app:borderWidth="0dp"
+        android:id="@+id/real_estate_fab"
+        />
+
     <include android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
         layout="@layout/loading_error_fragment" />
-
 
 </RelativeLayout>
