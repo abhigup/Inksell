@@ -18,5 +18,7 @@
     <color name="TitlePrimaryDark">#01579B</color>
     <color name="TitlePrimary">#0277BD</color>
 
+    <color name="IconColor">#F5554a</color>
+
     <color name="labelTextColor">#F57F17</color>
 </resources>

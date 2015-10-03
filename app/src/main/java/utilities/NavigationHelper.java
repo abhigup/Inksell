@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -59,6 +60,17 @@ public class NavigationHelper {
         ConfigurationManager.CurrentActivityContext.startActivity(intent, bundle);
     }
 
+    public static void StartActivityForResultFromFragment(Fragment fragment, int requestCode, Class clazz, Map<String, String> map)
+    {
+        Intent intent = new Intent(ConfigurationManager.CurrentActivityContext, clazz);
+
+        if(map!=null) {
+            intent.putExtra("intentExtra", Utility.GetJSONString(map));
+        }
+
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
     public static void StartActivityForResult(Activity activity, int requestCode, Class clazz, Map<String, String> map)
     {
         Intent intent = new Intent(ConfigurationManager.CurrentActivityContext, clazz);
@@ -67,7 +79,7 @@ public class NavigationHelper {
             intent.putExtra("intentExtra", Utility.GetJSONString(map));
         }
 
-        activity.startActivityForResult(intent, requestCode, null);
+        activity.startActivityForResult(intent, requestCode);
     }
 
 

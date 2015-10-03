@@ -5,18 +5,23 @@
         <item
             android:id="@+id/nav_home"
             android:title="Home"
+            android:icon="@drawable/realestate"
             android:checked="true"/>
         <item
             android:id="@+id/nav_subscriptions"
+            android:icon="@drawable/notify"
             android:title="Subscriptions"/>
         <item
             android:id="@+id/nav_favourites"
+            android:icon="@drawable/favourite"
             android:title="Favourites" />
         <item
             android:id="@+id/nav_my_account"
+            android:icon="@drawable/user"
             android:title="My Account" />
         <item
             android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
             android:title="Logout" />
     </group>
 </menu>

@@ -2,6 +2,7 @@ package inksell.posts.add;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,6 @@ public class AddRealEstateMapFragment extends BaseAddFragment implements OnMapRe
     LatLng propertyLatLng;
     GoogleMap map;
     Marker marker;
-
 
     public AddRealEstateMapFragment() {
         // Required empty public constructor
@@ -101,6 +101,19 @@ public class AddRealEstateMapFragment extends BaseAddFragment implements OnMapRe
                 16));
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == InksellConstants.REQUEST_MAP_RESULT && resultCode == getActivity().RESULT_OK)
+        {
+            double lat = data.getDoubleExtra("lat", 0);
+            double lng = data.getDoubleExtra("lng", 0);
+            String address = data.getStringExtra("address");
+
+            setMapData(new LatLng(lat, lng), address);
+        }
+    }
+
+
     private GoogleMap.OnMapClickListener navigateToMapActivity() {
         return new GoogleMap.OnMapClickListener() {
             @Override
@@ -108,7 +121,7 @@ public class AddRealEstateMapFragment extends BaseAddFragment implements OnMapRe
                 Map<String , String> map = new HashMap<>();
                 map.put("lat", propertyLatLng!=null?String.valueOf(propertyLatLng.latitude):"0");
                 map.put("lng", propertyLatLng!=null?String.valueOf(propertyLatLng.longitude):"0");
-                NavigationHelper.StartActivityForResult(getActivity(), InksellConstants.REQUEST_MAP_RESULT, MapActivity.class, map);
+                NavigationHelper.StartActivityForResultFromFragment(fragment, InksellConstants.REQUEST_MAP_RESULT, MapActivity.class, map);
             }
         };
     }

@@ -36,8 +36,8 @@
 
             <EditText android:textSize="15sp"
                 android:layout_marginTop="10dp"
+                android:inputType="textNoSuggestions"
                 style="@style/MyEditTextTheme"
-                android:fontFamily="sans-serif-light"
                 android:layout_width="match_parent"
                 android:id="@+id/add_post_contact_person"
                 android:hint="@string/hintContactPerson"
@@ -45,7 +45,7 @@
 
             <EditText android:textSize="15sp"
                 style="@style/MyEditTextTheme"
-                android:fontFamily="sans-serif-light"
+                android:inputType="textNoSuggestions"
                 android:layout_width="match_parent"
                 android:id="@+id/add_post_contact_number"
                 android:hint="@string/hintContactNumber"
@@ -53,7 +53,7 @@
 
             <EditText android:textSize="15sp"
                 style="@style/MyEditTextTheme"
-                android:fontFamily="sans-serif-light"
+                android:inputType="textNoSuggestions"
                 android:layout_width="match_parent"
                 android:id="@+id/add_post_contact_email"
                 android:hint="@string/hintContactEmail"
@@ -61,7 +61,7 @@
 
             <EditText android:textSize="15sp"
                 style="@style/MyEditTextTheme"
-                android:fontFamily="sans-serif-light"
+                android:inputType="textNoSuggestions"
                 android:layout_width="match_parent"
                 android:id="@+id/add_post_contact_address"
                 android:hint="@string/hintContactAddress"
@@ -69,7 +69,7 @@
 
             <EditText android:textSize="15sp"
                 style="@style/MyEditTextTheme"
-                android:fontFamily="sans-serif-light"
+                android:inputType="textNoSuggestions"
                 android:layout_width="match_parent"
                 android:id="@+id/add_post_contact_city"
                 android:hint="@string/hintContactCity"

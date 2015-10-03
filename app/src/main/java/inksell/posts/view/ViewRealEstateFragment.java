@@ -169,7 +169,7 @@ public class ViewRealEstateFragment extends BaseViewFragment implements OnMapRea
     private void toggleWaterButton()
     {
         if(isWater) {
-            waterBtn.setBackgroundResource(android.R.color.holo_blue_bright);
+            waterBtn.setBackgroundResource(R.color.IconColor);
         }
         else
         {
@@ -180,7 +180,7 @@ public class ViewRealEstateFragment extends BaseViewFragment implements OnMapRea
     private void togglePowerButton()
     {
         if(isPower) {
-            powerBtn.setBackgroundResource(android.R.color.holo_orange_light);
+            powerBtn.setBackgroundResource(R.color.IconColor);
         }
         else
         {
@@ -191,7 +191,7 @@ public class ViewRealEstateFragment extends BaseViewFragment implements OnMapRea
     private void toggleInternetButton()
     {
         if(isInternet) {
-            internetBtn.setBackgroundResource(android.R.color.holo_blue_dark);
+            internetBtn.setBackgroundResource(R.color.IconColor);
         }
         else
         {
@@ -202,7 +202,7 @@ public class ViewRealEstateFragment extends BaseViewFragment implements OnMapRea
     private void toggleParkingButton()
     {
         if(isParking) {
-            parkingBtn.setBackgroundResource(android.R.color.holo_red_light);
+            parkingBtn.setBackgroundResource(R.color.IconColor);
         }
         else
         {

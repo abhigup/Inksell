@@ -50,6 +50,7 @@
             android:layout_marginTop="10dp">
         <EditText android:textSize="30sp"
             android:paddingTop="0dp"
+            android:inputType="textNoSuggestions"
             style="@style/MyEditTextTheme"
             android:fontFamily="sans-serif-light"
             android:layout_width="match_parent"
@@ -74,6 +75,7 @@
                     android:layout_weight="1">
                 <EditText android:textSize="15sp"
                     style="@style/MyEditTextTheme"
+                    android:inputType="textNoSuggestions"
                     android:layout_width="match_parent"
                     android:id="@+id/add_post_rent"
                     android:hint="@string/rentAmount"
@@ -87,6 +89,7 @@
                     android:layout_weight="1">
                 <EditText android:textSize="15sp"
                     style="@style/MyEditTextTheme"
+                    android:inputType="textNoSuggestions"
                     android:layout_width="match_parent"
                     android:id="@+id/add_post_maintenance"
                     android:hint="@string/maintenanceAmount"
@@ -108,6 +111,7 @@
                 <EditText android:textSize="15sp"
                     style="@style/MyEditTextTheme"
                     android:layout_width="match_parent"
+                    android:inputType="textNoSuggestions"
                     android:id="@+id/add_post_bhk"
                     android:hint="@string/bhk"
                     android:singleLine="true"
@@ -123,6 +127,7 @@
                     style="@android:style/Widget.EditText"
                     android:layout_width="match_parent"
                     android:id="@+id/add_post_availability"
+                    android:inputType="textNoSuggestions"
                     android:hint="@string/availableFrom"
                     android:singleLine="true"
                     android:layout_height="wrap_content" />
@@ -139,7 +144,7 @@
             android:layout_height="wrap_content">
         <EditText android:textSize="15sp"
             android:layout_weight="1"
-            android:inputType="textMultiLine"
+            android:inputType="textMultiLine|textNoSuggestions"
             android:layout_width="match_parent"
             android:id="@+id/add_post_area"
             android:hint="@string/area"
@@ -166,9 +171,10 @@
                     android:textColor="@color/toggle_primary_text"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:layout_weight="1"/>
+                    />
 
                 <TextView
+                    android:layout_marginTop="5dp"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@+id/water_btn"
                     android:textColor="@color/half_black"
@@ -191,10 +197,10 @@
                     android:src="@drawable/power"
                     android:textColor="@color/toggle_primary_text"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_width="wrap_content"/>
 
                 <TextView
+                    android:layout_marginTop="5dp"
                     android:layout_below="@+id/power_btn"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/half_black"
@@ -216,10 +222,10 @@
                     android:src="@drawable/wifi"
                     android:textColor="@color/toggle_primary_text"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_width="wrap_content"/>
 
                 <TextView
+                    android:layout_marginTop="5dp"
                     android:layout_below="@+id/internet_btn"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/half_black"
@@ -241,10 +247,10 @@
                     android:src="@drawable/parking"
                     android:textColor="@color/toggle_primary_text"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_width="wrap_content"/>
 
                 <TextView
+                    android:layout_marginTop="5dp"
                     android:layout_below="@+id/parking_btn"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/half_black"
@@ -262,7 +268,7 @@
             android:layout_marginTop="10dp">
         <EditText
             android:textSize="15sp"
-            android:inputType="textMultiLine"
+            android:inputType="textMultiLine|textNoSuggestions"
             style="@style/MyEditTextTheme"
             android:layout_width="match_parent"
             android:singleLine="false"

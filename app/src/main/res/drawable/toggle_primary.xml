@@ -4,7 +4,7 @@
     <item android:drawable="@color/background"
         android:state_checked="false" />
     <!-- When not selected, use white-->
-    <item android:drawable="@color/TitlePrimary"
+    <item android:drawable="@color/IconColor"
         android:state_checked="true"/>
 
 </selector>

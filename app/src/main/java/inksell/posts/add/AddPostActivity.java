@@ -1,7 +1,6 @@
 package inksell.posts.add;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,12 +8,9 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.List;
 
 import Constants.AppData;
-import Constants.InksellConstants;
 import butterknife.InjectView;
 import enums.CategoryType;
 import inksell.common.BaseActionBarActivity;
@@ -54,18 +50,6 @@ public class AddPostActivity extends BaseActionBarActivity {
     @Override
     protected void initDataAndLayout() {
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == InksellConstants.REQUEST_MAP_RESULT && resultCode == RESULT_OK)
-        {
-            double lat = data.getDoubleExtra("lat", 0);
-            double lng = data.getDoubleExtra("lng", 0);
-            String address = data.getStringExtra("address");
-
-            ((AddRealEstateMapFragment)addRealEstateMapFragment).setMapData(new LatLng(lat, lng), address);
-        }
     }
 
     @Override

@@ -19,6 +19,8 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract void initView(LayoutInflater inflater, View view, Bundle savedInstanceState);
 
+    public Fragment fragment = this;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
