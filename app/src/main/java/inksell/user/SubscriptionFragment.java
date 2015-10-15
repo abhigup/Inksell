@@ -21,8 +21,6 @@ import butterknife.InjectView;
 import inksell.common.BaseFragment;
 import inksell.inksell.R;
 import models.TagsEntity;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
@@ -53,18 +51,17 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
 
     private void GetAllSubscriptionTags(final int failCount)
     {
-        RestClient.get().getAllSubscriptionsTags(new InksellCallback<List<TagsEntity>>() {
+        RestClient.get().getAllSubscriptionsTags().enqueue(new InksellCallback<List<TagsEntity>>() {
             @Override
-            public void onSuccess(List<TagsEntity> tagsEntities, Response response) {
+            public void onSuccess(List<TagsEntity> tagsEntities) {
                 tagsAdapter.addAll(tagsEntities);
                 autoCompleteTextView.setThreshold(1);
                 autoCompleteTextView.setAdapter(tagsAdapter);
             }
 
             @Override
-            public void onFailure(RetrofitError retrofitError)
-            {
-                if(failCount<5) {
+            public void onError() {
+                if (failCount < 5) {
                     GetAllSubscriptionTags(failCount + 1);
                 }
             }

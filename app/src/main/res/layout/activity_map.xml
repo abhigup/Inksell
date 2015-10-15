@@ -43,15 +43,24 @@
 
             <ImageButton
                 android:layout_margin="5dp"
-                android:scaleType="centerInside"
+                android:scaleType="centerCrop"
                 android:id="@+id/button_clear"
                 android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@android:color/transparent"
-                android:layout_centerInParent="true"
                 android:src="@drawable/ic_close_grey"
                  />
+
+            <ProgressBar
+                android:layout_margin="5dp"
+                android:id="@+id/load_address"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:layout_width="25dp"
+                android:layout_height="25dp" />
 
         </RelativeLayout>
     </RelativeLayout>

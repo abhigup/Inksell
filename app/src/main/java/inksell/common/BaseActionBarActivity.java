@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import retrofit.Callback;
 import utilities.ConfigurationManager;
 import utilities.Utility;
 
@@ -23,6 +26,8 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
     protected abstract void initActivity();
 
     protected abstract int getActivityLayout();
+
+    protected List<Callback> callbacks;
 
     protected View.OnClickListener refresh_click() {
         return new View.OnClickListener() {
@@ -44,6 +49,7 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
         setContentView(getActivityLayout());
 
         ButterKnife.inject(this, this.findViewById(android.R.id.content));
+        callbacks = new ArrayList<>();
 
         ConfigurationManager.CurrentActivityContext = this;
 
@@ -70,5 +76,14 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
     protected void setIntentExtras()
     {}
 
+    @Override
+    protected void onDestroy()
+    {
+//        for (int i=0;i<callbacks.size();i++)
+//        {
+//            callbacks.get(i)
+//        }
+        super.onDestroy();
+    }
 
 }

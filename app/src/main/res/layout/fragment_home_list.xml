@@ -35,11 +35,52 @@
 
     </FrameLayout>
 
-    <com.google.android.gms.maps.MapView
+    <RelativeLayout
         android:visibility="gone"
-        android:id="@+id/real_estate_map"
+        android:id="@+id/mapView_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/real_estate_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_margin="10dp"
+            android:elevation="4dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/map_autocomplete"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type location"
+                android:paddingRight="50dp"
+                android:backgroundTint="@android:color/transparent"/>
+
+            <ImageButton
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                android:id="@+id/button_clear"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_close_grey"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         xmlns:android="http://schemas.android.com/apk/res/android"

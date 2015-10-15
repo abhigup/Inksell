@@ -35,6 +35,9 @@ public class AddPostDetailsFragment extends BaseAddFragment {
     @InjectView(R.id.add_post_actual_price)
     EditText actualPrice;
 
+    @InjectView(R.id.add_post_make)
+    EditText make;
+
     @InjectView(R.id.add_post_description)
     EditText description;
 
@@ -97,6 +100,7 @@ public class AddPostDetailsFragment extends BaseAddFragment {
                 entity.ActualPrice = usedPeriod.getText().toString();
                 entity.ExpectedPrice = usedPeriod.getText().toString();
                 entity.PostDescription = description.getText().toString();
+                entity.MakeBrand = make.getText().toString();
             }
                 break;
             case Automobile: {
@@ -106,6 +110,7 @@ public class AddPostDetailsFragment extends BaseAddFragment {
                 entity.ActualPrice = usedPeriod.getText().toString();
                 entity.ExpectedPrice = usedPeriod.getText().toString();
                 entity.PostDescription = description.getText().toString();
+                entity.MakeBrand = make.getText().toString();
             }
                 break;
             case Furniture: {
@@ -115,6 +120,7 @@ public class AddPostDetailsFragment extends BaseAddFragment {
                 entity.ActualPrice = usedPeriod.getText().toString();
                 entity.ExpectedPrice = usedPeriod.getText().toString();
                 entity.PostDescription = description.getText().toString();
+                entity.MakeBrand = make.getText().toString();
             }
                 break;
             case Others: {
@@ -124,6 +130,7 @@ public class AddPostDetailsFragment extends BaseAddFragment {
                 entity.ActualPrice = usedPeriod.getText().toString();
                 entity.ExpectedPrice = usedPeriod.getText().toString();
                 entity.PostDescription = description.getText().toString();
+                entity.MakeBrand = make.getText().toString();
             }
                 break;
         }

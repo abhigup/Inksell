@@ -18,14 +18,13 @@ import java.util.List;
 import Constants.AppData;
 import adapters.RVAdapter;
 import butterknife.InjectView;
-import inksell.inksell.R;
 import inksell.common.BaseActionBarActivity;
+import inksell.inksell.R;
 import models.CategoryEntity;
 import models.LocationEntity;
 import models.PostSummaryEntity;
 import models.SearchEntity;
 import retrofit.Callback;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ConfigurationManager;
@@ -135,7 +134,7 @@ public class SearchResultsActivity extends BaseActionBarActivity {
             public boolean onQueryTextSubmit(String query) {
                 // this is your adapter that will be filtered
                 if(locationAdapter.getCount()>0) {
-                    RestClient.post().searchTextV2(AppData.UserData.CopmanyId, AppData.UserData.LocationId, ((CategoryEntity) spnCategory.getSelectedItem()).type.ordinal(), AppData.UserGuid, query, searchCallback());
+                    RestClient.post().searchTextV2(AppData.UserData.CopmanyId, AppData.UserData.LocationId, ((CategoryEntity) spnCategory.getSelectedItem()).type.ordinal(), AppData.UserGuid, query).enqueue(searchCallback());
                 }
                 else
                 {
@@ -149,12 +148,12 @@ public class SearchResultsActivity extends BaseActionBarActivity {
     private Callback<List<SearchEntity>> searchCallback() {
         return new InksellCallback<List<SearchEntity>>() {
             @Override
-            public void onSuccess(List<SearchEntity> searchEntities, Response response) {
+            public void onSuccess(List<SearchEntity> searchEntities) {
                 postSummaryList = searchEntityToPostSummary(searchEntities);
                 if(!searchEntities.isEmpty()) {
                     if(rvAdapter==null) {
                         rvAdapter = new RVAdapter(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
-                        rvAdapter.setIsMyPosts(true);
+                        rvAdapter.setIsSearchPosts(true);
                         rv.setAdapter(rvAdapter);
                     }
                     else {
@@ -183,9 +182,9 @@ public class SearchResultsActivity extends BaseActionBarActivity {
 
     private void populateLocations(int companyId) {
 
-        RestClient.get().getLocations(companyId, new InksellCallback<List<LocationEntity>>() {
+        RestClient.get().getLocations(companyId).enqueue(new InksellCallback<List<LocationEntity>>() {
             @Override
-            public void onSuccess(List<LocationEntity> locationEntities, Response response) {
+            public void onSuccess(List<LocationEntity> locationEntities) {
                 locationAdapter.addAll((locationEntities));
                 for(int i=0;i<locationEntities.size();i++)
                 {

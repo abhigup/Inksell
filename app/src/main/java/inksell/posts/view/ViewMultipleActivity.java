@@ -23,8 +23,6 @@ import inksell.common.BaseActionBarActivity;
 import inksell.inksell.R;
 import models.PostSummaryEntity;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.FavouritesHelper;
@@ -73,7 +71,7 @@ public class ViewMultipleActivity extends BaseActionBarActivity {
     }
 
     private void loadMultiplePosts() {
-        RestClient.get().getMultipleFullPostEntity(summaryEntity.PostId, AppData.UserGuid, setListOnResponse());
+        RestClient.get().getMultipleFullPostEntity(summaryEntity.PostId, AppData.UserGuid).enqueue(setListOnResponse());
     }
 
     @Override
@@ -112,7 +110,7 @@ public class ViewMultipleActivity extends BaseActionBarActivity {
     private Callback<List<PostSummaryEntity>> setListOnResponse() {
         return new InksellCallback<List<PostSummaryEntity>>() {
             @Override
-            public void onSuccess(List<PostSummaryEntity> postSummaryEntities, Response response) {
+            public void onSuccess(List<PostSummaryEntity> postSummaryEntities) {
 
                 layoutErrorTryAgain.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
@@ -132,7 +130,7 @@ public class ViewMultipleActivity extends BaseActionBarActivity {
             }
 
             @Override
-            public void onFailure(RetrofitError error)
+            public void onError()
             {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);

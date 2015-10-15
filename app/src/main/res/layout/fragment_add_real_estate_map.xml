@@ -51,7 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/MyEditTextTheme"
-            android:inputType="textNoSuggestions"
+            android:singleLine="false"
+            android:inputType="textMultiLine|textNoSuggestions"
             android:hint="@string/propertyAddress"
             android:id="@+id/add_property_address"/>
 

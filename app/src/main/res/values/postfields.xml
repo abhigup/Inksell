@@ -9,6 +9,7 @@
     <string name="contactInformation">Contact Information</string>
     <string name="addImages">Images</string>
     <string name="address">Address</string>
+    <string name="make">Make / Brand</string>
 
     <string name="propertyAddress">Property Address</string>
     <string name="location">Location</string>

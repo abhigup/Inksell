@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -15,18 +16,24 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.TimerTask;
+
 import Constants.InksellConstants;
 import butterknife.InjectView;
 import inksell.common.BaseFragmentActivity;
 import inksell.inksell.R;
 import models.ILocationCallbacks;
 import utilities.LocationWrapper;
+import utilities.TimerHelper;
 import utilities.Utility;
 
 public class MapActivity extends BaseFragmentActivity implements ILocationCallbacks, GoogleMap.OnCameraChangeListener {
 
     @InjectView(R.id.map_autocomplete)
     AutoCompleteTextView mAutocompleteView;
+
+    @InjectView(R.id.load_address)
+    ProgressBar loadAddress;
 
     @InjectView(R.id.map_cancel)
     Button cancel;
@@ -45,6 +52,8 @@ public class MapActivity extends BaseFragmentActivity implements ILocationCallba
 
     GoogleMap map;
 
+    TimerHelper timerHelper;
+
     private boolean setFromPrediction = false;
 
     private LocationWrapper locationWrapper;
@@ -59,6 +68,7 @@ public class MapActivity extends BaseFragmentActivity implements ILocationCallba
         setUpMapIfNeeded();
 
         locationWrapper = new LocationWrapper(this, this, propertyLatLng);
+        timerHelper = new TimerHelper(2000);
 
         cancel.setOnClickListener(clickListener);
 
@@ -143,6 +153,7 @@ public class MapActivity extends BaseFragmentActivity implements ILocationCallba
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == InksellConstants.REQUEST_CHECK_SETTINGS && resultCode == RESULT_OK)
         {
+            locationWrapper.setShowMyLocation(true);
             myLocationBtn.setVisibility(View.VISIBLE);
         }
         if (requestCode == InksellConstants.REQUEST_CHECK_SETTINGS && resultCode == RESULT_CANCELED)
@@ -173,7 +184,9 @@ public class MapActivity extends BaseFragmentActivity implements ILocationCallba
             map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
 
+
             map.setOnCameraChangeListener(this);
+
             map.setMyLocationEnabled(true);
 
             myLocationBtn.setOnClickListener(new View.OnClickListener() {
@@ -191,6 +204,7 @@ public class MapActivity extends BaseFragmentActivity implements ILocationCallba
         propertyLatLng = latLng;
         setFromPrediction = true;
         mAutocompleteView.setText(defaultPropertyAddress);
+        myLocationBtn.setVisibility(View.VISIBLE);
         zoom();
         locationWrapper.updateAdapterBounds(mAutocompleteView, latLng);
     }
@@ -200,6 +214,7 @@ public class MapActivity extends BaseFragmentActivity implements ILocationCallba
         propertyLatLng = latLng;
         zoom();
         locationWrapper.updateAdapterBounds(mAutocompleteView, latLng);
+        myLocationBtn.setVisibility(View.VISIBLE);
     }
 
 
@@ -225,12 +240,32 @@ public class MapActivity extends BaseFragmentActivity implements ILocationCallba
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
         propertyLatLng = cameraPosition.target;
-        if(!setFromPrediction) {
-            mAutocompleteView.setFocusable(false);
-            mAutocompleteView.setFocusableInTouchMode(false);
-            mAutocompleteView.setText(LocationWrapper.getReverseGeocodeAddress(propertyLatLng));
-            mAutocompleteView.setFocusable(true);
-            mAutocompleteView.setFocusableInTouchMode(true);
+
+
+        if (!setFromPrediction) {
+            {
+                loadAddress.setVisibility(View.VISIBLE);
+                clear.setVisibility(View.GONE);
+
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAutocompleteView.setFocusable(false);
+                                mAutocompleteView.setFocusableInTouchMode(false);
+                                mAutocompleteView.setText(LocationWrapper.getReverseGeocodeAddress(propertyLatLng));
+                                mAutocompleteView.setFocusable(true);
+                                mAutocompleteView.setFocusableInTouchMode(true);
+                                loadAddress.setVisibility(View.GONE);
+                                clear.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                };
+                timerHelper.startTask(timerTask);
+            }
         }
         setFromPrediction = false;
     }

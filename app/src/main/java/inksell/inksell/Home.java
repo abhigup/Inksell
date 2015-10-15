@@ -22,7 +22,6 @@ import inksell.search.SearchResultsActivity;
 import inksell.user.MyAccount;
 import inksell.user.SubscriptionFragment;
 import models.UserEntity;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
@@ -78,9 +77,9 @@ public class Home extends BaseActionBarActivity{
 
     private void loadUserData()
     {
-        RestClient.get().getUserDetails(AppData.UserGuid, new InksellCallback<UserEntity>() {
+        RestClient.get().getUserDetails(AppData.UserGuid).enqueue(new InksellCallback<UserEntity>() {
             @Override
-            public void onSuccess(UserEntity userEntity, Response response) {
+            public void onSuccess(UserEntity userEntity) {
                 AppData.UserData = userEntity;
 
                 navHeadEmail.setText(userEntity.CorporateEmail);
@@ -209,12 +208,13 @@ public class Home extends BaseActionBarActivity{
             mDrawer.closeDrawers();
             return;
         }
-        HomeListFragment homeListFragment = (HomeListFragment)
-                getSupportFragmentManager().findFragmentById(R.id.flContent);
-        if(homeListFragment.categoryType!=CategoryType.AllCategory)
-        {
-            homeListFragment.setFilteredList(CategoryType.AllCategory);
-            return;
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.flContent);
+        if(fragment instanceof HomeListFragment) {
+            HomeListFragment homeListFragment = (HomeListFragment)fragment;
+            if (homeListFragment.categoryType != CategoryType.AllCategory) {
+                homeListFragment.setFilteredList(CategoryType.AllCategory);
+                return;
+            }
         }
         super.onBackPressed();
     }

@@ -28,6 +28,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
 
     boolean isMyPosts = false;
     boolean isFavPosts = false;
+    boolean isSearchPosts = false;
 
     View.OnClickListener cvClickListener;
 
@@ -39,6 +40,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
     public void setIsMyPosts(boolean isMyPosts)
     {
         this.isMyPosts = isMyPosts;
+    }
+    public void setIsSearchPosts(boolean isSearchPosts)
+    {
+        this.isSearchPosts = isSearchPosts;
     }
     public void setIsFavPosts(boolean isFavPosts)
     {
@@ -63,20 +68,20 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
 
         int resource = isMyPosts?R.layout.my_posts_card_view:R.layout.posts_card_view;
 
-        if(viewType==1)
+        if(viewType==1 && !isMyPosts)
         {
             resource = R.layout.posts_card_view_without_pic;
+        }
+        else if(viewType ==1 && (isMyPosts || isSearchPosts))
+        {
+            resource = R.layout.search_card_view_without_pic;
         }
 
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(resource, viewGroup, false);
         PostViewHolder pvh = new PostViewHolder(v);
 
         if(isMyPosts) {
-            pvh.fav.setVisibility(View.GONE);
             pvh.postedBy.setVisibility(View.GONE);
-            if(pvh.userPic!=null) {
-                pvh.userPic.setVisibility(View.GONE);
-            }
         }
 
         if(isFavPosts)
@@ -114,6 +119,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
         postViewHolder.postedBy.setText(postSummaryEntity.PostedBy);
         postViewHolder.postedOn.setText(Utility.StringDateToRelativeStringDate(postSummaryEntity.Postdate));
         postViewHolder.postTitle.setText(postSummaryEntity.Title);
+
+        //Set data for search/my posts cardview above
+        if(isMyPosts)
+            return;;
 
         if(postSummaryEntity.HasPostTitlePic())
         {

@@ -17,8 +17,6 @@ import inksell.common.BaseActionBarActivity;
 import inksell.inksell.R;
 import models.IPostEntity;
 import models.OtherEntity;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.Utility;
@@ -191,18 +189,18 @@ public class AddPostActivity extends BaseActionBarActivity {
             case Others:
                 ((OtherEntity)iPostEntity).PostImagesUrl = imagesUrl;
                 ((OtherEntity)iPostEntity).UserGuid = AppData.UserGuid;
-                RestClient.post().addOtherPost((OtherEntity)iPostEntity, isMultiple?1:0, new InksellCallback<Integer>() {
+                RestClient.post().addOtherPost((OtherEntity)iPostEntity, isMultiple?1:0).enqueue(new InksellCallback<Integer>() {
                     @Override
-                    public void onSuccess(Integer integer, Response response) {
+                    public void onSuccess(Integer integer) {
                         finish();
                     }
 
                     @Override
-                    public void onFailure(RetrofitError retrofitError)
+                    public void onError()
                     {
                         loadingFullPage.setVisibility(View.GONE);
                         submit.setEnabled(true);
-                        Utility.ShowToast(retrofitError.toString());
+                        //Utility.ShowToast(retrofitError.toString());
                     }
                 });
         }

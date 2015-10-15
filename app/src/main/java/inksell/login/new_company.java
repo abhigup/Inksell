@@ -6,7 +6,6 @@ import android.widget.EditText;
 import butterknife.InjectView;
 import inksell.inksell.R;
 import inksell.common.BaseActionBarActivity;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.Utility;
@@ -53,9 +52,9 @@ public class new_company extends BaseActionBarActivity {
     public void submit_click(View view) {
         if (validateUserDetails())
             RestClient.post().newCompanyRequest(txtCompany.getText().toString(), txtLocation.getText().toString()
-                    , txtName.getText().toString(), txtEmail.getText().toString(),new InksellCallback<String>() {
+                    , txtName.getText().toString(), txtEmail.getText().toString()).enqueue(new InksellCallback<String>() {
                 @Override
-                public void onSuccess(String s, Response response) {;
+                public void onSuccess(String s) {;
                 }
             });
     }

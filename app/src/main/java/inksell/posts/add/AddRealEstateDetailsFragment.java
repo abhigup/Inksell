@@ -20,6 +20,7 @@ import butterknife.InjectView;
 import enums.CategoryType;
 import inksell.inksell.R;
 import models.IPostEntity;
+import models.RealEstateEntity;
 import utilities.ConfigurationManager;
 import utilities.Utility;
 
@@ -48,6 +49,21 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
 
     @InjectView(R.id.add_post_availability)
     EditText availableFrom;
+
+    @InjectView(R.id.add_post_rent)
+    EditText rent;
+
+    @InjectView(R.id.add_post_maintenance)
+    EditText maintenance;
+
+    @InjectView(R.id.add_post_bhk)
+    EditText bhk;
+
+    @InjectView(R.id.add_post_area)
+    EditText area;
+
+    @InjectView(R.id.add_post_description)
+    EditText description;
 
     @InjectView(R.id.water_btn)
     ImageButton waterBtn;
@@ -256,6 +272,30 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
 
     @Override
     public boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType) {
+        if(Utility.IsEditTextNullorEmpty(title))
+        {
+            Utility.ShowToast(R.string.ErrorTitleIsRequired);
+            return false;
+        }
+
+        RealEstateEntity entity = (RealEstateEntity) iPostEntity;
+        entity.Area = area.getText().toString();
+        entity.AvailableFrom = availableFrom.getText().toString();
+        entity.Bhk = bhk.getText().toString();
+        entity.Is24x7Water = isWater;
+        entity.IsInternet = isInternet;
+        entity.IsParking = isParking;
+        entity.IsPowerBackup = isPower;
+        entity.IsRent  = isRent;
+        entity.MaintenancePrice = maintenance.getText().toString();
+
+        //Todo : Handle sale scenario
+        //entity.PricePerSqFt =
+        entity.PostDescription = description.getText().toString();
+        entity.PostTitle = title.getText().toString();
+        entity.RentPrice = rent.getText().toString();
+
+
         return false;
     }
 }

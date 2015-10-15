@@ -35,6 +35,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
 import java.util.List;
@@ -308,6 +309,9 @@ public class Utility {
         //milliseconds
         long different = endDate.getTime() - startDate.getTime();
 
+        int todayDate = Integer.parseInt((String)android.text.format.DateFormat.format("dd",endDate));
+        int postDate = Integer.parseInt((String)android.text.format.DateFormat.format("dd",startDate));
+
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
         long hoursInMilli = minutesInMilli * 60;
@@ -316,25 +320,38 @@ public class Utility {
         long elapsedDays = different / daysInMilli;
         different = different % daysInMilli;
 
+        //More than 2 days
         if(elapsedDays>2)
         {
             return DateToLocalStringDate(startDate);
         }
 
-        long elapsedHours = different / hoursInMilli;
-        different = different % hoursInMilli;
+        //Day before yesterday
+        Date yesterdayStart = removeTime((Date)endDate.clone());
+        yesterdayStart = addDate(yesterdayStart, Calendar.DATE, -1);
+        if(startDate.compareTo(yesterdayStart) < 0)
+        {
+            return DateToLocalStringDate(startDate);
+        }
 
-        if(elapsedDays>1)
+        //yesterday
+        Date todayStart = removeTime((Date)endDate.clone());
+        if(startDate.compareTo(todayStart)>0)
         {
             return Utility.GetResourceString(R.string.yesterday);
         }
+
+        //Hours ago
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
         if(elapsedHours>1)
         {
             return elapsedHours + " hours ago";
         }
+
+        //minutes ago
         long elapsedMinutes = different / minutesInMilli;
         different = different % minutesInMilli;
-
         return elapsedMinutes + " min ago";
     }
 
@@ -342,6 +359,25 @@ public class Utility {
     {
         return android.text.format.DateFormat.getMediumDateFormat(ConfigurationManager.CurrentActivityContext).format(date);
 
+    }
+
+    private static Date removeTime(Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
+    private static Date addDate(Date date, int field, int value)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(field, value);
+        return cal.getTime();
     }
 
     public static boolean ShouldProcessFurtherAndShowResponseError(ResponseStatus responseStatus)

@@ -2,8 +2,8 @@ package services;
 
 import inksell.inksell.R;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 import utilities.ResponseStatus;
 import utilities.Utility;
 
@@ -12,36 +12,39 @@ import utilities.Utility;
  */
 public abstract class InksellCallback<T> implements Callback<T> {
 
-    public abstract void onSuccess(T t, Response response);
+    public abstract void onSuccess(T t);
 
-    public void onFailure(RetrofitError error) {
+    public void onError() {
 
     }
 
     @Override
-    public void success(T t, Response response)
+    public void onResponse(Response<T> response, Retrofit retrofit)
     {
-        if(t==null)
-        {
-            Utility.ShowInfoDialog(R.string.ErrorSomeErrorOccured);
-            return;
-        }
+        if(response.isSuccess()) {
+            T data = response.body();
+            if (data == null) {
+                Utility.ShowInfoDialog(R.string.ErrorSomeErrorOccured);
+                return;
+            }
 
-        if(Utility.isInteger(t.toString()))
-        {
-            ResponseStatus responseStatus = ResponseStatus.values()[Integer.parseInt(t.toString())];
-            if(Utility.ShouldProcessFurtherAndShowResponseError(responseStatus))
-            {
-                this.onSuccess(t, response);
+            if (Utility.isInteger(data.toString()) && Integer.parseInt(data.toString()) < 1000) {
+                ResponseStatus responseStatus = ResponseStatus.values()[Integer.parseInt(data.toString())];
+                if (Utility.ShouldProcessFurtherAndShowResponseError(responseStatus)) {
+                    this.onSuccess(data);
+                }
+            } else {
+                this.onSuccess(data);
             }
         }
-        else {
-            this.onSuccess(t, response);
+        else
+        {
+            Utility.ShowToast(response.message());
         }
     }
 
     @Override
-    public void failure(RetrofitError error) {
+    public void onFailure(Throwable error) {
         //ToDo : Remove below after Development
         Utility.ShowInfoDialog(error.getMessage().toString());
 

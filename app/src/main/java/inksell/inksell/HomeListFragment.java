@@ -1,28 +1,36 @@
 package inksell.inksell;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
@@ -36,9 +44,8 @@ import enums.CategoryType;
 import inksell.common.BaseFragment;
 import models.ILocationCallbacks;
 import models.PostSummaryEntity;
+import models.PropertyMapEntity;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
@@ -51,10 +58,16 @@ import utilities.NavigationHelper;
 import utilities.Utility;
 
 
-public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, OnMapReadyCallback, ILocationCallbacks {
+public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, OnMapReadyCallback, ILocationCallbacks, View.OnDragListener {
 
     public CategoryType categoryType;
     private Menu homeMenu;
+
+    @InjectView(R.id.map_autocomplete)
+    AutoCompleteTextView mAutocompleteView;
+
+    @InjectView(R.id.button_clear)
+    ImageButton clear;
 
     @InjectView(R.id.homeListRecycleView)
     RecyclerView rv;
@@ -100,6 +113,9 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
 
     @InjectView(R.id.real_estate_map)
     MapView mapView;
+
+    @InjectView(R.id.mapView_layout)
+    RelativeLayout mapViewLayout;
 
     LocationWrapper locationWrapper;
     GoogleMap map;
@@ -175,7 +191,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
         {
             if(isMap)
             {
-                mapView.setVisibility(View.VISIBLE);
+                mapViewLayout.setVisibility(View.VISIBLE);
                 realEstateFab.setImageResource(R.drawable.ic_list);
 
                 Utility.setMap(null, mapView, this);
@@ -183,7 +199,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
             else
             {
                 realEstateFab.setImageResource(R.drawable.ic_map);
-                mapView.setVisibility(View.GONE);
+                mapViewLayout.setVisibility(View.GONE);
             }
         }
     }
@@ -251,10 +267,10 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
         switch (type)
         {
             case AllCategory:
-                RestClient.get().getPostSummaryAll(lastPostid, AppData.UserGuid, setListOnResponse());
+                RestClient.get().getPostSummaryAll(lastPostid, AppData.UserGuid).enqueue(setListOnResponse());
                 break;
             default:
-                RestClient.get().getFilteredPostSummary(lastPostid, type.ordinal(), AppData.UserGuid, setListOnResponse());
+                RestClient.get().getFilteredPostSummary(lastPostid, type.ordinal(), AppData.UserGuid).enqueue(setListOnResponse());
         }
 
     }
@@ -275,7 +291,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     private Callback<List<PostSummaryEntity>> setListOnResponse() {
         return new InksellCallback<List<PostSummaryEntity>>() {
             @Override
-            public void onSuccess(List<PostSummaryEntity> postSummaryEntities, Response response) {
+            public void onSuccess(List<PostSummaryEntity> postSummaryEntities) {
 
                 layoutErrorTryAgain.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
@@ -300,7 +316,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
             }
 
             @Override
-            public void onFailure(RetrofitError error)
+            public void onError()
             {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);
@@ -340,21 +356,60 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mapView.setOnDragListener(this);
         map = googleMap;
-        map.setOnCameraChangeListener(cameraChangeListener());
+        //map.setOnCameraChangeListener(cameraChangeListener());
+        map.setMyLocationEnabled(true);
+
+        mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
+
+        clear.setOnClickListener(clearClickListener);
+
         LocationWrapper locationWrapper = new LocationWrapper(getActivity(), this, null);
         locationWrapper.onResume();
         locationWrapper.checkLocationSettings();
     }
 
-    private GoogleMap.OnCameraChangeListener cameraChangeListener() {
-        return new GoogleMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
+    View.OnClickListener clearClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mAutocompleteView.setText("");
+        }};
 
-            }
-        };
-    }
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            /*
+             Retrieve the place ID of the selected item from the Adapter.
+             The adapter stores each Place suggestion in a AutocompletePrediction from which we
+             read the place ID and title.
+              */
+            final AutocompletePrediction item = locationWrapper.getItemAtPosition(position);
+            if(item==null)
+                return;
+
+            final String placeId = item.getPlaceId();
+            locationWrapper.updateLocationFromPlaceId(placeId);
+
+            //Close Keyboard
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    };
+
+//    private GoogleMap.OnCameraChangeListener cameraChangeListener() {
+//        return new GoogleMap.OnCameraChangeListener() {
+//            @Override
+//            public void onCameraChange(CameraPosition cameraPosition) {
+//
+//                    }
+//                });
+//
+//
+//            }
+//        };
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -383,9 +438,44 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void handleNewLocation(LatLng latLng) {
-        map.addMarker(new MarkerOptions().position(latLng));
         zoom(latLng);
+        if(locationWrapper!=null) {
+            locationWrapper.updateAdapterBounds(mAutocompleteView, latLng);
+        }
     }
+
+    @Override
+    public boolean onDrag(View v, DragEvent event) {
+        switch (event.getAction()) {
+            case DragEvent.ACTION_DRAG_ENDED: {
+                CameraPosition cameraPosition = map.getCameraPosition();
+
+                LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+
+                Location locationCenter = new Location("A");
+                locationCenter.setLatitude(cameraPosition.target.latitude);
+                locationCenter.setLongitude(cameraPosition.target.longitude);
+
+                Location locationEast = new Location("B");
+                locationEast.setLongitude(bounds.northeast.longitude);
+                locationEast.setLatitude(cameraPosition.target.latitude);
+
+                int distance = (int) locationCenter.distanceTo(locationEast);
+
+                RestClient.get().getMapSummary(String.valueOf(distance), AppData.UserGuid, String.valueOf(cameraPosition.target.latitude), String.valueOf(cameraPosition.target.longitude)).enqueue(new InksellCallback<List<PropertyMapEntity>>() {
+                    @Override
+                    public void onSuccess(List<PropertyMapEntity> propertyMapEntities) {
+                        for (int i = 0; i < propertyMapEntities.size(); i++) {
+                            map.addMarker(new MarkerOptions().position(new LatLng(propertyMapEntities.get(i).latitude, propertyMapEntities.get(i).longitude))).setTitle(propertyMapEntities.get(i).PostTitle);
+                        }
+                    }
+                });
+            }
+        }
+        return true;
+    }
+
+
 }
 
 

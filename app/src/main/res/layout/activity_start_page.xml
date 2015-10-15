@@ -24,14 +24,17 @@
 
             <Button
                 android:text="@string/register"
+                android:padding="10dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 style="@style/ButtonDarkRed"
+                android:layout_marginBottom="5dp"
                 android:onClick="register_click">
             </Button>
             <Button
-                android:layout_marginTop="10px"
+                android:layout_marginTop="5px"
+                android:padding="10dp"
                 android:text="@string/verify"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

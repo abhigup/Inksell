@@ -4,9 +4,10 @@ import java.util.List;
 
 import models.OtherEntity;
 import models.SearchEntity;
+import models.SubscriptionEntity;
 import models.UserEntity;
 import models.VerifyUserEntity;
-import retrofit.Callback;
+import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.POST;
 import retrofit.http.Path;
@@ -17,18 +18,27 @@ import retrofit.http.Path;
 public interface IPostServices {
 
 
-    @POST("/registeruser")
-    void registerUser(@Body VerifyUserEntity userEntity, Callback<String> callback);
+    @POST("registeruser")
+    Call<String> registerUser(@Body VerifyUserEntity userEntity);
 
-    @POST("/addCompanyRequest/{company}/{location}/{name}")
-    void newCompanyRequest(@Path("company") String company, @Path("location") String location, @Path("name") String name, @Body String email, Callback<String> callback);
+    @POST("addCompanyRequest/{company}/{location}/{name}")
+    Call<String> newCompanyRequest(@Path("company") String company, @Path("location") String location, @Path("name") String name, @Body String email);
 
-    @POST("/SearchTextV2/{companyid}/{locationid}/{categoryid}/{userguid}")
-    void searchTextV2(@Path("companyid") int companyId, @Path("locationid") int locationId, @Path("categoryid") int categoryId, @Path("userguid") String userGuid, @Body String queryText, Callback<List<SearchEntity>> callback);
+    @POST("SearchTextV2/{companyid}/{locationid}/{categoryid}/{userguid}")
+    Call<List<SearchEntity>> searchTextV2(@Path("companyid") int companyId, @Path("locationid") int locationId, @Path("categoryid") int categoryId, @Path("userguid") String userGuid, @Body String queryText);
 
-    @POST("/createUsers")
-    void CreateUpdateUserData(@Body UserEntity userEntity, Callback<Integer> callback);
+    @POST("createUsers")
+    Call<Integer> CreateUpdateUserData(@Body UserEntity userEntity);
 
-    @POST("/addOtherPost/{isMultiple}")
-    void addOtherPost(@Body OtherEntity iPostEntity, @Path("isMultiple") Integer isMultiple, Callback<Integer> callback);
+    @POST("addOtherPost/{isMultiple}")
+    Call<Integer> addOtherPost(@Body OtherEntity iPostEntity, @Path("isMultiple") Integer isMultiple);
+
+    @POST("AddSubscriptionV2")
+    Call<String> addSubscriptionV2(@Body SubscriptionEntity subscriptionEntity);
+
+    @POST(("RemoveListedSubscriptionV2"))
+    Call<Integer> removeListedSubscriptionV2(@Body List<SubscriptionEntity> subscriptionEntities);
+
+    @POST(("UpdateAllSubscriptionUserUriV2"))
+    Call<Integer> updateAllSubscriptionUserUriV2(@Body List<SubscriptionEntity> subscriptionEntities);
 }

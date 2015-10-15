@@ -9,10 +9,11 @@ import models.FurnitureEntity;
 import models.LocationEntity;
 import models.OtherEntity;
 import models.PostSummaryEntity;
+import models.PropertyMapEntity;
 import models.RealEstateEntity;
 import models.TagsEntity;
 import models.UserEntity;
-import retrofit.Callback;
+import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
@@ -21,51 +22,55 @@ import retrofit.http.Path;
  */
 public interface IGetServices {
 
-    @GET("/getCompanies")
-    void getCompanies(Callback<List<CompanyEntity>> callback);
+    @GET("getCompanies")
+    Call<List<CompanyEntity>> getCompanies();
 
-    @GET("/getLocations/{companyId}")
-    void getLocations(@Path("companyId") int companyId, Callback<List<LocationEntity>> callback);
+    @GET("getLocations/{companyId}")
+    Call<List<LocationEntity>> getLocations(@Path("companyId") int companyId);
 
-    @GET("/verifyUser/{guid}/{code}/{isAlreadyRegistered}")
-    void verifyNewUser(@Path("guid") String guid, @Path("code") String code, @Path("isAlreadyRegistered") int isAlreadyRegistered, Callback<Integer> callback);
+    @GET("verifyUser/{guid}/{code}/{isAlreadyRegistered}")
+    Call<Integer> verifyNewUser(@Path("guid") String guid, @Path("code") String code, @Path("isAlreadyRegistered") int isAlreadyRegistered);
 
-    @GET("/registerUserAgain/{email}")
-    void registerUserAgain(@Path("email") String email, Callback<String> callback);
+    @GET("registerUserAgain/{email}")
+    Call<String> registerUserAgain(@Path("email") String email);
 
-    @GET("/GetUserEntityDevFriendly/{guid}")
-    void getUserDetails(@Path("guid") String guid, Callback<UserEntity> userEntity);
+    @GET("GetUserEntityDevFriendly/{guid}")
+    Call<UserEntity> getUserDetails(@Path("guid") String guid);
 
-    @GET("/GetPostSummaryAll/{lastPostId}/{guid}")
-    void getPostSummaryAll(@Path("lastPostId") int lastPostId, @Path("guid") String guid, Callback<List<PostSummaryEntity>> postSummaryList);
+    @GET("GetPostSummaryAll/{lastPostId}/{guid}")
+    Call<List<PostSummaryEntity>> getPostSummaryAll(@Path("lastPostId") int lastPostId, @Path("guid") String guid);
 
-    @GET("/GetMyPostSummary/{userGuid}")
-    void getMyPostSummary(@Path("userGuid") String UserGuid, Callback<List<PostSummaryEntity>> postSummaryList);
+    @GET("GetMyPostSummary/{userGuid}")
+    Call<List<PostSummaryEntity>> getMyPostSummary(@Path("userGuid") String UserGuid);
 
-    @GET("/GetFilteredPostSummary/{lastPostId}/{categoryId}/{guid}")
-    void getFilteredPostSummary(@Path("lastPostId") int lastPostId, @Path("categoryId") int categoryId, @Path("guid") String guid, Callback<List<PostSummaryEntity>> postSummaryList);
+    @GET("GetFilteredPostSummary/{lastPostId}/{categoryId}/{guid}")
+    Call<List<PostSummaryEntity>> getFilteredPostSummary(@Path("lastPostId") int lastPostId, @Path("categoryId") int categoryId, @Path("guid") String guid);
 
-    @GET("/GetFullAutomobilePost/{postId}/{userGuid}")
-    void getAutomobilesFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid, Callback<AutomobileEntity> entityCallback);
+    @GET("GetFullAutomobilePost/{postId}/{userGuid}")
+    Call<AutomobileEntity> getAutomobilesFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid);
 
-    @GET("/GetFullElectronicPost/{postId}/{userGuid}")
-    void getElectronicsFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid, Callback<ElectronicEntity> entityCallback);
+    @GET("GetFullElectronicPost/{postId}/{userGuid}")
+    Call<ElectronicEntity> getElectronicsFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid);
 
-    @GET("/GetFullOtherPost/{postId}/{userGuid}")
-    void getOtherFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid, Callback<OtherEntity> entityCallback);
+    @GET("GetFullOtherPost/{postId}/{userGuid}")
+    Call<OtherEntity> getOtherFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid);
 
-    @GET("/GetFullFurniturePost/{postId}/{userGuid}")
-    void getFurnitureFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid, Callback<FurnitureEntity> entityCallback);
+    @GET("GetFullFurniturePost/{postId}/{userGuid}")
+    Call<FurnitureEntity> getFurnitureFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid);
 
-    @GET("/GetFullRealStatePost/{postId}/{userGuid}")
-    void getRealEstateFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid, Callback<RealEstateEntity> entityCallback);
+    @GET("GetFullRealStatePost/{postId}/{userGuid}")
+    Call<RealEstateEntity> getRealEstateFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid);
 
-    @GET("/GetMultiplePost/{postId}/{userGuid}")
-    void getMultipleFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid, Callback<List<PostSummaryEntity>> callback);
+    @GET("GetMultiplePost/{postId}/{userGuid}")
+    Call<List<PostSummaryEntity>> getMultipleFullPostEntity(@Path("postId") int postId, @Path("userGuid") String guid);
 
-    @GET("/DeletePost/{postId}/{userGuid}/{category}")
-    void deletePost(@Path("postId") int postId, @Path("userGuid") String guid, @Path("category") int category, Callback<Integer> callback);
+    @GET("DeletePost/{postId}/{userGuid}/{category}")
+    Call<Integer> deletePost(@Path("postId") int postId, @Path("userGuid") String guid, @Path("category") int category);
 
-    @GET("/getAllTags")
-    void getAllSubscriptionsTags(Callback<List<TagsEntity>> callback);
+    @GET("getAllTags")
+    Call<List<TagsEntity>> getAllSubscriptionsTags();
+
+    @GET("GetPropertyMapSummary/{distance}/{userguid}/{latitude}/{longitude}")
+    Call<List<PropertyMapEntity>> getMapSummary(@Path("distance") String distance, @Path("userguid") String guid, @Path("latitude") String latitude,  @Path("longitude") String longitude);
+
 }

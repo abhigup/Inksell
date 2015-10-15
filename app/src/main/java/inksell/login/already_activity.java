@@ -8,10 +8,8 @@ import java.util.Map;
 
 import Constants.StorageConstants;
 import butterknife.InjectView;
-import inksell.inksell.R;
 import inksell.common.BaseActionBarActivity;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import inksell.inksell.R;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
@@ -45,9 +43,9 @@ public class already_activity extends BaseActionBarActivity {
             return;
         }
 
-        RestClient.get().registerUserAgain(email, new InksellCallback<String>() {
+        RestClient.get().registerUserAgain(email).enqueue(new InksellCallback<String>() {
             @Override
-            public void onSuccess(String s, Response response) {
+            public void onSuccess(String s) {
                 if(Utility.GetUUID(s)!=null) {
                     LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
                     Map<String, String> map = new HashMap<String, String>();
@@ -57,7 +55,7 @@ public class already_activity extends BaseActionBarActivity {
             }
 
             @Override
-            public void onFailure(RetrofitError error) {
+            public void onError() {
 
             }
         });

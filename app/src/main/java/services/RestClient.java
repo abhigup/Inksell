@@ -7,10 +7,8 @@ import com.squareup.okhttp.OkHttpClient;
 import java.util.concurrent.TimeUnit;
 
 import Constants.InksellConstants;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
-import retrofit.converter.GsonConverter;
-import utilities.ConfigurationManager;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 /**
  * Created by Abhinav on 05/04/15.
@@ -20,7 +18,7 @@ public class RestClient {
     private static IPostServices POST_REST_CLIENT;
 
     private static String ROOT =
-            "http://inksell.cloudapp.net:8080/service1.svc/json";
+            "http://inksell.cloudapp.net:8080/service1.svc/json/";
 
     static {
         setupRestClient();
@@ -45,23 +43,33 @@ public class RestClient {
         Gson gson = new GsonBuilder()
                 .setDateFormat(InksellConstants.DATEFORMAT)
                 .create();
-        GsonConverter gsonConverter = new GsonConverter(gson);
-        RestAdapter.Builder getbuilder = new RestAdapter.Builder()
-                .setEndpoint(ROOT)
-                .setConverter(gsonConverter)
-                .setClient(new OkClient(okHttpClient))
-                .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
 
-        RestAdapter getRestAdapter = getbuilder.build();
-        GET_REST_CLIENT = getRestAdapter.create(IGetServices.class);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ROOT)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
 
-        RestAdapter.Builder postbuilder = new RestAdapter.Builder()
-                .setEndpoint(ROOT)
-                .setConverter(gsonConverter)
-                .setClient(new OkClient(okHttpClient))
-                .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
 
-        RestAdapter postRestAdapter = postbuilder.build();
-        POST_REST_CLIENT = postRestAdapter.create(IPostServices.class);
+//        Gson gson = new GsonBuilder()
+//                .setDateFormat(InksellConstants.DATEFORMAT)
+//                .create();
+//        GsonConverter gsonConverter = new GsonConverter(gson);
+//        RestAdapter.Builder getbuilder = new RestAdapter.Builder()
+//                .setEndpoint(ROOT)
+//                .setConverter(gsonConverter)
+//                .setClient(new OkClient(okHttpClient))
+//                .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
+//
+//        RestAdapter getRestAdapter = getbuilder.build();
+        GET_REST_CLIENT = retrofit.create(IGetServices.class);
+
+//        RestAdapter.Builder postbuilder = new RestAdapter.Builder()
+//                .setEndpoint(ROOT)
+//                .setConverter(gsonConverter)
+//                .setClient(new OkClient(okHttpClient))
+//                .setErrorHandler(new CustomErrorHandler(ConfigurationManager.CurrentActivityContext));
+
+        //RestAdapter postRestAdapter = postbuilder.build();
+        POST_REST_CLIENT = retrofit.create(IPostServices.class);
     }
 }

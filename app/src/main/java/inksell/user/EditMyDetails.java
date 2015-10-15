@@ -18,8 +18,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import inksell.common.BaseActionBarActivity;
 import inksell.inksell.R;
 import models.UserEntity;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ResponseStatus;
@@ -104,16 +102,15 @@ public class EditMyDetails extends BaseActionBarActivity {
                 userEntity.PersonalEmail = personalEmail.getText().toString();
                 userEntity.PhoneNumber = editPhone.getText().toString();
 
-                RestClient.post().CreateUpdateUserData(userEntity, new InksellCallback<Integer>() {
+                RestClient.post().CreateUpdateUserData(userEntity).enqueue(new InksellCallback<Integer>() {
                     @Override
-                    public void onSuccess(Integer integer, Response response) {
+                    public void onSuccess(Integer integer) {
                         loadingFullPage.setVisibility(View.GONE);
                         ResponseStatus status = ResponseStatus.values()[integer];
                     }
 
                     @Override
-                    public void onFailure(RetrofitError retrofitError)
-                    {
+                    public void onError() {
                         loadingFullPage.setVisibility(View.GONE);
                     }
                 });
@@ -133,9 +130,9 @@ public class EditMyDetails extends BaseActionBarActivity {
 
     private void loadUserData()
     {
-        RestClient.get().getUserDetails(AppData.UserGuid, new InksellCallback<UserEntity>() {
+        RestClient.get().getUserDetails(AppData.UserGuid).enqueue(new InksellCallback<UserEntity>() {
             @Override
-            public void onSuccess(UserEntity userEntity, Response response) {
+            public void onSuccess(UserEntity userEntity) {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.GONE);
                 layout.setVisibility(View.VISIBLE);
@@ -145,7 +142,7 @@ public class EditMyDetails extends BaseActionBarActivity {
             }
 
             @Override
-            public void onFailure(RetrofitError error)
+            public void onError()
             {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);

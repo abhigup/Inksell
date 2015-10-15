@@ -6,11 +6,9 @@ import android.widget.TextView;
 import Constants.AppData;
 import Constants.StorageConstants;
 import butterknife.InjectView;
+import inksell.common.BaseActionBarActivity;
 import inksell.inksell.Home;
 import inksell.inksell.R;
-import inksell.common.BaseActionBarActivity;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
@@ -69,9 +67,9 @@ public class verify_activity extends BaseActionBarActivity {
             Utility.ShowInfoDialog(R.string.ErrorVerifyEmptyCode);
             return;
         }
-        RestClient.get().verifyNewUser(guid, txtCode.getText().toString(), isAlreadyRegistered?1:0, new InksellCallback<Integer>() {
+        RestClient.get().verifyNewUser(guid, txtCode.getText().toString(), isAlreadyRegistered?1:0).enqueue(new InksellCallback<Integer>() {
             @Override
-            public void onSuccess(Integer integer, Response response) {
+            public void onSuccess(Integer integer) {
                 if(ResponseStatus.values()[integer] == ResponseStatus.UserSuccessfullyVerified)
                 {
                     LocalStorageHandler.SaveData(StorageConstants.UserVerified, true);
@@ -81,7 +79,7 @@ public class verify_activity extends BaseActionBarActivity {
             }
 
             @Override
-            public void onFailure(RetrofitError error) {
+            public void onError() {
 
             }
         });

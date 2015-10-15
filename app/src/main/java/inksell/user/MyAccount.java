@@ -25,8 +25,6 @@ import inksell.common.BaseActionBarActivity;
 import inksell.inksell.R;
 import models.PostSummaryEntity;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.NavigationHelper;
@@ -125,9 +123,9 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
     }
 
     private void loadMyPostsData() {
-        RestClient.get().getMyPostSummary(AppData.UserGuid, new InksellCallback<List<PostSummaryEntity>>() {
+        RestClient.get().getMyPostSummary(AppData.UserGuid).enqueue(new InksellCallback<List<PostSummaryEntity>>() {
             @Override
-            public void onSuccess(List<PostSummaryEntity> postSummaryEntities, Response response) {
+            public void onSuccess(List<PostSummaryEntity> postSummaryEntities) {
 
                 layoutErrorTryAgain.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
@@ -145,7 +143,7 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
             }
 
             @Override
-            public void onFailure(RetrofitError error) {
+            public void onError() {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);
             }
@@ -194,7 +192,7 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        RestClient.get().deletePost(entity.PostId, AppData.UserGuid, entity.categoryid, deletePostCallback(position));
+                        RestClient.get().deletePost(entity.PostId, AppData.UserGuid, entity.categoryid).enqueue(deletePostCallback(position));
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         refresh();
@@ -206,14 +204,14 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
     private Callback<Integer> deletePostCallback(final int position) {
         return new InksellCallback<Integer>() {
             @Override
-            public void onSuccess(Integer integer, Response response) {
+            public void onSuccess(Integer integer) {
                 ResponseStatus status = ResponseStatus.values()[integer];
                 postSummaryList.remove(position);
                 rvAdapter.notifyItemRemoved(position);
             }
 
             @Override
-            public void onFailure(RetrofitError error)
+            public void onError()
             {
                 Utility.ShowInfoDialog(R.string.deletePostFailure);
             }

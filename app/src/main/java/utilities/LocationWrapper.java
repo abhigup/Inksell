@@ -45,6 +45,7 @@ public class LocationWrapper implements GoogleApiClient.ConnectionCallbacks, Goo
     ILocationCallbacks iLocationCallbacks;
     private PlaceAutocompleteAdapter mAdapter;
     private LatLng defaultLatlng;
+    private boolean showMyLocation = false;
 
     public LocationWrapper(Activity activityParam, ILocationCallbacks locationCallbacks, LatLng latLng)
     {
@@ -75,6 +76,13 @@ public class LocationWrapper implements GoogleApiClient.ConnectionCallbacks, Goo
         return mLocationRequest;
     }
 
+    public boolean getShowMyLocation(){
+        return showMyLocation;
+    }
+
+    public void setShowMyLocation(boolean showMyLocation){
+        this.showMyLocation = showMyLocation;
+    }
 
     public void checkLocationSettings()
     {
@@ -127,9 +135,7 @@ public class LocationWrapper implements GoogleApiClient.ConnectionCallbacks, Goo
         final Status status = locationSettingsResult.getStatus();
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
-
-                // NO need to show the dialog;
-
+                showMyLocation = true;
                 break;
 
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:

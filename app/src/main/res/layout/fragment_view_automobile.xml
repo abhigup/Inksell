@@ -107,6 +107,34 @@
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-light"
             android:layout_width="match_parent"
+            android:text="@string/make"
+            android:textColor="@color/labelTextColor"
+            android:id="@+id/view_automobile_label_make"
+            android:layout_height="wrap_content" />
+
+        <TextView android:textSize="14sp"
+            android:layout_below="@+id/view_automobile_label_make"
+            android:fontFamily="sans-serif-light"
+            android:singleLine="false"
+            android:layout_width="match_parent"
+            android:id="@+id/view_automobile_make"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:id="@+id/line_below_make"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/view_automobile_make"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background"/>
+
+
+
+        <TextView android:textSize="10sp"
+            android:layout_below="@+id/line_below_make"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-light"
+            android:layout_width="match_parent"
             android:text="@string/description"
             android:textColor="@color/labelTextColor"
             android:id="@+id/view_automobile_label_description"

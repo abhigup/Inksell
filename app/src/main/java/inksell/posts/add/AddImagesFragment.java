@@ -183,7 +183,7 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
     public boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType) {
         if(imageGridAdapter.getImageUri()==null || imageGridAdapter.getImageUri().size()==0)
         {
-            ((AddPostActivity)getActivity()).onImageUploaded(true, null);
+            ((AddPostActivity)getActivity()).onImageUploaded(true, new ArrayList<String>());
         }
         else {
             new UploadImages(this).execute(imageGridAdapter.getImageUri());

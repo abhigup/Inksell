@@ -15,8 +15,6 @@ import inksell.login.already_activity;
 import inksell.login.register_activity;
 import inksell.login.verify_activity;
 import models.UserEntity;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ConfigurationManager;
@@ -58,15 +56,15 @@ public class StartPage extends Activity {
 
     private void loadUserData()
     {
-        RestClient.get().getUserDetails(AppData.UserGuid, new InksellCallback<UserEntity>() {
+        RestClient.get().getUserDetails(AppData.UserGuid).enqueue(new InksellCallback<UserEntity>() {
             @Override
-            public void onSuccess(UserEntity userEntity, Response response) {
+            public void onSuccess(UserEntity userEntity) {
                 AppData.UserData = userEntity;
                 NavigationHelper.NavigateTo(Home.class, true);
             }
 
             @Override
-            public void onFailure(RetrofitError error)
+            public void onError()
             {
                 NavigationHelper.NavigateTo(Home.class, true);
             }

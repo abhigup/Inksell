@@ -11,14 +11,11 @@ import java.util.List;
 
 import Constants.StorageConstants;
 import butterknife.InjectView;
-import inksell.inksell.R;
 import inksell.common.BaseActionBarActivity;
+import inksell.inksell.R;
 import models.CompanyEntity;
 import models.LocationEntity;
 import models.VerifyUserEntity;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
@@ -72,16 +69,16 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
 
     private void populateCompanies() {
 
-        RestClient.get().getCompanies(new Callback<List<CompanyEntity>>() {
+        RestClient.get().getCompanies().enqueue(new InksellCallback<List<CompanyEntity>>() {
             @Override
-            public void success(List<CompanyEntity> companyEntities, Response response) {
+            public void onSuccess(List<CompanyEntity> companyEntities) {
                 companyAdapter.addAll(companyEntities);
                 domain.setText(companyEntities.get(0).companyDomain);
                 populateLocations(companyEntities.get(0));
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onError() {
 
             }
         });
@@ -105,17 +102,17 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
         }
 
         entity.CorporateEmail = entity.CorporateEmail + domain.getText();
-        RestClient.post().registerUser(entity, new InksellCallback<String>() {
+        RestClient.post().registerUser(entity).enqueue(new InksellCallback<String>() {
             @Override
-            public void onSuccess(String s, Response response) {
-                if(Utility.GetUUID(s)!=null) {
+            public void onSuccess(String s) {
+                if (Utility.GetUUID(s) != null) {
                     LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
                     NavigationHelper.NavigateTo(verify_activity.class);
                 }
             }
 
             @Override
-            public void onFailure(RetrofitError error) {
+            public void onError() {
 
             }
         });
@@ -140,14 +137,14 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
 
     private void populateLocations(CompanyEntity selectedItem) {
 
-        RestClient.get().getLocations(selectedItem.companyId, new Callback<List<LocationEntity>>() {
+        RestClient.get().getLocations(selectedItem.companyId).enqueue(new InksellCallback<List<LocationEntity>>() {
             @Override
-            public void success(List<LocationEntity> locationEntities, Response response) {
+            public void onSuccess(List<LocationEntity> locationEntities) {
                 locationAdapter.addAll((locationEntities));
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onError() {
 
             }
         });

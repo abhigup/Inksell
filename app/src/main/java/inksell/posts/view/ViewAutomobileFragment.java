@@ -27,6 +27,9 @@ public class ViewAutomobileFragment extends BaseViewFragment {
     @InjectView(R.id.view_automobile_usedperiod)
     TextView usedPeriod;
 
+    @InjectView(R.id.view_automobile_make)
+    TextView make;
+
     @InjectView(R.id.view_user_pic)
     CircleImageView userPic;
 
@@ -77,13 +80,14 @@ public class ViewAutomobileFragment extends BaseViewFragment {
     @Override
     public void initView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         price.setText(Utility.GetLocalCurrencySymbol() + " " + entity.ExpectedPrice + "  ");
-        usedPeriod.setText(Utility.IsStringNullorEmpty(entity.UsedPeriod)?"-": entity.UsedPeriod);
+        usedPeriod.setText(Utility.getStringValue(entity.UsedPeriod));
         entity.PostDescription = entity.PostDescription.replace("\r\n","\n").replace("\r","\n");
-        description.setText(Utility.IsStringNullorEmpty(entity.PostDescription)?"-": entity.PostDescription);
+        description.setText(Utility.getStringValue(entity.PostDescription));
         actualPrice.setText(Utility.IsStringNullorEmpty(entity.ActualPrice) ? "-" : (Utility.GetLocalCurrencySymbol() + " " + entity.ActualPrice));
         Utility.setUserPic(userPic, entity.UserImageUrl, entity.PostedBy);
         postedBy.setText(entity.PostedBy);
         contactName.setText(entity.ContactAddress.contactName);
+        make.setText(Utility.getStringValue(entity.MakeBrand));
 
         String address = Utility.IsStringNullorEmpty(entity.ContactAddress.Address)
                 ?(Utility.IsStringNullorEmpty(entity.ContactAddress.City)
