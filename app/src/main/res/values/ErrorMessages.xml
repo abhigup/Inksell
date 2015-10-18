@@ -39,4 +39,6 @@
 
     <string name="ErrorUnSubscribeFailed">Error unsubscribing tag. Please try again later.</string>
     <string name="ErrorPostSoldOutUpdateFailed">Error updating post status. Please try again later.</string>
+
+    <string name="ErrorAddMultipleNoPosts">Please add atleast one post.</string>
 </resources>

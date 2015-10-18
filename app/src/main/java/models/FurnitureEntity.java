@@ -30,7 +30,7 @@ public class FurnitureEntity implements IPostEntity {
 
     public boolean IsSoldOut;
 
-    public boolean IsVisibleToAll;
+    public boolean IsVisibleToAll = false;
 
     public String MakeBrand;
 

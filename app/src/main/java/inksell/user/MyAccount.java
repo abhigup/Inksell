@@ -38,8 +38,14 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
 
     private List<PostSummaryEntity> postSummaryList;
 
+    @InjectView(R.id.my_post_recycler_view)
+    RecyclerView rv;
+
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
+
+    @InjectView(R.id.my_collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     @InjectView(R.id.my_fab_edit)
     FloatingActionButton fabEditButton;
@@ -52,12 +58,6 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
 
     @InjectView(R.id.my_email)
     TextView myEmail;
-
-    @InjectView(R.id.my_post_recycler_view)
-    RecyclerView rv;
-
-    @InjectView(R.id.my_collapsing_toolbar)
-    CollapsingToolbarLayout collapsingToolbarLayout;
 
     @InjectView(R.id.loading_spinner)
     ProgressBar progressBar;

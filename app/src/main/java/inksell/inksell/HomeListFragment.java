@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,9 +30,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TimerTask;
 
 import Constants.AppData;
 import Constants.InksellConstants;
@@ -55,10 +59,11 @@ import utilities.FavouritesHelper;
 import utilities.LocalStorageHandler;
 import utilities.LocationWrapper;
 import utilities.NavigationHelper;
+import utilities.TimerHelper;
 import utilities.Utility;
 
 
-public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, OnMapReadyCallback, ILocationCallbacks, View.OnDragListener {
+public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, OnMapReadyCallback, ILocationCallbacks{
 
     public CategoryType categoryType;
     private Menu homeMenu;
@@ -68,6 +73,9 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
 
     @InjectView(R.id.button_clear)
     ImageButton clear;
+
+    @InjectView(R.id.load_address)
+    ProgressBar loadAddress;
 
     @InjectView(R.id.homeListRecycleView)
     RecyclerView rv;
@@ -123,6 +131,9 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     private RVAdapter rvAdapter;
     private boolean isMap = false;
     private List<PostSummaryEntity> postSummaryList;
+    private TimerHelper timerHelper = new TimerHelper(2000);
+    private Map<Marker, PropertyMapEntity> markerPropertyMapEntityMap = new HashMap<>();
+    private boolean markerSelected = false;
 
     @Override
     public int getViewResId() {
@@ -356,16 +367,15 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mapView.setOnDragListener(this);
         map = googleMap;
-        //map.setOnCameraChangeListener(cameraChangeListener());
+        map.setOnCameraChangeListener(cameraChangeListener());
         map.setMyLocationEnabled(true);
 
         mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
 
         clear.setOnClickListener(clearClickListener);
 
-        LocationWrapper locationWrapper = new LocationWrapper(getActivity(), this, null);
+        locationWrapper = new LocationWrapper(getActivity(), this, null);
         locationWrapper.onResume();
         locationWrapper.checkLocationSettings();
     }
@@ -398,18 +408,90 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
         }
     };
 
-//    private GoogleMap.OnCameraChangeListener cameraChangeListener() {
-//        return new GoogleMap.OnCameraChangeListener() {
-//            @Override
-//            public void onCameraChange(CameraPosition cameraPosition) {
-//
-//                    }
-//                });
-//
-//
-//            }
-//        };
-//    }
+    private GoogleMap.OnCameraChangeListener cameraChangeListener() {
+        return new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                if(markerSelected)
+                {
+                    markerSelected = false;
+                    return;
+                }
+                loadAddress.setVisibility(View.VISIBLE);
+                clear.setVisibility(View.GONE);
+
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                loadPropertiesOnCameraChange();
+
+                                loadAddress.setVisibility(View.GONE);
+                                clear.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                };
+                timerHelper.startTask(timerTask);
+            }
+        };
+    }
+
+    private void loadPropertiesOnCameraChange()
+    {
+        CameraPosition cameraPosition = map.getCameraPosition();
+
+        LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+
+        Location locationCenter = new Location("A");
+        locationCenter.setLatitude(cameraPosition.target.latitude);
+        locationCenter.setLongitude(cameraPosition.target.longitude);
+
+        Location locationEast = new Location("B");
+        locationEast.setLongitude(bounds.northeast.longitude);
+        locationEast.setLatitude(cameraPosition.target.latitude);
+
+        int distance = (int) locationCenter.distanceTo(locationEast);
+
+        RestClient.get().getMapSummary(String.valueOf(distance), AppData.UserGuid, String.valueOf(cameraPosition.target.latitude), String.valueOf(cameraPosition.target.longitude)).enqueue(new InksellCallback<List<PropertyMapEntity>>() {
+            @Override
+            public void onSuccess(List<PropertyMapEntity> propertyMapEntities) {
+
+                Iterator iterator = markerPropertyMapEntityMap.keySet().iterator();
+                while (iterator.hasNext())
+                {
+                    ((Marker)iterator.next()).remove();
+                }
+
+                markerPropertyMapEntityMap.clear();
+
+                map.setOnMarkerClickListener(onMarkerClickListener());
+                for (int i = 0; i < propertyMapEntities.size(); i++) {
+                    Marker marker = map.addMarker(new MarkerOptions().position(new LatLng(propertyMapEntities.get(i).latitude, propertyMapEntities.get(i).longitude)));
+                    marker.setTitle(propertyMapEntities.get(i).PostTitle);
+                    markerPropertyMapEntityMap.put(marker, propertyMapEntities.get(i));
+                }
+            }
+        });
+    }
+
+    private GoogleMap.OnMarkerClickListener onMarkerClickListener() {
+        return new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                markerSelected = true;
+
+                if(marker.isInfoWindowShown()) {
+                    PropertyMapEntity propertyMapEntity = markerPropertyMapEntityMap.get(marker);
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -439,40 +521,10 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void handleNewLocation(LatLng latLng) {
         zoom(latLng);
+
         if(locationWrapper!=null) {
             locationWrapper.updateAdapterBounds(mAutocompleteView, latLng);
         }
-    }
-
-    @Override
-    public boolean onDrag(View v, DragEvent event) {
-        switch (event.getAction()) {
-            case DragEvent.ACTION_DRAG_ENDED: {
-                CameraPosition cameraPosition = map.getCameraPosition();
-
-                LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
-
-                Location locationCenter = new Location("A");
-                locationCenter.setLatitude(cameraPosition.target.latitude);
-                locationCenter.setLongitude(cameraPosition.target.longitude);
-
-                Location locationEast = new Location("B");
-                locationEast.setLongitude(bounds.northeast.longitude);
-                locationEast.setLatitude(cameraPosition.target.latitude);
-
-                int distance = (int) locationCenter.distanceTo(locationEast);
-
-                RestClient.get().getMapSummary(String.valueOf(distance), AppData.UserGuid, String.valueOf(cameraPosition.target.latitude), String.valueOf(cameraPosition.target.longitude)).enqueue(new InksellCallback<List<PropertyMapEntity>>() {
-                    @Override
-                    public void onSuccess(List<PropertyMapEntity> propertyMapEntities) {
-                        for (int i = 0; i < propertyMapEntities.size(); i++) {
-                            map.addMarker(new MarkerOptions().position(new LatLng(propertyMapEntities.get(i).latitude, propertyMapEntities.get(i).longitude))).setTitle(propertyMapEntities.get(i).PostTitle);
-                        }
-                    }
-                });
-            }
-        }
-        return true;
     }
 
 

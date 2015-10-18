@@ -7,18 +7,25 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.ToggleButton;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 import butterknife.InjectView;
 import enums.CategoryType;
+import enums.FurnishingType;
 import inksell.inksell.R;
+import models.FurnishingEntity;
 import models.IPostEntity;
 import models.RealEstateEntity;
 import utilities.ConfigurationManager;
@@ -65,6 +72,11 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
     @InjectView(R.id.add_post_description)
     EditText description;
 
+    @InjectView(R.id.spnFurnishing)
+    Spinner furnishingSpinner;
+
+    ArrayAdapter furnishingAdapter;
+
     @InjectView(R.id.water_btn)
     ImageButton waterBtn;
     private boolean isWater = false;
@@ -96,6 +108,10 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
         rent_btn.setOnCheckedChangeListener(changeChecker);
         sale_btn.setOnCheckedChangeListener(changeChecker);
 
+        furnishingAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_item);
+        furnishingAdapter.addAll(getFurnishingList());
+        furnishingSpinner.setAdapter(furnishingAdapter);
+
         waterBtn.setOnClickListener(toggleBtn);
         powerBtn.setOnClickListener(toggleBtn);
         internetBtn.setOnClickListener(toggleBtn);
@@ -116,6 +132,16 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
                 openDateFragment(v);
             }
         });
+    }
+
+    private Collection getFurnishingList() {
+
+        List<FurnishingEntity> furnitureEntities = new ArrayList<>();
+        furnitureEntities.add(new FurnishingEntity(FurnishingType.UnFurnished));
+        furnitureEntities.add(new FurnishingEntity(FurnishingType.SemiFurnished));
+        furnitureEntities.add(new FurnishingEntity(FurnishingType.FullyFurnished));
+
+        return furnitureEntities;
     }
 
     @Override
@@ -227,8 +253,6 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
         availableFrom.setText(sdf.format(myCalendar.getTime()));
     }
 
-
-
     CompoundButton.OnCheckedChangeListener changeChecker = new CompoundButton.OnCheckedChangeListener() {
 
         @Override
@@ -294,8 +318,17 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
         entity.PostDescription = description.getText().toString();
         entity.PostTitle = title.getText().toString();
         entity.RentPrice = rent.getText().toString();
+        entity.FurnishedType = ((FurnishingEntity)furnishingSpinner.getSelectedItem()).type.ordinal();
 
+        return true;
+    }
 
+    @Override
+    public boolean canBeDiscarded() {
+        if(Utility.IsEditTextNullorEmpty(title))
+        {
+            return true;
+        }
         return false;
     }
 }

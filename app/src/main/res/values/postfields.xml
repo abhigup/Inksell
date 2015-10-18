@@ -20,7 +20,12 @@
     <string name="maintenanceAmount">Maintenance</string>
     <string name="availableFrom">Available From</string>
     <string name="area">Area (sqft)</string>
+
     <string name="furnishing">Furnishing</string>
+    <string name="unfurnished">Unfurnished</string>
+    <string name="semiFurnished">Semi-Furnished</string>
+    <string name="fullyFurnished">Fully-Furnished</string>
+
     <string name="water">24x7 Water</string>
     <string name="power">24x7 Power</string>
     <string name="internet">Internet</string>

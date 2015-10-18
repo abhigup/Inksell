@@ -104,7 +104,8 @@
 
         <activity
             android:name="inksell.posts.add.AddMultipleActivity"
-            android:label="@string/title_activity_add_multiple" >
+            android:theme="@style/AppThemeNoActionBar"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
             android:name="inksell.posts.view.ViewMultipleActivity"

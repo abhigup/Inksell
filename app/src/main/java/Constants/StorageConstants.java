@@ -14,4 +14,6 @@ public class StorageConstants {
     public static final String SubscriptionTagEntities = "SubscriptionTagEntities";
 
     public static final String AppLoginCount = "AppLoginCount";
+
+    public static final String UserNotificationUri = "UserNotificationUri";
 }

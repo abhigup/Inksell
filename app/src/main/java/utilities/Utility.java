@@ -53,6 +53,8 @@ import models.CategoryEntity;
 import models.ElectronicEntity;
 import models.FurnitureEntity;
 import models.OtherEntity;
+import models.PostSummaryEntity;
+import models.PropertyMapEntity;
 import models.RealEstateEntity;
 
 /**
@@ -249,7 +251,7 @@ public class Utility {
         }
     }
 
-    private static Date GetUTCdatetimeAsDate()
+    public static Date GetUTCdatetimeAsDate()
     {
         //note: doesn't check for null
         return StringDateToDate(GetUTCdatetimeAsString());
@@ -336,7 +338,7 @@ public class Utility {
 
         //yesterday
         Date todayStart = removeTime((Date)endDate.clone());
-        if(startDate.compareTo(todayStart)>0)
+        if(startDate.compareTo(todayStart)<0)
         {
             return Utility.GetResourceString(R.string.yesterday);
         }
@@ -523,7 +525,7 @@ public class Utility {
                 displayMessage = R.string.ErrorUnknownResponseStatus;
         }
 
-        if(displayMessage!=-1 && displayMessage!=1) {
+        if(displayMessage!=-1) {
             Utility.ShowInfoDialog(displayMessage);
         }
             return processFurther;
@@ -724,11 +726,11 @@ public class Utility {
         switch (type)
         {
             case UnFurnished:
-                return "UnFurnished";
+                return ConfigurationManager.CurrentActivityContext.getString(R.string.unfurnished);
             case SemiFurnished:
-                return "Semi-Furnished";
+                return ConfigurationManager.CurrentActivityContext.getString(R.string.semiFurnished);
             case FullyFurnished:
-                return "Fully Furnished";
+                return ConfigurationManager.CurrentActivityContext.getString(R.string.fullyFurnished);
         }
         return "";
     }
@@ -740,6 +742,19 @@ public class Utility {
         MapsInitializer.initialize(ConfigurationManager.CurrentActivityContext);
 
         mapView.getMapAsync(onMapReadyCallback);
+    }
+
+    public static PostSummaryEntity propertyMapToPostSummaryEntity(PropertyMapEntity propertyMapEntity)
+    {
+        if(propertyMapEntity==null)
+            return null;
+
+        PostSummaryEntity postSummaryEntity = new PostSummaryEntity();
+        postSummaryEntity.Title = propertyMapEntity.PostTitle;
+        postSummaryEntity.PostId = propertyMapEntity.PostId;
+        postSummaryEntity.categoryid = CategoryType.RealState.ordinal();
+
+        return postSummaryEntity;
     }
 
 }

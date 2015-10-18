@@ -56,10 +56,10 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
         locationAdapter = new ArrayAdapter(this, R.layout.spinner_item);
 
         companySpinner.setAdapter(companyAdapter);
-        companySpinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        companySpinner.setOnItemSelectedListener(this);
 
         locationSpinner.setAdapter(locationAdapter);
-        locationSpinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        locationSpinner.setOnItemSelectedListener(this);
     }
 
     @Override

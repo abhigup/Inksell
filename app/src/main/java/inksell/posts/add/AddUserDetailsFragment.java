@@ -136,10 +136,31 @@ public class AddUserDetailsFragment extends BaseAddFragment {
 
         switch (categoryType)
         {
-            case Others:
-                OtherEntity otherEntity = (OtherEntity) iPostEntity;
-                otherEntity.ContactAddress = contactAddressEntity;
+            case Others: {
+                OtherEntity entity = (OtherEntity) iPostEntity;
+                entity.ContactAddress = contactAddressEntity;
                 break;
+            }
+            case Automobile:{
+                AutomobileEntity entity = (AutomobileEntity) iPostEntity;
+                entity.ContactAddress = contactAddressEntity;
+                break;
+            }
+            case Electronics:{
+                ElectronicEntity entity = (ElectronicEntity) iPostEntity;
+                entity.ContactAddress = contactAddressEntity;
+                break;
+            }
+            case RealState:{
+                RealEstateEntity entity = (RealEstateEntity) iPostEntity;
+                entity.ContactAddress = contactAddressEntity;
+                break;
+            }
+            case Furniture:{
+                FurnitureEntity entity = (FurnitureEntity) iPostEntity;
+                entity.ContactAddress = contactAddressEntity;
+                break;
+            }
         }
         return true;
     }

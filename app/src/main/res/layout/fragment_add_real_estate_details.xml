@@ -50,7 +50,8 @@
             android:layout_marginTop="10dp">
         <EditText android:textSize="30sp"
             android:paddingTop="0dp"
-            android:inputType="textNoSuggestions"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:singleLine="false"
             style="@style/MyEditTextTheme"
             android:fontFamily="sans-serif-light"
             android:layout_width="match_parent"
@@ -151,6 +152,14 @@
             android:singleLine="true"
             android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:layout_height="wrap_content"
+            android:id="@+id/spnFurnishing"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="-8dp"
+            android:layout_width="match_parent"
+            android:spinnerMode="dialog" />
 
         <LinearLayout
             android:layout_marginTop="10dp"

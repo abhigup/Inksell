@@ -40,6 +40,10 @@ public abstract class BaseAddFragment extends BaseFragment {
 
     public abstract boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType);
 
+    public boolean canBeDiscarded() {
+        return false;
+    }
+
     public abstract void initViewAfterSettingEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState);
 
     public abstract void setEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState);

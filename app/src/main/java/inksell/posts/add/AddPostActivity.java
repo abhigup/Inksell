@@ -1,6 +1,7 @@
 package inksell.posts.add;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +16,14 @@ import butterknife.InjectView;
 import enums.CategoryType;
 import inksell.common.BaseActionBarActivity;
 import inksell.inksell.R;
+import models.AutomobileEntity;
+import models.ElectronicEntity;
+import models.FurnitureEntity;
 import models.IPostEntity;
 import models.OtherEntity;
+import models.PostSummaryEntity;
+import models.RealEstateEntity;
+import retrofit.Callback;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.Utility;
@@ -29,7 +36,8 @@ public class AddPostActivity extends BaseActionBarActivity {
     private CategoryType categoryType;
     private boolean isMultiple;
     private boolean forEdit;
-
+    private String title;
+    private List<String> postImages;
 
     @InjectView(R.id.add_submit)
     Button submit;
@@ -117,16 +125,40 @@ public class AddPostActivity extends BaseActionBarActivity {
                     case Others:
                         iPostEntity = new OtherEntity();
                         break;
+                    case Electronics:
+                        iPostEntity = new ElectronicEntity();
+                        break;
+                    case Automobile:
+                        iPostEntity = new AutomobileEntity();
+                        break;
+                    case RealState:
+                        iPostEntity = new RealEstateEntity();
+                        break;
+                    case Furniture:
+                        iPostEntity = new FurnitureEntity();
+                        break;
                 }
 
                 boolean isVerified = false;
 
                 if(addPostDetailsFragment.verifyAndGetPost(iPostEntity, categoryType))
                 {
-                    if(((BaseAddFragment)userDetailsFragment).verifyAndGetPost(iPostEntity, categoryType))
+                    if(categoryType==CategoryType.RealState) {
+                        if(addRealEstateMapFragment.verifyAndGetPost(iPostEntity, categoryType))
+                        {
+
+                        }
+                        else {
+                            loadingFullPage.setVisibility(View.GONE);
+                            submit.setEnabled(true);
+                            return;
+                        }
+                    }
+
+                    if(userDetailsFragment.verifyAndGetPost(iPostEntity, categoryType))
                     {
                         loadingText.setText("Uploading Images");
-                        if(((BaseAddFragment)imagesFragment).verifyAndGetPost(iPostEntity, categoryType))
+                        if(imagesFragment.verifyAndGetPost(iPostEntity, categoryType))
                         {
                             isVerified = true;
                         }
@@ -150,16 +182,22 @@ public class AddPostActivity extends BaseActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        Utility.ShowDialog(getString(R.string.discardAddPost), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        finish();
-                        break;
+        if(addPostDetailsFragment.canBeDiscarded()) {
+            super.onBackPressed();
+        }
+        else
+        {
+            Utility.ShowDialog(getString(R.string.discardAddPost), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            finish();
+                            break;
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -184,25 +222,86 @@ public class AddPostActivity extends BaseActionBarActivity {
         }
 
         loadingText.setText("Saving Post");
+        postImages = imagesUrl;
         switch (categoryType)
         {
-            case Others:
-                ((OtherEntity)iPostEntity).PostImagesUrl = imagesUrl;
-                ((OtherEntity)iPostEntity).UserGuid = AppData.UserGuid;
-                RestClient.post().addOtherPost((OtherEntity)iPostEntity, isMultiple?1:0).enqueue(new InksellCallback<Integer>() {
-                    @Override
-                    public void onSuccess(Integer integer) {
-                        finish();
+            case Others: {
+                OtherEntity entity = (OtherEntity) iPostEntity;
+                title = entity.PostTitle;
+                entity.PostImagesUrl = imagesUrl;
+                entity.UserGuid = AppData.UserGuid;
+                RestClient.post().addOtherPost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+            }
+                break;
+            case Automobile: {
+                AutomobileEntity entity = (AutomobileEntity) iPostEntity;
+                title = entity.PostTitle;
+                entity.PostImagesUrl = imagesUrl;
+                entity.UserGuid = AppData.UserGuid;
+                RestClient.post().addAutomobilePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+            }
+                break;
+            case Electronics:{
+                ElectronicEntity entity = (ElectronicEntity) iPostEntity;
+                title = entity.PostTitle;
+                entity.PostImagesUrl = imagesUrl;
+                entity.UserGuid = AppData.UserGuid;
+                RestClient.post().addElectronicsPost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+            }
+                break;
+            case Furniture:{
+                FurnitureEntity entity = (FurnitureEntity) iPostEntity;
+                title = entity.PostTitle;
+                entity.PostImagesUrl = imagesUrl;
+                entity.UserGuid = AppData.UserGuid;
+                RestClient.post().addFurniturePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+            }
+                break;
+            case RealState:{
+                RealEstateEntity entity = (RealEstateEntity) iPostEntity;
+                title = entity.PostTitle;
+                entity.PostImagesUrl = imagesUrl;
+                entity.UserGuid = AppData.UserGuid;
+                RestClient.post().addRealEstatePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+            }
+                break;
+        }
+    }
+
+    private Callback<Integer> addPost() {
+        return new InksellCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer integer) {
+                if(isMultiple && integer>1000)
+                {
+                    Intent returnIntent = new Intent();
+                    PostSummaryEntity postSummaryEntity = new PostSummaryEntity();
+                    postSummaryEntity.categoryid = categoryType.ordinal();
+                    postSummaryEntity.CompanyId = AppData.UserData.CopmanyId;
+                    postSummaryEntity.LocationId = AppData.UserData.LocationId;
+                    postSummaryEntity.PostedBy = AppData.UserData.Username;
+                    postSummaryEntity.UserImageUrl = AppData.UserData.UserImageUrl;
+                    postSummaryEntity.Title = title;
+                    postSummaryEntity.PostId = integer;
+                    postSummaryEntity.Postdate = Utility.GetUTCdatetimeAsDate();
+                    if(postImages!=null && !postImages.isEmpty())
+                    {
+                        postSummaryEntity.PostDefaultImage = postImages.get(0);
                     }
 
-                    @Override
-                    public void onError()
-                    {
-                        loadingFullPage.setVisibility(View.GONE);
-                        submit.setEnabled(true);
-                        //Utility.ShowToast(retrofitError.toString());
-                    }
-                });
-        }
+                    returnIntent.putExtra("postSummary", Utility.GetJSONString(postSummaryEntity));
+                    setResult(RESULT_OK, returnIntent);
+                }
+                finish();
+            }
+
+            @Override
+            public void onError()
+            {
+                loadingFullPage.setVisibility(View.GONE);
+                submit.setEnabled(true);
+                //Utility.ShowToast(retrofitError.toString());
+            }
+        };
     }
 }

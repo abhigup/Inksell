@@ -94,6 +94,10 @@ public class ViewPostActivity extends BaseActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        collapsingToolbarLayout.setTitleEnabled(false);
+        collapsingToolbarLayout.setTitle("");
+        toolbar.setTitle("");
+
         //Set fab edit button
         if(!summaryEntity.isEditable)
         {
@@ -102,10 +106,6 @@ public class ViewPostActivity extends BaseActionBarActivity {
             fabEdit.setLayoutParams(p);
             fabEdit.setVisibility(View.GONE);
         }
-
-        collapsingToolbarLayout.setTitleEnabled(false);
-        collapsingToolbarLayout.setTitle("");
-        toolbar.setTitle("");
 
         tryAgainButton.setOnClickListener(refresh_click());
 

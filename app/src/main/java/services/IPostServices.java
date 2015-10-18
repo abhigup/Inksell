@@ -2,7 +2,12 @@ package services;
 
 import java.util.List;
 
+import models.AutomobileEntity;
+import models.ElectronicEntity;
+import models.FurnitureEntity;
+import models.MultiplePostDetailsEntity;
 import models.OtherEntity;
+import models.RealEstateEntity;
 import models.SearchEntity;
 import models.SubscriptionEntity;
 import models.UserEntity;
@@ -32,6 +37,22 @@ public interface IPostServices {
 
     @POST("addOtherPost/{isMultiple}")
     Call<Integer> addOtherPost(@Body OtherEntity iPostEntity, @Path("isMultiple") Integer isMultiple);
+
+    @POST("addAutomobilePost/{isMultiple}")
+    Call<Integer> addAutomobilePost(@Body AutomobileEntity iPostEntity, @Path("isMultiple") Integer isMultiple);
+
+    @POST("addFurniturePost/{isMultiple}")
+    Call<Integer> addFurniturePost(@Body FurnitureEntity iPostEntity, @Path("isMultiple") Integer isMultiple);
+
+    @POST("addRealstatePost/{isMultiple}")
+    Call<Integer> addRealEstatePost(@Body RealEstateEntity iPostEntity, @Path("isMultiple") Integer isMultiple);
+
+    @POST("addElectronicsPost/{isMultiple}")
+    Call<Integer> addElectronicsPost(@Body ElectronicEntity iPostEntity, @Path("isMultiple") Integer isMultiple);
+
+    @POST("addMultipleItem")
+    Call<Integer> addMultiplePost(@Body MultiplePostDetailsEntity multiplePostDetailsEntity);
+
 
     @POST("AddSubscriptionV2")
     Call<String> addSubscriptionV2(@Body SubscriptionEntity subscriptionEntity);

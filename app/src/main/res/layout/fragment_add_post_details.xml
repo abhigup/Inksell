@@ -22,7 +22,8 @@
 
                 <EditText android:textSize="30sp"
                     style="@style/MyEditTextTheme"
-                    android:inputType="textNoSuggestions"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:singleLine="false"
                     android:fontFamily="sans-serif-light"
                     android:layout_width="match_parent"
                     android:id="@+id/add_post_title"

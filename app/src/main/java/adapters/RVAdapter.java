@@ -11,6 +11,7 @@ import android.widget.ToggleButton;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import inksell.inksell.R;
@@ -22,13 +23,14 @@ import utilities.Utility;
 /**
  * Created by Abhinav on 20/07/15.
  */
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
+public class RVAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<PostSummaryEntity> postSummaryEntityList;
 
     boolean isMyPosts = false;
     boolean isFavPosts = false;
     boolean isSearchPosts = false;
+    boolean showFavToggleButton = true;
 
     View.OnClickListener cvClickListener;
 
@@ -49,11 +51,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
     {
         this.isFavPosts = isFavPosts;
     }
+    public void setShowFavToggleButton(boolean showFavButton)
+    {
+        this.showFavToggleButton = showFavButton;
+    }
 
     public void Update(List<PostSummaryEntity> persons, View.OnClickListener clickListener)
     {
+        List<PostSummaryEntity> postSummaryEntities = new ArrayList<>(persons);
         this.postSummaryEntityList.clear();
-        this.postSummaryEntityList = persons;
+        this.postSummaryEntityList.addAll(postSummaryEntities);
         this.cvClickListener = clickListener;
         this.notifyDataSetChanged();
     }
@@ -112,7 +119,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(PostViewHolder postViewHolder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
+
+        PostViewHolder postViewHolder = (PostViewHolder)viewHolder;
         final PostSummaryEntity postSummaryEntity = postSummaryEntityList.get(position);
 
         postViewHolder.cv.setOnClickListener(this.cvClickListener);
@@ -122,7 +131,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.PostViewHolder> {
 
         //Set data for search/my posts cardview above
         if(isMyPosts)
-            return;;
+            return;
+
+        if(!showFavToggleButton)
+        {
+            postViewHolder.fav.setVisibility(View.GONE);
+        }
 
         if(postSummaryEntity.HasPostTitlePic())
         {

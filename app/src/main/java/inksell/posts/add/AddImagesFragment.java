@@ -200,11 +200,11 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
 
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 8;
+            options.inSampleSize = 2;
             Bitmap b= BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri), null, options);
 
             fOut = new FileOutputStream(file);
-            b.compress(Bitmap.CompressFormat.JPEG, 80, fOut);
+            b.compress(Bitmap.CompressFormat.JPEG, 90, fOut);
             fOut.flush();
             fOut.close();
             b.recycle();

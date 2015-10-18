@@ -48,6 +48,6 @@ public abstract class InksellCallback<T> implements Callback<T> {
         //ToDo : Remove below after Development
         Utility.ShowInfoDialog(error.getMessage().toString());
 
-        this.onFailure(error);
+        this.onError();
     }
 }

@@ -1,6 +1,5 @@
 package inksell.user;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,10 +15,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Constants.AppData;
 import Constants.StorageConstants;
 import butterknife.InjectView;
 import inksell.common.BaseFragment;
 import inksell.inksell.R;
+import models.SubscriptionEntity;
 import models.TagsEntity;
 import services.InksellCallback;
 import services.RestClient;
@@ -76,11 +77,6 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
     }
@@ -103,6 +99,13 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
                 return;
             }
         }
+
+        SubscriptionEntity subscriptionEntity = new SubscriptionEntity();
+        subscriptionEntity.tagId = tagsEntity.tagId;
+        subscriptionEntity.tagName = tagsEntity.tagName;
+        subscriptionEntity.IsNew = false;
+        subscriptionEntity.userGuid = AppData.UserGuid;
+        //subscriptionEntity.userUri =
 
         tagsEntityList.add(tagsEntity);
         saveSubscriptions();

@@ -134,4 +134,14 @@ public class NavigationHelper {
             }
         };
     }
+
+    public static void NavigateToViewPosts(PostSummaryEntity postSummaryEntity)
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("postSummary", Utility.GetJSONString(postSummaryEntity));
+
+        Class navClass = CategoryType.values()[postSummaryEntity.categoryid]==CategoryType.Multiple? ViewMultipleActivity.class:ViewPostActivity.class;
+
+        NavigateTo(navClass, map);
+    }
 }

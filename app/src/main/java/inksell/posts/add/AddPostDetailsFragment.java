@@ -97,8 +97,8 @@ public class AddPostDetailsFragment extends BaseAddFragment {
                 ElectronicEntity entity = (ElectronicEntity) iPostEntity;
                 entity.PostTitle = postTitle.getText().toString();
                 entity.UsedPeriod = usedPeriod.getText().toString();
-                entity.ActualPrice = usedPeriod.getText().toString();
-                entity.ExpectedPrice = usedPeriod.getText().toString();
+                entity.ActualPrice = actualPrice.getText().toString();
+                entity.ExpectedPrice = expectedPrice.getText().toString();
                 entity.PostDescription = description.getText().toString();
                 entity.MakeBrand = make.getText().toString();
             }
@@ -107,8 +107,8 @@ public class AddPostDetailsFragment extends BaseAddFragment {
                 AutomobileEntity entity = (AutomobileEntity) iPostEntity;
                 entity.PostTitle = postTitle.getText().toString();
                 entity.UsedPeriod = usedPeriod.getText().toString();
-                entity.ActualPrice = usedPeriod.getText().toString();
-                entity.ExpectedPrice = usedPeriod.getText().toString();
+                entity.ActualPrice = actualPrice.getText().toString();
+                entity.ExpectedPrice = expectedPrice.getText().toString();
                 entity.PostDescription = description.getText().toString();
                 entity.MakeBrand = make.getText().toString();
             }
@@ -117,8 +117,8 @@ public class AddPostDetailsFragment extends BaseAddFragment {
                 FurnitureEntity entity = (FurnitureEntity) iPostEntity;
                 entity.PostTitle = postTitle.getText().toString();
                 entity.UsedPeriod = usedPeriod.getText().toString();
-                entity.ActualPrice = usedPeriod.getText().toString();
-                entity.ExpectedPrice = usedPeriod.getText().toString();
+                entity.ActualPrice = actualPrice.getText().toString();
+                entity.ExpectedPrice = expectedPrice.getText().toString();
                 entity.PostDescription = description.getText().toString();
                 entity.MakeBrand = make.getText().toString();
             }
@@ -127,13 +127,22 @@ public class AddPostDetailsFragment extends BaseAddFragment {
                 OtherEntity entity = (OtherEntity) iPostEntity;
                 entity.PostTitle = postTitle.getText().toString();
                 entity.UsedPeriod = usedPeriod.getText().toString();
-                entity.ActualPrice = usedPeriod.getText().toString();
-                entity.ExpectedPrice = usedPeriod.getText().toString();
+                entity.ActualPrice = actualPrice.getText().toString();
+                entity.ExpectedPrice = expectedPrice.getText().toString();
                 entity.PostDescription = description.getText().toString();
                 entity.MakeBrand = make.getText().toString();
             }
                 break;
         }
         return true;
+    }
+
+    @Override
+    public boolean canBeDiscarded() {
+        if(Utility.IsEditTextNullorEmpty(postTitle))
+        {
+            return true;
+        }
+        return false;
     }
 }

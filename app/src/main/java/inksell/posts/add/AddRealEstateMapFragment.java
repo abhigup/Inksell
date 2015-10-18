@@ -25,6 +25,7 @@ import butterknife.InjectView;
 import enums.CategoryType;
 import inksell.inksell.R;
 import models.IPostEntity;
+import models.RealEstateEntity;
 import utilities.NavigationHelper;
 import utilities.Utility;
 
@@ -76,6 +77,22 @@ public class AddRealEstateMapFragment extends BaseAddFragment implements OnMapRe
 
     @Override
     public boolean verifyAndGetPost(IPostEntity iPostEntity, CategoryType categoryType) {
+
+        if(!Utility.IsEditTextNullorEmpty(propertyAddress))
+        {
+            RealEstateEntity realEstateEntity = (RealEstateEntity)iPostEntity;
+            realEstateEntity.PropertyAddress = propertyAddress.getText().toString();
+            if(propertyLatLng!=null) {
+                realEstateEntity.latitude = propertyLatLng.latitude;
+                realEstateEntity.longitude = propertyLatLng.longitude;
+            }
+            else {
+                realEstateEntity.latitude = 0;
+                realEstateEntity.longitude = 0;
+            }
+            return true;
+        }
+
         return false;
     }
 
