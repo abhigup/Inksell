@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Constants.AppData;
@@ -27,6 +28,7 @@ import models.PostSummaryEntity;
 import retrofit.Callback;
 import services.InksellCallback;
 import services.RestClient;
+import utilities.EmptyTemplateHelper;
 import utilities.NavigationHelper;
 import utilities.ResponseStatus;
 import utilities.SwipableRecyclerView;
@@ -37,6 +39,8 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
     private RVAdapter rvAdapter;
 
     private List<PostSummaryEntity> postSummaryList;
+
+    private EmptyTemplateHelper emptyTemplateHelper;
 
     @InjectView(R.id.my_post_recycler_view)
     RecyclerView rv;
@@ -96,6 +100,9 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
         rv.setLayoutManager(layoutManager);
 
         SwipableRecyclerView.setSwipeBehaviour(rv, this);
+
+        emptyTemplateHelper = new EmptyTemplateHelper(this);
+        emptyTemplateHelper.setEmptyTemplate(R.drawable.sad, R.string.emptyMyAccount);
     }
 
 
@@ -130,15 +137,24 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
                 layoutErrorTryAgain.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
 
-                postSummaryList = setIsEditable(postSummaryEntities);
+                if(postSummaryEntities!=null && !postSummaryEntities.isEmpty()) {
 
-                if (rvAdapter == null) {
-                    RVAdapter adapter = new RVAdapter(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
-                    adapter.setIsMyPosts(true);
-                    rvAdapter = adapter;
-                    rv.setAdapter(rvAdapter);
-                } else {
-                    rvAdapter.Update(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
+                    postSummaryList = setIsEditable(postSummaryEntities);
+
+                    if (rvAdapter == null) {
+                        RVAdapter adapter = new RVAdapter(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
+                        adapter.setIsMyPosts(true);
+                        rvAdapter = adapter;
+                        rv.setAdapter(rvAdapter);
+                    } else {
+                        rvAdapter.Update(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
+                    }
+                    emptyTemplateHelper.setLayoutVisibility(View.GONE);
+                }
+                else
+                {
+                    postSummaryEntities = new ArrayList<PostSummaryEntity>();
+                    emptyTemplateHelper.setLayoutVisibility(View.VISIBLE);
                 }
             }
 
@@ -208,6 +224,10 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
                 ResponseStatus status = ResponseStatus.values()[integer];
                 postSummaryList.remove(position);
                 rvAdapter.notifyItemRemoved(position);
+                if(postSummaryList.isEmpty())
+                {
+                    emptyTemplateHelper.setLayoutVisibility(View.VISIBLE);
+                }
             }
 
             @Override

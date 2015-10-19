@@ -24,6 +24,7 @@ import models.SubscriptionEntity;
 import models.TagsEntity;
 import services.InksellCallback;
 import services.RestClient;
+import utilities.EmptyTemplateHelper;
 import utilities.LocalStorageHandler;
 import utilities.Utility;
 
@@ -34,6 +35,8 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
 
     @InjectView(R.id.subscriptions_buttons_layout)
     LinearLayout buttonsLayout;
+
+    EmptyTemplateHelper emptyTemplateHelper;
 
     private List<TagsEntity> tagsEntityList;
 
@@ -72,6 +75,9 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     @Override
     public void initView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         autoCompleteTextView.setOnItemClickListener(this);
+        emptyTemplateHelper = new EmptyTemplateHelper(view);
+        emptyTemplateHelper.setEmptyTemplate(R.drawable.subscription_none, R.string.emptySubscriptionList);
+
         GetAllSubscriptionTags(0);
         setSubscriptionListFromLocal();
     }
@@ -165,6 +171,14 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     private void saveSubscriptions()
     {
         LocalStorageHandler.SaveData(StorageConstants.SubscriptionTagEntities, tagsEntityList);
+        if(tagsEntityList==null || tagsEntityList.isEmpty())
+        {
+            emptyTemplateHelper.setLayoutVisibility(View.VISIBLE);
+        }
+        else
+        {
+            emptyTemplateHelper.setLayoutVisibility(View.GONE);
+        }
     }
 
     private void setSubscriptionListFromLocal()
@@ -177,6 +191,11 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
             {
                 addSubscriptionsButtons(tagsEntityList.get(i));
             }
+            emptyTemplateHelper.setLayoutVisibility(View.GONE);
+        }
+        else
+        {
+            emptyTemplateHelper.setLayoutVisibility(View.VISIBLE);
         }
     }
 

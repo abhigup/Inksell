@@ -48,7 +48,8 @@ public class FavouritesHelper {
         {
             postSummaryEntityList = new ArrayList<>();
         }
-        postSummaryEntityList.add(postSummaryEntity);
+        postSummaryEntityList.add(0,
+                postSummaryEntity);
         saveFavouritesList();
     }
 

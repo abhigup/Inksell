@@ -8,4 +8,7 @@
         android:id="@+id/favouritesListRecycleView"
         />
 
+    <include android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/empty_layout_template" />
 </FrameLayout>

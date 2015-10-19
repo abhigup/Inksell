@@ -72,7 +72,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_below_appbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
         <android.support.v7.widget.RecyclerView
@@ -84,6 +85,12 @@
         <include android:layout_width="match_parent"
             android:layout_height="match_parent"
             layout="@layout/loading_error_top_fragment" />
+
+        <include
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/empty_layout_top_template" />
 
     </RelativeLayout>
 

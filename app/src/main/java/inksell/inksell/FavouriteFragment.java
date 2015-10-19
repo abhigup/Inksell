@@ -1,6 +1,5 @@
 package inksell.inksell;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +16,7 @@ import adapters.RVAdapter;
 import butterknife.InjectView;
 import inksell.common.BaseFragment;
 import models.PostSummaryEntity;
+import utilities.EmptyTemplateHelper;
 import utilities.FavouritesHelper;
 import utilities.NavigationHelper;
 import utilities.SwipableRecyclerView;
@@ -28,6 +28,8 @@ public class FavouriteFragment extends BaseFragment implements SwipableRecyclerV
 
     private List<PostSummaryEntity> postSummaryEntityList;
 
+    EmptyTemplateHelper emptyTemplateHelper;
+
     @InjectView(R.id.favouritesListRecycleView)
     RecyclerView frv;
 
@@ -38,6 +40,8 @@ public class FavouriteFragment extends BaseFragment implements SwipableRecyclerV
 
     @Override
     public void initView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
+        emptyTemplateHelper = new EmptyTemplateHelper(view);
+        emptyTemplateHelper.setEmptyTemplate(R.drawable.favourite_none, R.string.emptyFavourites);
         initFavList();
     }
 
@@ -63,6 +67,14 @@ public class FavouriteFragment extends BaseFragment implements SwipableRecyclerV
         }
 
         SwipableRecyclerView.setSwipeBehaviour(frv, this);
+        if(postSummaryEntityList==null || postSummaryEntityList.isEmpty())
+        {
+            emptyTemplateHelper.setLayoutVisibility(View.VISIBLE);
+        }
+        else
+        {
+            emptyTemplateHelper.setLayoutVisibility(View.GONE);
+        }
     }
 
 
@@ -72,11 +84,6 @@ public class FavouriteFragment extends BaseFragment implements SwipableRecyclerV
         inflater.inflate(R.menu.menu_favourites, menu);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -99,6 +106,7 @@ public class FavouriteFragment extends BaseFragment implements SwipableRecyclerV
                         postSummaryEntityList.clear();
                         FavouritesHelper.ClearAllFromFavourites();
                         frvAdapter.notifyDataSetChanged();
+                        emptyTemplateHelper.setLayoutVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -123,8 +131,11 @@ public class FavouriteFragment extends BaseFragment implements SwipableRecyclerV
     @Override
     public void onSwiped(int position) {
         int postId = postSummaryEntityList.get(position).PostId;
-        postSummaryEntityList.remove(position);
         FavouritesHelper.RemoveFromFavourites(postId);
         frvAdapter.notifyItemRemoved(position);
+        if(postSummaryEntityList.isEmpty())
+        {
+            emptyTemplateHelper.setLayoutVisibility(View.VISIBLE);
+        }
     }
 }

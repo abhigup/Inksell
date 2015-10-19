@@ -12,4 +12,8 @@
     <string name="mapMessage">Click on marker for navigate options.</string>
 
     <string name="emptyMapMessage">Please select your property location.</string>
+
+    <string name="emptyMyAccount">You haven\'t posted anything.\nStart posting now.</string>
+    <string name="emptyFavourites">No Favourites saved.</string>
+    <string name="emptySubscriptionList">You havent subscribe to any tags.\nSubscribe now.</string>
 </resources>
