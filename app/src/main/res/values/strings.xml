@@ -15,6 +15,8 @@
     <string name="save_changes">Save Changes</string>
 
     <string name="saving">Saving</string>
+    <string name="addTag">Adding subscription</string>
+    <string name="removeTag">Removing subscription</string>
 
     <string name="title_activity_register_activity">Register</string>
     <string name="title_activity_verify_activity">Verify</string>

@@ -1,11 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_margin="16dp"
+
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="inksell.user.SubscriptionFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:id="@+id/subscriptions_autocomplete_layout">
 
         <AutoCompleteTextView
@@ -18,19 +19,35 @@
         </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         android:layout_below="@+id/subscriptions_autocomplete_layout"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/subscriptions_buttons_layout">
+        android:id="@+id/subscriptions_buttons_layout1">
 
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="16dp"
+        android:layout_below="@+id/subscriptions_buttons_layout1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/subscriptions_buttons_layout2">
+
+    </LinearLayout>
 
     <include android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/subscriptions_autocomplete_layout"
         layout="@layout/empty_layout_template" />
+
+    <include
+        layout="@layout/loading_fullpage_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

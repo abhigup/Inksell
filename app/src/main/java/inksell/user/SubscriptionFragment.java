@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,8 +35,17 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     @InjectView(R.id.subscriptions_autocomplete)
     AutoCompleteTextView autoCompleteTextView;
 
-    @InjectView(R.id.subscriptions_buttons_layout)
-    LinearLayout buttonsLayout;
+    @InjectView(R.id.subscriptions_buttons_layout1)
+    LinearLayout buttonsLayout1;
+
+    @InjectView(R.id.subscriptions_buttons_layout2)
+    LinearLayout buttonsLayout2;
+
+    @InjectView(R.id.loading_full_page)
+    RelativeLayout loadingFullPage;
+
+    @InjectView(R.id.loading_Text)
+    TextView loadingText;
 
     EmptyTemplateHelper emptyTemplateHelper;
 
@@ -78,6 +89,8 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         emptyTemplateHelper = new EmptyTemplateHelper(view);
         emptyTemplateHelper.setEmptyTemplate(R.drawable.subscription_none, R.string.emptySubscriptionList);
 
+        loadingFullPage.setVisibility(View.GONE);
+
         GetAllSubscriptionTags(0);
         setSubscriptionListFromLocal();
     }
@@ -113,9 +126,14 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         subscriptionEntity.userGuid = AppData.UserGuid;
         //subscriptionEntity.userUri =
 
+        loadingText.setText(getString(R.string.addTag));
+        loadingFullPage.setVisibility(View.VISIBLE);
+
         tagsEntityList.add(tagsEntity);
         saveSubscriptions();
         addSubscriptionsButtons(tagsEntity);
+
+        loadingFullPage.setVisibility(View.GONE);
     }
 
     private void addSubscriptionsButtons(TagsEntity tagsEntity)
@@ -132,8 +150,14 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         btnTag.setTag(tagsEntity);
         btnTag.setOnClickListener(removeTag());
         //add button to the layout
-        buttonsLayout.addView(btnTag);
-        autoCompleteTextView.setText("");
+        if(tagsEntityList.indexOf(tagsEntity)<2) {
+            buttonsLayout1.addView(btnTag);
+        }
+        else {
+            buttonsLayout2.addView(btnTag);
+        }
+            autoCompleteTextView.setText("");
+
     }
 
     private View.OnClickListener removeTag() {
@@ -154,15 +178,35 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
                 switch (which)
                         {
                             case DialogInterface.BUTTON_POSITIVE:
+
+                                loadingText.setText(getString(R.string.removeTag));
+                                loadingFullPage.setVisibility(View.VISIBLE);
+
                                 for(int i=0;i<tagsEntityList.size();i++)
                                 {
                                     if(tagsEntityList.get(i).tagId==tagsEntity.tagId)
                                     {
-                                        buttonsLayout.removeView(v);
+                                        if(i<2) {
+                                            buttonsLayout1.removeView(v);
+                                            if(tagsEntityList.indexOf(tagsEntity)<3 && tagsEntityList.size()>2)
+                                            {
+                                                View view = buttonsLayout2.findViewById(tagsEntityList.get(2).tagId);
+                                                if(view!=null)
+                                                {
+                                                    buttonsLayout2.removeView(view);
+                                                    buttonsLayout1.addView(view);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            buttonsLayout2.removeView(v);
+                                        }
                                         tagsEntityList.remove(i);
                                     }
                                 }
                                 saveSubscriptions();
+                                loadingFullPage.setVisibility(View.GONE);
                         }
                     }
         };
