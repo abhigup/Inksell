@@ -1,6 +1,7 @@
 package inksell.user;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import Constants.AppData;
 import Constants.StorageConstants;
 import butterknife.InjectView;
 import inksell.common.BaseFragment;
+import inksell.gcm.RegistrationIntentService;
 import inksell.inksell.R;
 import models.SubscriptionEntity;
 import models.TagsEntity;
@@ -30,7 +32,7 @@ import utilities.EmptyTemplateHelper;
 import utilities.LocalStorageHandler;
 import utilities.Utility;
 
-public class SubscriptionFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class SubscriptionFragment extends BaseFragment implements AdapterView.OnItemClickListener{
 
     @InjectView(R.id.subscriptions_autocomplete)
     AutoCompleteTextView autoCompleteTextView;
@@ -49,9 +51,10 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
 
     EmptyTemplateHelper emptyTemplateHelper;
 
-    private List<TagsEntity> tagsEntityList;
+    private List<SubscriptionEntity> subscriptionEntityList;
 
     ArrayAdapter tagsAdapter;
+    String token;
 
     @Override
     public int getViewResId() {
@@ -60,8 +63,13 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
 
     @Override
     public void initFragment(Bundle savedInstanceState) {
-        tagsEntityList = new ArrayList<>();
+        subscriptionEntityList = new ArrayList<>();
         tagsAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_item);
+
+        if (Utility.checkPlayServices(getActivity())) {
+            Intent intent = new Intent(getActivity(), RegistrationIntentService.class);
+            getActivity().startService(intent);
+        }
     }
 
     private void GetAllSubscriptionTags(final int failCount)
@@ -104,15 +112,15 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TagsEntity tagsEntity = (TagsEntity) parent.getItemAtPosition(position);
 
-        if(tagsEntityList.size()>=3)
+        if(subscriptionEntityList.size()>=3)
         {
             Utility.ShowToast(R.string.ErrorSubscriptionLimitReached);
             return;
         }
 
-        for(int i=0;i<tagsEntityList.size();i++)
+        for(int i=0;i<subscriptionEntityList.size();i++)
         {
-            if(tagsEntityList.get(i).tagId==tagsEntity.tagId)
+            if(subscriptionEntityList.get(i).tagId==tagsEntity.tagId)
             {
                 Utility.ShowToast(R.string.ErrorSubscriptionAlreadyAdded);
                 return;
@@ -126,17 +134,33 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         subscriptionEntity.userGuid = AppData.UserGuid;
         //subscriptionEntity.userUri =
 
+        addNewSubscription(subscriptionEntity);
+    }
+
+    private void addNewSubscription(SubscriptionEntity subscriptionEntity)
+    {
+        if(Utility.IsStringNullorEmpty(AppData.NotificationToken))
+        {
+            Utility.ShowToast("Unable to setup notifications! Please try again");
+            return;
+        }
+
+        if(subscriptionEntity==null)
+            return;
+
+        //subscriptionEntity.userUri =
+
         loadingText.setText(getString(R.string.addTag));
         loadingFullPage.setVisibility(View.VISIBLE);
 
-        tagsEntityList.add(tagsEntity);
+        subscriptionEntityList.add(subscriptionEntity);
         saveSubscriptions();
-        addSubscriptionsButtons(tagsEntity);
+        addSubscriptionsButtons(subscriptionEntity);
 
         loadingFullPage.setVisibility(View.GONE);
     }
 
-    private void addSubscriptionsButtons(TagsEntity tagsEntity)
+    private void addSubscriptionsButtons(SubscriptionEntity subscriptionEntity)
     {
         //ToDo : Add logic to make a call and then add the button on success
         Button btnTag = new Button(getActivity());
@@ -145,12 +169,12 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0,0, Utility.GetPixelsFromDp(16), 0);
         btnTag.setLayoutParams(params);
-        btnTag.setText(tagsEntity.tagName);
-        btnTag.setId(tagsEntity.tagId);
-        btnTag.setTag(tagsEntity);
+        btnTag.setText(subscriptionEntity.tagName);
+        btnTag.setId(subscriptionEntity.tagId);
+        btnTag.setTag(subscriptionEntity);
         btnTag.setOnClickListener(removeTag());
         //add button to the layout
-        if(tagsEntityList.indexOf(tagsEntity)<2) {
+        if(subscriptionEntityList.indexOf(subscriptionEntity)<2) {
             buttonsLayout1.addView(btnTag);
         }
         else {
@@ -165,13 +189,13 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
             @Override
             public void onClick(final View v) {
                 Button button = (Button) v;
-                final TagsEntity tagsEntity = (TagsEntity) button.getTag();
-                Utility.ShowDialog(getString(R.string.removeSubscription), unSubscribe(tagsEntity, v));
+                final SubscriptionEntity subscriptionEntity = (SubscriptionEntity) button.getTag();
+                Utility.ShowDialog(getString(R.string.removeSubscription), unSubscribe(subscriptionEntity, v));
             }
         };
     }
 
-    private DialogInterface.OnClickListener unSubscribe(final TagsEntity tagsEntity, final View v) {
+    private DialogInterface.OnClickListener unSubscribe(final SubscriptionEntity subscriptionEntity, final View v) {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -182,15 +206,15 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
                                 loadingText.setText(getString(R.string.removeTag));
                                 loadingFullPage.setVisibility(View.VISIBLE);
 
-                                for(int i=0;i<tagsEntityList.size();i++)
+                                for(int i=0;i<subscriptionEntityList.size();i++)
                                 {
-                                    if(tagsEntityList.get(i).tagId==tagsEntity.tagId)
+                                    if(subscriptionEntityList.get(i).tagId==subscriptionEntity.tagId)
                                     {
                                         if(i<2) {
                                             buttonsLayout1.removeView(v);
-                                            if(tagsEntityList.indexOf(tagsEntity)<3 && tagsEntityList.size()>2)
+                                            if(subscriptionEntityList.indexOf(subscriptionEntity)<3 && subscriptionEntityList.size()>2)
                                             {
-                                                View view = buttonsLayout2.findViewById(tagsEntityList.get(2).tagId);
+                                                View view = buttonsLayout2.findViewById(subscriptionEntityList.get(2).tagId);
                                                 if(view!=null)
                                                 {
                                                     buttonsLayout2.removeView(view);
@@ -202,7 +226,7 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
                                         {
                                             buttonsLayout2.removeView(v);
                                         }
-                                        tagsEntityList.remove(i);
+                                        subscriptionEntityList.remove(i);
                                     }
                                 }
                                 saveSubscriptions();
@@ -214,8 +238,8 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
 
     private void saveSubscriptions()
     {
-        LocalStorageHandler.SaveData(StorageConstants.SubscriptionTagEntities, tagsEntityList);
-        if(tagsEntityList==null || tagsEntityList.isEmpty())
+        LocalStorageHandler.SaveData(StorageConstants.SubscriptionTagEntities, subscriptionEntityList);
+        if(subscriptionEntityList==null || subscriptionEntityList.isEmpty())
         {
             emptyTemplateHelper.setLayoutVisibility(View.VISIBLE);
         }
@@ -227,13 +251,13 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
 
     private void setSubscriptionListFromLocal()
     {
-        TagsEntity[] tagsEntities = LocalStorageHandler.GetData(StorageConstants.SubscriptionTagEntities, TagsEntity[].class);
-        if(tagsEntities!=null && tagsEntities.length>0)
+        SubscriptionEntity[] subscriptionEntities = LocalStorageHandler.GetData(StorageConstants.SubscriptionTagEntities, SubscriptionEntity[].class);
+        if(subscriptionEntities!=null && subscriptionEntities.length>0)
         {
-            tagsEntityList = new ArrayList(Arrays.asList(tagsEntities));
-            for(int i=0;i<tagsEntityList.size();i++)
+            subscriptionEntityList = new ArrayList(Arrays.asList(subscriptionEntities));
+            for(int i=0;i<subscriptionEntityList.size();i++)
             {
-                addSubscriptionsButtons(tagsEntityList.get(i));
+                addSubscriptionsButtons(subscriptionEntityList.get(i));
             }
             emptyTemplateHelper.setLayoutVisibility(View.GONE);
         }

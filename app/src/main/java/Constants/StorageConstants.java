@@ -16,4 +16,6 @@ public class StorageConstants {
     public static final String AppLoginCount = "AppLoginCount";
 
     public static final String UserNotificationUri = "UserNotificationUri";
+
+    public static final String UserNotificationToken = "UserNotificationToken";
 }

@@ -19,6 +19,7 @@ public class InksellConstants {
 
     public static final int REQUEST_ADD_MULTIPLE = 1004;
 
+    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     public static final String IMAGE_DIR_NAME = "Inksell";
 

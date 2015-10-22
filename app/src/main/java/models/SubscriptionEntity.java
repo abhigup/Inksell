@@ -18,4 +18,6 @@ public class SubscriptionEntity {
     public int platformType;
 
     public String registrationId;
+
+
 }

@@ -1,5 +1,6 @@
 package utilities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,6 +26,8 @@ import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -525,7 +528,7 @@ public class Utility {
                 displayMessage = R.string.ErrorUnknownResponseStatus;
         }
 
-        if(displayMessage!=-1) {
+        if(displayMessage!=-1 && displayMessage!=1) {
             Utility.ShowInfoDialog(displayMessage);
         }
             return processFurther;
@@ -755,6 +758,22 @@ public class Utility {
         postSummaryEntity.categoryid = CategoryType.RealState.ordinal();
 
         return postSummaryEntity;
+    }
+
+    public static boolean checkPlayServices(Activity activity) {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(activity);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(activity, resultCode, InksellConstants.PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                // Log.i(TAG, "This device is not supported.");
+                Utility.ShowToast("This device is not supported.");
+            }
+            return false;
+        }
+        return true;
     }
 
 }

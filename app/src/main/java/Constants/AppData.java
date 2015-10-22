@@ -9,4 +9,6 @@ public class AppData {
     public static String UserGuid;
 
     public static UserEntity UserData;
+
+    public static String NotificationToken;
 }
