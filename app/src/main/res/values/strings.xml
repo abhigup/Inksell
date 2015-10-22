@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Inksell</string>
-    <string name="gcm_defaultSenderId">525500289503</string>
 
     <string name="hello_world">Hello Inksell!</string>
     <string name="action_settings">Settings</string>
