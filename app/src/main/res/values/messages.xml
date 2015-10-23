@@ -13,6 +13,9 @@
 
     <string name="emptyMapMessage">Please select your property location.</string>
 
+    <string name="subscriptionAddFailure">Could not subscribe. Please try again later.</string>
+    <string name="subscriptionAddSuccess">Subscribed successfully.</string>
+
     <string name="emptyMyAccount">You haven\'t posted anything.\nStart posting now.</string>
     <string name="emptyFavourites">No Favourites saved.</string>
     <string name="emptySubscriptionList">You havent subscribe to any tags.\nSubscribe now.</string>

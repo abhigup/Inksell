@@ -46,7 +46,7 @@ public abstract class InksellCallback<T> implements Callback<T> {
     @Override
     public void onFailure(Throwable error) {
         //ToDo : Remove below after Development
-        Utility.ShowInfoDialog(error.getMessage().toString());
+        Utility.ShowInfoDialog(error.getMessage());
 
         this.onError();
     }

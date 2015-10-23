@@ -101,13 +101,14 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <!--<meta-data-->
             <!--android:name="com.google.android.maps.v2.API_KEY"-->
-            <!--android:value="AIzaSyBgZ1I0jQ3pddkxn9vEB4UDJcgrIjPYiKc" />-->
+            <!--android:value="AIzaSyBysSO24zoG7P3ZOcXiRxuohu9aakXbo_k" />-->
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBgZ1I0jQ3pddkxn9vEB4UDJcgrIjPYiKc"/>
+            android:value="AIzaSyBysSO24zoG7P3ZOcXiRxuohu9aakXbo_k"/>
 
         <activity
             android:name="inksell.posts.add.AddMultipleActivity"

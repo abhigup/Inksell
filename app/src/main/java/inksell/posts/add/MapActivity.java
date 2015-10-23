@@ -68,7 +68,7 @@ public class MapActivity extends BaseFragmentActivity implements ILocationCallba
         setUpMapIfNeeded();
 
         locationWrapper = new LocationWrapper(this, this, propertyLatLng);
-        timerHelper = new TimerHelper(2000);
+        timerHelper = new TimerHelper(3000);
 
         cancel.setOnClickListener(clickListener);
 

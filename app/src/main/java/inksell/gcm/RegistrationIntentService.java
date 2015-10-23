@@ -6,9 +6,16 @@ import android.content.Intent;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import Constants.AppData;
 import Constants.StorageConstants;
 import inksell.inksell.R;
+import models.SubscriptionEntity;
+import services.InksellCallback;
+import services.RestClient;
 import utilities.LocalStorageHandler;
 
 /**
@@ -37,7 +44,7 @@ public class RegistrationIntentService extends IntentService {
 
             AppData.NotificationToken = token;
 
-            if(localToken.compareTo(token)!=0) {
+            if(localToken==null || localToken.compareTo(token)!=0) {
                 LocalStorageHandler.SaveData(StorageConstants.UserNotificationToken, token);
                 updateTokenForSubscriptions();
             }
@@ -50,6 +57,34 @@ public class RegistrationIntentService extends IntentService {
     }
 
     private void updateTokenForSubscriptions() {
+
+        List<SubscriptionEntity> subscriptionEntityList = getUpdatedLocalSubscriptions();
+        if(subscriptionEntityList!=null && !subscriptionEntityList.isEmpty()) {
+            RestClient.post().updateAllSubscriptionUserUriV2(subscriptionEntityList).enqueue(new InksellCallback<Integer>() {
+                @Override
+                public void onSuccess(Integer integer) {
+
+                }
+                @Override
+                public void onError()
+                {
+
+                }
+            });
+        }
+    }
+
+    private List<SubscriptionEntity>  getUpdatedLocalSubscriptions()
+    {
+        List<SubscriptionEntity> subscriptionEntityList = new ArrayList<>();
+        SubscriptionEntity[] subscriptionEntities = LocalStorageHandler.GetData(StorageConstants.SubscriptionTagEntities, SubscriptionEntity[].class);
+        if(subscriptionEntities!=null && subscriptionEntities.length>0) {
+            subscriptionEntityList = new ArrayList(Arrays.asList(subscriptionEntities));
+            for (int i = 0; i < subscriptionEntityList.size(); i++) {
+                subscriptionEntityList.get(i).userUri = AppData.NotificationToken;
+            }
+        }
+        return subscriptionEntityList;
     }
 
 }

@@ -21,6 +21,7 @@ import java.util.List;
 import Constants.AppData;
 import Constants.StorageConstants;
 import butterknife.InjectView;
+import enums.PlatformType;
 import inksell.common.BaseFragment;
 import inksell.gcm.RegistrationIntentService;
 import inksell.inksell.R;
@@ -131,13 +132,11 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         subscriptionEntity.tagId = tagsEntity.tagId;
         subscriptionEntity.tagName = tagsEntity.tagName;
         subscriptionEntity.IsNew = false;
-        subscriptionEntity.userGuid = AppData.UserGuid;
-        //subscriptionEntity.userUri =
 
         addNewSubscription(subscriptionEntity);
     }
 
-    private void addNewSubscription(SubscriptionEntity subscriptionEntity)
+    private void addNewSubscription(final SubscriptionEntity subscriptionEntity)
     {
         if(Utility.IsStringNullorEmpty(AppData.NotificationToken))
         {
@@ -148,16 +147,33 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         if(subscriptionEntity==null)
             return;
 
-        //subscriptionEntity.userUri =
+
+        subscriptionEntity.userGuid = AppData.UserGuid;
+        subscriptionEntity.platformType = PlatformType.Android.ordinal();
+        subscriptionEntity.userUri = AppData.NotificationToken;
 
         loadingText.setText(getString(R.string.addTag));
         loadingFullPage.setVisibility(View.VISIBLE);
 
-        subscriptionEntityList.add(subscriptionEntity);
-        saveSubscriptions();
-        addSubscriptionsButtons(subscriptionEntity);
+        RestClient.post().addSubscriptionV2(subscriptionEntity).enqueue(new InksellCallback<String>() {
+            @Override
+            public void onSuccess(String s) {
+                subscriptionEntity.registrationId = s;
+                Utility.ShowToast(R.string.subscriptionAddSuccess);
 
-        loadingFullPage.setVisibility(View.GONE);
+                subscriptionEntityList.add(subscriptionEntity);
+                saveSubscriptions();
+                addSubscriptionsButtons(subscriptionEntity);
+
+                loadingFullPage.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError() {
+                Utility.ShowToast(R.string.subscriptionAddFailure);
+                loadingFullPage.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void addSubscriptionsButtons(SubscriptionEntity subscriptionEntity)
@@ -203,37 +219,63 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
                         {
                             case DialogInterface.BUTTON_POSITIVE:
 
-                                loadingText.setText(getString(R.string.removeTag));
-                                loadingFullPage.setVisibility(View.VISIBLE);
 
-                                for(int i=0;i<subscriptionEntityList.size();i++)
-                                {
-                                    if(subscriptionEntityList.get(i).tagId==subscriptionEntity.tagId)
-                                    {
-                                        if(i<2) {
-                                            buttonsLayout1.removeView(v);
-                                            if(subscriptionEntityList.indexOf(subscriptionEntity)<3 && subscriptionEntityList.size()>2)
-                                            {
-                                                View view = buttonsLayout2.findViewById(subscriptionEntityList.get(2).tagId);
-                                                if(view!=null)
-                                                {
-                                                    buttonsLayout2.removeView(view);
-                                                    buttonsLayout1.addView(view);
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            buttonsLayout2.removeView(v);
-                                        }
-                                        subscriptionEntityList.remove(i);
-                                    }
-                                }
-                                saveSubscriptions();
-                                loadingFullPage.setVisibility(View.GONE);
+
+
+
                         }
                     }
         };
+    }
+
+    private void unsubscribeTags(final SubscriptionEntity subscriptionEntity, final View v)
+    {
+        loadingText.setText(getString(R.string.removeTag));
+        loadingFullPage.setVisibility(View.VISIBLE);
+
+        for(int i=0;i<subscriptionEntityList.size();i++)
+        {
+            if(subscriptionEntityList.get(i).tagId==subscriptionEntity.tagId)
+            {
+                List<SubscriptionEntity> subscriptionEntities = new ArrayList<>();
+                subscriptionEntities.add(subscriptionEntity);
+                final int finalI = i;
+
+                RestClient.post().removeListedSubscriptionV2(subscriptionEntities).enqueue(new InksellCallback<Integer>() {
+                    @Override
+                    public void onSuccess(Integer integer) {
+
+                        if(finalI <2) {
+                            buttonsLayout1.removeView(v);
+                            if(subscriptionEntityList.size()>2)
+                            {
+                                View view = buttonsLayout2.findViewById(subscriptionEntityList.get(2).tagId);
+                                if(view!=null)
+                                {
+                                    buttonsLayout2.removeView(view);
+                                    buttonsLayout1.addView(view);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            buttonsLayout2.removeView(v);
+                        }
+                        subscriptionEntityList.remove(finalI);
+                        saveSubscriptions();
+                        loadingFullPage.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                        loadingFullPage.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }
+
+
     }
 
     private void saveSubscriptions()

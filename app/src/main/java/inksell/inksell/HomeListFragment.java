@@ -131,7 +131,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     private RVAdapter rvAdapter;
     private boolean isMap = false;
     private List<PostSummaryEntity> postSummaryList;
-    private TimerHelper timerHelper = new TimerHelper(2000);
+    private TimerHelper timerHelper = new TimerHelper(3000);
     private Map<Marker, PropertyMapEntity> markerPropertyMapEntityMap = new HashMap<>();
     private boolean markerSelected = false;
 
@@ -297,6 +297,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
         if(locationWrapper!=null) {
             locationWrapper.onResume();
         }
+
     }
 
     private Callback<List<PostSummaryEntity>> setListOnResponse() {

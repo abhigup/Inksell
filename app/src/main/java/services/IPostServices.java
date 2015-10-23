@@ -57,9 +57,9 @@ public interface IPostServices {
     @POST("AddSubscriptionV2")
     Call<String> addSubscriptionV2(@Body SubscriptionEntity subscriptionEntity);
 
-    @POST(("RemoveListedSubscriptionV2"))
+    @POST("RemoveListedSubscriptionV2")
     Call<Integer> removeListedSubscriptionV2(@Body List<SubscriptionEntity> subscriptionEntities);
 
-    @POST(("UpdateAllSubscriptionUserUriV2"))
+    @POST("UpdateAllSubscriptionUserUriV2")
     Call<Integer> updateAllSubscriptionUserUriV2(@Body List<SubscriptionEntity> subscriptionEntities);
 }
