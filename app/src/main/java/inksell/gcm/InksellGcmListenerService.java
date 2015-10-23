@@ -1,5 +1,6 @@
 package inksell.gcm;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -36,16 +37,19 @@ public class InksellGcmListenerService extends GcmListenerService {
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
         _notificationManeger = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setAutoCancel(true)
-                        .setContentTitle(senderName + " says:")
-                        .setContentText("\"" + message + "\"")
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setContentTitle(message)
+                        .setContentText(senderName)
                         .setSubText("Recipients: " + recipientNames.replace("#", ","))
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                        .setContentIntent(pendingIntent);
+                        .setContentIntent(pendingIntent)
+                        .addAction(R.drawable.favourite, getString(R.string.emptyFavourites), pendingIntent);
 
         _notificationManeger.notify(NOTIFICATION_ID, builder.build());
     }

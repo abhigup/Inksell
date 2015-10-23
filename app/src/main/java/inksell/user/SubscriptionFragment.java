@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -113,6 +114,10 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TagsEntity tagsEntity = (TagsEntity) parent.getItemAtPosition(position);
 
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+
         if(subscriptionEntityList.size()>=3)
         {
             Utility.ShowToast(R.string.ErrorSubscriptionLimitReached);
@@ -215,16 +220,11 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which)
-                        {
-                            case DialogInterface.BUTTON_POSITIVE:
-
-
-
-
-
-                        }
-                    }
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        unsubscribeTags(subscriptionEntity, v);
+                }
+            }
         };
     }
 
