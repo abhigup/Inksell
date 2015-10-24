@@ -114,9 +114,8 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TagsEntity tagsEntity = (TagsEntity) parent.getItemAtPosition(position);
 
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
+        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
 
         if(subscriptionEntityList.size()>=3)
         {

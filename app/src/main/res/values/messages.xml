@@ -16,7 +16,7 @@
     <string name="subscriptionAddFailure">Could not subscribe. Please try again later.</string>
     <string name="subscriptionAddSuccess">Subscribed successfully.</string>
 
-    <string name="AddToFavourites">Add to favourites</string>
+    <string name="addToFavourites">Add to favourites</string>
 
     <string name="emptyMyAccount">You haven\'t posted anything.\nStart posting now.</string>
     <string name="emptyFavourites">No Favourites saved.</string>

@@ -46,10 +46,11 @@ public class InksellGcmListenerService extends GcmListenerService {
                         .setContentTitle(message)
                         .setContentText(senderName)
                         .setSubText("Recipients: " + recipientNames.replace("#", ","))
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setColor(getResources().getColor(R.color.TitlePrimary))
+                        .setSmallIcon(R.drawable.appicon)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                         .setContentIntent(pendingIntent)
-                        .addAction(R.drawable.favourite, getString(R.string.emptyFavourites), pendingIntent);
+                        .addAction(R.drawable.notify_fav, getString(R.string.addToFavourites), pendingIntent);
 
         _notificationManeger.notify(NOTIFICATION_ID, builder.build());
     }
