@@ -110,7 +110,7 @@ public class EditMyDetails extends BaseActionBarActivity {
                     }
 
                     @Override
-                    public void onError() {
+                    public void onError(ResponseStatus responseStatus) {
                         loadingFullPage.setVisibility(View.GONE);
                     }
                 });
@@ -142,7 +142,7 @@ public class EditMyDetails extends BaseActionBarActivity {
             }
 
             @Override
-            public void onError()
+            public void onError(ResponseStatus responseStatus)
             {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);

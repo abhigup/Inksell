@@ -46,8 +46,7 @@ public class InksellGcmListenerService extends GcmListenerService {
                         .setContentTitle(message)
                         .setContentText(senderName)
                         .setSubText("Recipients: " + recipientNames.replace("#", ","))
-                        .setColor(getResources().getColor(R.color.TitlePrimary))
-                        .setSmallIcon(R.drawable.appicon)
+                        .setSmallIcon(R.drawable.ic_app_icon)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                         .setContentIntent(pendingIntent)
                         .addAction(R.drawable.notify_fav, getString(R.string.addToFavourites), pendingIntent);

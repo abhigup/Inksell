@@ -21,6 +21,7 @@ import utilities.ConfigurationManager;
 import utilities.FavouritesHelper;
 import utilities.LocalStorageHandler;
 import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class StartPage extends Activity {
@@ -64,7 +65,7 @@ public class StartPage extends Activity {
             }
 
             @Override
-            public void onError()
+            public void onError(ResponseStatus responseStatus)
             {
                 NavigationHelper.NavigateTo(Home.class, true);
             }

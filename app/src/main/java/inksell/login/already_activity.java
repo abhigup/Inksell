@@ -14,6 +14,7 @@ import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
 import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class already_activity extends BaseActionBarActivity {
@@ -55,7 +56,7 @@ public class already_activity extends BaseActionBarActivity {
             }
 
             @Override
-            public void onError() {
+            public void onError(ResponseStatus responseStatus) {
 
             }
         });

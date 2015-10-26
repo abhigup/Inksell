@@ -36,6 +36,7 @@ import models.PostSummaryEntity;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class AddMultipleActivity extends BaseActionBarActivity {
@@ -181,7 +182,7 @@ public class AddMultipleActivity extends BaseActionBarActivity {
                 }
 
                 @Override
-                public void onError() {
+                public void onError(ResponseStatus responseStatus) {
                     loadingFullPage.setVisibility(View.GONE);
                 }
             });

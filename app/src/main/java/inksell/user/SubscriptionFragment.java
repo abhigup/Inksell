@@ -32,6 +32,7 @@ import services.InksellCallback;
 import services.RestClient;
 import utilities.EmptyTemplateHelper;
 import utilities.LocalStorageHandler;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class SubscriptionFragment extends BaseFragment implements AdapterView.OnItemClickListener{
@@ -85,7 +86,7 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
             }
 
             @Override
-            public void onError() {
+            public void onError(ResponseStatus responseStatus) {
                 if (failCount < 5) {
                     GetAllSubscriptionTags(failCount + 1);
                 }
@@ -173,7 +174,7 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
             }
 
             @Override
-            public void onError() {
+            public void onError(ResponseStatus responseStatus) {
                 Utility.ShowToast(R.string.subscriptionAddFailure);
                 loadingFullPage.setVisibility(View.GONE);
             }
@@ -266,7 +267,7 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
                     }
 
                     @Override
-                    public void onError() {
+                    public void onError(ResponseStatus responseStatus) {
 
                         loadingFullPage.setVisibility(View.GONE);
                     }

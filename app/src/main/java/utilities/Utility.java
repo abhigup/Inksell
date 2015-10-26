@@ -385,10 +385,12 @@ public class Utility {
         return cal.getTime();
     }
 
-    public static boolean ShouldProcessFurtherAndShowResponseError(ResponseStatus responseStatus)
+    public static ResponseStatusParser ShouldProcessFurtherAndSucceededWithResponseStatus(ResponseStatus responseStatus)
     {
-        int displayMessage;
+        int displayMessage = -1;
+        boolean isSuccess = false;
         boolean processFurther = false;
+
         switch (responseStatus)
         {
             case UserNotRegistered:
@@ -404,7 +406,7 @@ public class Utility {
                 displayMessage = R.string.ErrorUserAlreadyVerified;
                 break;
             case UserSuccessfullyVerified:
-                displayMessage = 1;
+                isSuccess = true;
                 processFurther = true;
                 break;
             case WrongVerificationCode:
@@ -415,123 +417,146 @@ public class Utility {
                 processFurther = true;
                 break;
             case PartialUserAddedSuccess:
-                displayMessage = 1;
+                isSuccess = true;
                 break;
             case PartialUserNotAdded:
-                displayMessage = -1;
+
                 break;
             case ErrorInTransferringDataInVUTable:
-                displayMessage = -1;
+
                 break;
             case UserTableUpdateSuccess:
-                displayMessage = 1;
+                isSuccess = true;
                 break;
             case UserTableNotUpdated:
-                displayMessage = -1;
+
                 break;
             case UserAddedSuccess:
                 displayMessage = R.string.SuccessUserAddedSuccess;
+                isSuccess = true;
                 processFurther = true;
                 break;
             case UserAddedFailed:
                 displayMessage = R.string.ErrorUserAddedFailed;
+                processFurther = true;
                 break;
             case UserNotAuthorized:
                 displayMessage = R.string.ErrorUserNotAuthorized;
+                processFurther = true;
                 break;
             case PostAddedSuccess:
                 displayMessage = R.string.SuccessPostAddedSuccess;
+                isSuccess = true;
                 processFurther = true;
                 break;
             case PostSummaryAdded:
-                displayMessage = 1;
+
                 break;
             case PostSummaryNotAdded:
-                displayMessage = -1;
+
                 break;
             case UserNotExists:
                 displayMessage = R.string.ErrorUserNotExists;
+                processFurther = true;
                 break;
             case ErrorInUpdationOfVerifyUser:
-                displayMessage = -1;
+
                 break;
             case PostSummaryDeletedSuccess:
-                displayMessage = 1;
+                isSuccess = true;
                 break;
             case PostSummaryDeletionFailed:
-                displayMessage = -1;
+
                 break;
             case PostDeletedSuccess:
                 displayMessage = R.string.SuccessPostDeletedSuccess;
+                isSuccess = true;
                 processFurther = true;
                 break;
             case PostDeletionFailed:
                 displayMessage = R.string.ErrorPostDeletionFailed;
+                processFurther = true;
                 break;
             case PostUpdationSuccess:
                 displayMessage = R.string.SuccessPostUpdationSuccess;
+                isSuccess = true;
                 processFurther = true;
                 break;
             case PostUpdationFailed:
                 displayMessage = R.string.ErrorPostUpdationFailed;
+                processFurther = true;
                 break;
             case PostUpdationDenied:
-                displayMessage = -1;
+                processFurther = true;
                 break;
             case CompanyRequestAdded:
                 displayMessage = R.string.SuccessCompanyRequestAdded;
                 processFurther = true;
+                isSuccess = true;
                 break;
             case CompanyRequestFailed:
                 displayMessage = R.string.ErrorCompanyRequestFailed;
+                processFurther = true;
                 break;
             case EmailIdNotPermitted:
                 displayMessage = R.string.ErrorEmailIdNotPermitted;
+                processFurther = true;
                 break;
             case UserNotPermitted:
-                displayMessage = -1;
+
                 break;
             case SubscriptionAdded:
-                displayMessage = 1;
+                isSuccess = true;
                 processFurther = true;
                 break;
             case SubscriptionFailed:
                 displayMessage = R.string.ErrorSubscriptionFailed;
+                processFurther = true;
                 break;
             case UserUriUpdated:
-                displayMessage = 1;
+                isSuccess = true;
+                processFurther = true;
                 break;
             case UserUriNotUpdated:
-                displayMessage = -1;
+                processFurther = true;
                 break;
             case UnsubscribeSuccess:
                 displayMessage = R.string.SucessUnsubscribeSuccess;
                 processFurther = true;
+                isSuccess = true;
                 break;
             case UnSubscribeFailed:
                 displayMessage = R.string.ErrorUnSubscribeFailed;
+                processFurther = true;
                 break;
             case PostSoldOutUpdated:
-                displayMessage = -1;
+                isSuccess = true;
                 processFurther = true;
                 break;
             case PostSoldOutUpdateFailed:
+                processFurther = true;
                 displayMessage = R.string.ErrorPostSoldOutUpdateFailed;
                 break;
             case PostSummarySoldOutUpdate:
-                displayMessage = -1;
+
                 break;
             case PostSummarySoldOutFailed:
-                displayMessage = -1;
+
                 break;
             default:
                 displayMessage = R.string.ErrorUnknownResponseStatus;
         }
 
-        if(displayMessage!=-1 && displayMessage!=1) {
+        if(displayMessage!=-1) {
             Utility.ShowInfoDialog(displayMessage);
         }
-            return processFurther;
+
+        ResponseStatusParser parser = new ResponseStatusParser();
+        parser.isSuccess = isSuccess;
+        parser.responseStatus = responseStatus;
+        parser.processFurther = processFurther;
+
+            return parser;
     }
 
 

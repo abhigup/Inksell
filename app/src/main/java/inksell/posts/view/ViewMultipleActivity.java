@@ -27,6 +27,7 @@ import services.InksellCallback;
 import services.RestClient;
 import utilities.FavouritesHelper;
 import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class ViewMultipleActivity extends BaseActionBarActivity {
@@ -130,7 +131,7 @@ public class ViewMultipleActivity extends BaseActionBarActivity {
             }
 
             @Override
-            public void onError()
+            public void onError(ResponseStatus responseStatus)
             {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);

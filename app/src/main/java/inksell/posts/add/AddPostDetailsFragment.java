@@ -15,7 +15,6 @@ import models.ElectronicEntity;
 import models.FurnitureEntity;
 import models.IPostEntity;
 import models.OtherEntity;
-import models.RealEstateEntity;
 import utilities.Utility;
 
 /**
@@ -59,25 +58,48 @@ public class AddPostDetailsFragment extends BaseAddFragment {
     public void setEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
         postTitle.setEnabled(false);
         switch (categoryType) {
-            case Electronics:
-                ElectronicEntity electronicEntity = (ElectronicEntity)iPostEntity;
-                postTitle.setText(electronicEntity.PostTitle);
+            case Electronics: {
+                ElectronicEntity entity = (ElectronicEntity) iPostEntity;
+                postTitle.setText(entity.PostTitle);
+                usedPeriod.setText(entity.UsedPeriod);
+                expectedPrice.setText(entity.ExpectedPrice);
+                actualPrice.setText(entity.ActualPrice);
+                make.setText(entity.MakeBrand);
+                description.setText(entity.PostDescription);
+            }
                 break;
-            case Automobile:
-                AutomobileEntity automobileEntity = (AutomobileEntity)iPostEntity;
-                postTitle.setText(automobileEntity.PostTitle);
+            case Automobile: {
+                AutomobileEntity entity = (AutomobileEntity) iPostEntity;
+                postTitle.setText(entity.PostTitle);
+                postTitle.setText(entity.PostTitle);
+                usedPeriod.setText(entity.UsedPeriod);
+                expectedPrice.setText(entity.ExpectedPrice);
+                actualPrice.setText(entity.ActualPrice);
+                make.setText(entity.MakeBrand);
+                description.setText(entity.PostDescription);
+            }
                 break;
-            case Furniture:
-                FurnitureEntity furnitureEntity = (FurnitureEntity)iPostEntity;
-                postTitle.setText(furnitureEntity.PostTitle);
+            case Furniture: {
+                FurnitureEntity entity = (FurnitureEntity) iPostEntity;
+                postTitle.setText(entity.PostTitle);
+                postTitle.setText(entity.PostTitle);
+                usedPeriod.setText(entity.UsedPeriod);
+                expectedPrice.setText(entity.ExpectedPrice);
+                actualPrice.setText(entity.ActualPrice);
+                make.setText(entity.MakeBrand);
+                description.setText(entity.PostDescription);
+            }
                 break;
-            case RealState:
-                RealEstateEntity realEstateEntity = (RealEstateEntity)iPostEntity;
-                postTitle.setText(realEstateEntity.PostTitle);
-                break;
-            case Others:
-                OtherEntity otherEntity = (OtherEntity)iPostEntity;
-                postTitle.setText(otherEntity.PostTitle);
+            case Others: {
+                OtherEntity entity = (OtherEntity) iPostEntity;
+                postTitle.setText(entity.PostTitle);
+                postTitle.setText(entity.PostTitle);
+                usedPeriod.setText(entity.UsedPeriod);
+                expectedPrice.setText(entity.ExpectedPrice);
+                actualPrice.setText(entity.ActualPrice);
+                make.setText(entity.MakeBrand);
+                description.setText(entity.PostDescription);
+            }
                 break;
         }
     }

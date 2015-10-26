@@ -10,11 +10,13 @@
     <string name="register">Register</string>
     <string name="verify">Verify</string>
     <string name="submit">Submit</string>
+    <string name="update">Update</string>
+    <string name="updating">Updating...</string>
     <string name="already">Already Registered ?</string>
     <string name="cannot_find">Cannot find company or location ?</string>
     <string name="save_changes">Save Changes</string>
 
-    <string name="saving">Saving</string>
+    <string name="saving">Saving...</string>
     <string name="addTag">Adding subscription</string>
     <string name="removeTag">Removing subscription</string>
 

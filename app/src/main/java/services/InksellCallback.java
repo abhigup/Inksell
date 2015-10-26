@@ -5,6 +5,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 import utilities.ResponseStatus;
+import utilities.ResponseStatusParser;
 import utilities.Utility;
 
 /**
@@ -14,7 +15,7 @@ public abstract class InksellCallback<T> implements Callback<T> {
 
     public abstract void onSuccess(T t);
 
-    public void onError() {
+    public void onError(ResponseStatus responseStatus) {
 
     }
 
@@ -30,8 +31,16 @@ public abstract class InksellCallback<T> implements Callback<T> {
 
             if (Utility.isInteger(data.toString()) && Integer.parseInt(data.toString()) < 1000) {
                 ResponseStatus responseStatus = ResponseStatus.values()[Integer.parseInt(data.toString())];
-                if (Utility.ShouldProcessFurtherAndShowResponseError(responseStatus)) {
-                    this.onSuccess(data);
+                ResponseStatusParser parser = Utility.ShouldProcessFurtherAndSucceededWithResponseStatus(responseStatus);
+
+                if(parser.processFurther) {
+                    if (parser.isSuccess) {
+                        this.onSuccess(data);
+                    }
+                    else
+                    {
+                        this.onError(parser.responseStatus);
+                    }
                 }
             } else {
                 this.onSuccess(data);
@@ -48,6 +57,6 @@ public abstract class InksellCallback<T> implements Callback<T> {
         //ToDo : Remove below after Development
         Utility.ShowInfoDialog(error.getMessage());
 
-        this.onError();
+        this.onError(ResponseStatus.SomeErrorOccured);
     }
 }

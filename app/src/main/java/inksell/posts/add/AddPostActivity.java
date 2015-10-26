@@ -26,6 +26,7 @@ import models.RealEstateEntity;
 import retrofit.Callback;
 import services.InksellCallback;
 import services.RestClient;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class AddPostActivity extends BaseActionBarActivity {
@@ -107,6 +108,7 @@ public class AddPostActivity extends BaseActionBarActivity {
             if(addRealEstateMapFragment!=null) {
                 addRealEstateMapFragment.setData(editableEntity, categoryType);
             }
+            submit.setText(R.string.update);
         }
 
         transaction.commit();
@@ -120,23 +122,28 @@ public class AddPostActivity extends BaseActionBarActivity {
                 loadingFullPage.setVisibility(View.VISIBLE);
                 submit.setEnabled(false);
 
-                switch (categoryType)
+                if(forEdit) {
+                    iPostEntity = editableEntity;
+                }
+                else
                 {
-                    case Others:
-                        iPostEntity = new OtherEntity();
-                        break;
-                    case Electronics:
-                        iPostEntity = new ElectronicEntity();
-                        break;
-                    case Automobile:
-                        iPostEntity = new AutomobileEntity();
-                        break;
-                    case RealState:
-                        iPostEntity = new RealEstateEntity();
-                        break;
-                    case Furniture:
-                        iPostEntity = new FurnitureEntity();
-                        break;
+                    switch (categoryType) {
+                        case Others:
+                            iPostEntity = new OtherEntity();
+                            break;
+                        case Electronics:
+                            iPostEntity = new ElectronicEntity();
+                            break;
+                        case Automobile:
+                            iPostEntity = new AutomobileEntity();
+                            break;
+                        case RealState:
+                            iPostEntity = new RealEstateEntity();
+                            break;
+                        case Furniture:
+                            iPostEntity = new FurnitureEntity();
+                            break;
+                    }
                 }
 
                 boolean isVerified = false;
@@ -221,7 +228,13 @@ public class AddPostActivity extends BaseActionBarActivity {
             return;
         }
 
-        loadingText.setText("Saving Post");
+        if(forEdit)
+        {
+            loadingText.setText(getString(R.string.updating));
+        }
+        else {
+            loadingText.setText(getString(R.string.saving));
+        }
         postImages = imagesUrl;
         switch (categoryType)
         {
@@ -230,7 +243,12 @@ public class AddPostActivity extends BaseActionBarActivity {
                 title = entity.PostTitle;
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
-                RestClient.post().addOtherPost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                if(forEdit) {
+                    RestClient.post().updateOtherPost(entity, AppData.UserGuid).enqueue(addPost());
+                }
+                else {
+                    RestClient.post().addOtherPost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                }
             }
                 break;
             case Automobile: {
@@ -238,7 +256,12 @@ public class AddPostActivity extends BaseActionBarActivity {
                 title = entity.PostTitle;
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
-                RestClient.post().addAutomobilePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                if(forEdit) {
+                    RestClient.post().updateAutomobilePost(entity, AppData.UserGuid).enqueue(addPost());
+                }
+                else {
+                    RestClient.post().addAutomobilePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                }
             }
                 break;
             case Electronics:{
@@ -246,7 +269,12 @@ public class AddPostActivity extends BaseActionBarActivity {
                 title = entity.PostTitle;
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
-                RestClient.post().addElectronicsPost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                if(forEdit) {
+                    RestClient.post().updateElectronicsPost(entity, AppData.UserGuid).enqueue(addPost());
+                }
+                else {
+                    RestClient.post().addElectronicsPost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                }
             }
                 break;
             case Furniture:{
@@ -254,7 +282,12 @@ public class AddPostActivity extends BaseActionBarActivity {
                 title = entity.PostTitle;
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
-                RestClient.post().addFurniturePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                if(forEdit) {
+                    RestClient.post().updateFurniturePost(entity, AppData.UserGuid).enqueue(addPost());
+                }
+                else {
+                    RestClient.post().addFurniturePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                }
             }
                 break;
             case RealState:{
@@ -262,7 +295,12 @@ public class AddPostActivity extends BaseActionBarActivity {
                 title = entity.PostTitle;
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
-                RestClient.post().addRealEstatePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                if(forEdit) {
+                    RestClient.post().updateRealEstatePost(entity, AppData.UserGuid).enqueue(addPost());
+                }
+                else {
+                    RestClient.post().addRealEstatePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                }
             }
                 break;
         }
@@ -296,7 +334,7 @@ public class AddPostActivity extends BaseActionBarActivity {
             }
 
             @Override
-            public void onError()
+            public void onError(ResponseStatus responseStatus)
             {
                 loadingFullPage.setVisibility(View.GONE);
                 submit.setEnabled(true);

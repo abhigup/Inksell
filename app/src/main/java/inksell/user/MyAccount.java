@@ -159,7 +159,7 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
             }
 
             @Override
-            public void onError() {
+            public void onError(ResponseStatus responseStatus) {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);
             }
@@ -231,7 +231,7 @@ public class MyAccount extends BaseActionBarActivity implements SwipableRecycler
             }
 
             @Override
-            public void onError()
+            public void onError(ResponseStatus responseStatus)
             {
                 Utility.ShowInfoDialog(R.string.deletePostFailure);
             }

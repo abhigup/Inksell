@@ -20,6 +20,7 @@ import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
 import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class register_activity extends BaseActionBarActivity implements AdapterView.OnItemSelectedListener {
@@ -78,7 +79,7 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
             }
 
             @Override
-            public void onError() {
+            public void onError(ResponseStatus responseStatus) {
 
             }
         });
@@ -112,7 +113,7 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
             }
 
             @Override
-            public void onError() {
+            public void onError(ResponseStatus responseStatus) {
 
             }
         });
@@ -144,7 +145,7 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
             }
 
             @Override
-            public void onError() {
+            public void onError(ResponseStatus responseStatus) {
 
             }
         });

@@ -33,13 +33,6 @@ import utilities.Utility;
 
 public class AddRealEstateDetailsFragment extends BaseAddFragment {
 
-
-    enum PropertyType
-    {
-        rent,
-        sale
-    }
-
     Calendar myCalendar = Calendar.getInstance();
 
     private boolean isRent = true;
@@ -146,7 +139,32 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
 
     @Override
     public void setEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
+        title.setEnabled(false);
+        switch (categoryType) {
+            case RealState: {
+                RealEstateEntity entity = (RealEstateEntity) iPostEntity;
+                title.setText(entity.PostTitle);
+                rent.setText(entity.RentPrice);
+                maintenance.setText(entity.MaintenancePrice);
+                bhk.setText(entity.Bhk);
+                availableFrom.setText(entity.AvailableFrom);
+                area.setText(entity.Area);
+                furnishingSpinner.setSelection(entity.FurnishedType);
+                isWater = entity.Is24x7Water;
+                isInternet = entity.IsInternet;
+                isParking = entity.IsParking;
+                isPower = entity.IsPowerBackup;
+                isRent = entity.IsRent;
 
+                description.setText(entity.PostDescription);
+
+                toggleInternetButton();
+                toggleParkingButton();
+                togglePowerButton();
+                toggleWaterButton();
+                toggleRentSale();
+            }
+        }
     }
 
 
@@ -272,19 +290,21 @@ public class AddRealEstateDetailsFragment extends BaseAddFragment {
                 toggleLoopBack = true;
                 if (buttonView == rent_btn) {
                     sale_btn.setChecked(false);
-                    toggleRentSale(PropertyType.rent);
+                    isRent = true;
+                    toggleRentSale();
                 }
                 if (buttonView == sale_btn) {
                     rent_btn.setChecked(false);
-                    toggleRentSale(PropertyType.sale);
+                    isRent = false;
+                    toggleRentSale();
                 }
             }
         }
     };
 
-    private void toggleRentSale(PropertyType propertyType)
+    private void toggleRentSale()
     {
-        if(propertyType == PropertyType.sale)
+        if(!isRent)
         {
             title.setText("Sale");
         }

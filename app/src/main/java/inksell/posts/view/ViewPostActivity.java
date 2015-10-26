@@ -40,6 +40,7 @@ import services.RestClient;
 import utilities.ConfigurationManager;
 import utilities.FavouritesHelper;
 import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class ViewPostActivity extends BaseActionBarActivity {
@@ -241,7 +242,7 @@ public class ViewPostActivity extends BaseActionBarActivity {
             }
 
             @Override
-            public void onError()
+            public void onError(ResponseStatus responseStatus)
             {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);

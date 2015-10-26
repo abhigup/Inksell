@@ -50,6 +50,21 @@ public interface IPostServices {
     @POST("addElectronicsPost/{isMultiple}")
     Call<Integer> addElectronicsPost(@Body ElectronicEntity iPostEntity, @Path("isMultiple") Integer isMultiple);
 
+    @POST("UpdateOtherPost/{userGuid}")
+    Call<Integer> updateOtherPost(@Body OtherEntity iPostEntity, @Path("userGuid") String userGuid);
+
+    @POST("UpdateAutomobilePost/{userGuid}")
+    Call<Integer> updateAutomobilePost(@Body AutomobileEntity iPostEntity, @Path("userGuid") String userGuid);
+
+    @POST("UpdateFurniturePost/{userGuid}")
+    Call<Integer> updateFurniturePost(@Body FurnitureEntity iPostEntity, @Path("userGuid") String userGuid);
+
+    @POST("UpdateRealEstatePost/{userGuid}")
+    Call<Integer> updateRealEstatePost(@Body RealEstateEntity iPostEntity, @Path("userGuid") String userGuid);
+
+    @POST("UpdateElectronicsPost/{userGuid}")
+    Call<Integer> updateElectronicsPost(@Body ElectronicEntity iPostEntity, @Path("userGuid") String userGuid);
+
     @POST("addMultipleItem")
     Call<Integer> addMultiplePost(@Body MultiplePostDetailsEntity multiplePostDetailsEntity);
 

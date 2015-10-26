@@ -17,6 +17,7 @@ import models.SubscriptionEntity;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
+import utilities.ResponseStatus;
 
 /**
  * Created by Abhinav on 21/10/15.
@@ -66,7 +67,7 @@ public class RegistrationIntentService extends IntentService {
 
                 }
                 @Override
-                public void onError()
+                public void onError(ResponseStatus responseStatus)
                 {
 
                 }

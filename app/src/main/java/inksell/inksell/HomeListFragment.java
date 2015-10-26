@@ -59,6 +59,7 @@ import utilities.FavouritesHelper;
 import utilities.LocalStorageHandler;
 import utilities.LocationWrapper;
 import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.TimerHelper;
 import utilities.Utility;
 
@@ -328,7 +329,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
             }
 
             @Override
-            public void onError()
+            public void onError(ResponseStatus responseStatus)
             {
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);

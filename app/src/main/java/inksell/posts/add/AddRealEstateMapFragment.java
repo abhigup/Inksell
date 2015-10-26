@@ -72,7 +72,14 @@ public class AddRealEstateMapFragment extends BaseAddFragment implements OnMapRe
 
     @Override
     public void setEditableView(LayoutInflater inflater, View view, Bundle savedInstanceState) {
-
+        RealEstateEntity entity = (RealEstateEntity) iPostEntity;
+        if(entity.latitude!=0 && entity.longitude!=0) {
+            setMapData(new LatLng(entity.latitude, entity.longitude), entity.PropertyAddress);
+        }
+        else
+        {
+            propertyAddress.setText(entity.PropertyAddress);
+        }
     }
 
     @Override

@@ -79,7 +79,7 @@ public class verify_activity extends BaseActionBarActivity {
             }
 
             @Override
-            public void onError() {
+            public void onError(ResponseStatus responseStatus) {
 
             }
         });
