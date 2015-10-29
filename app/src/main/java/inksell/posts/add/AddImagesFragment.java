@@ -54,6 +54,7 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
 
     private ImageGridAdapter imageGridAdapter;
     private EditImageGridAdapter editImageGridAdapter;
+    private UploadImages uploadImagesAdapter;
 
     @Override
     public int getViewResId() {
@@ -233,10 +234,21 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
             ((AddPostActivity) getActivity()).onImageUploaded(true, new ArrayList<String>());
         }
         else {
-            new UploadImages(this).execute(imageGridAdapter.getImageUri());
+            uploadImagesAdapter = new UploadImages(this);
+            uploadImagesAdapter.execute(imageGridAdapter.getImageUri());
         }
 
         return true;
+    }
+
+    public boolean isUploading()
+    {
+        return (uploadImagesAdapter!=null);
+    }
+
+    public void stopUpload()
+    {
+        uploadImagesAdapter.cancel(true);
     }
 
     private Uri getCacheImagesUri(Uri imageUri)
@@ -266,6 +278,6 @@ public class AddImagesFragment extends BaseAddFragment implements ImageGridDelet
 
     @Override
     public void onUpdateSuccess(List<String> imageUrls) {
-        ((AddPostActivity)getActivity()).onImageUploaded(imageUrls==null?false:true, imageUrls);
+        ((AddPostActivity)getActivity()).onImageUploaded(imageUrls == null ? false : true, imageUrls);
     }
 }

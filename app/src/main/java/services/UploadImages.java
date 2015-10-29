@@ -29,14 +29,21 @@ public class UploadImages extends AsyncTask<List<Uri>, Integer, List<String>>{
     }
 
     protected void onPostExecute(List<String> imageUrls) {
-        iUploadListener.onUpdateSuccess(imageUrls);
+        if(!isCancelled()) {
+            iUploadListener.onUpdateSuccess(imageUrls);
+        }
     }
 
     @Override
     protected List<String> doInBackground(List<Uri>... params) {
         List<String> urls = uploadImages(params[0]);
+
+        if (isCancelled())
+            return null;
+
         return urls;
     }
+
 
     private List<String> uploadImages(List<Uri> imageEntityList)
     {
@@ -46,6 +53,8 @@ public class UploadImages extends AsyncTask<List<Uri>, Integer, List<String>>{
             imageUrls = new ArrayList<>();
 
             for(int i=0;i<imageEntityList.size();i++) {
+                if(isCancelled())
+                    return null;
                 // Retrieve storage account from connection-string.
                 CloudStorageAccount storageAccount = CloudStorageAccount.parse(InksellConstants.storageConnectionString);
 

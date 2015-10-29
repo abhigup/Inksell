@@ -23,6 +23,7 @@ import models.IPostEntity;
 import models.OtherEntity;
 import models.PostSummaryEntity;
 import models.RealEstateEntity;
+import retrofit.Call;
 import retrofit.Callback;
 import services.InksellCallback;
 import services.RestClient;
@@ -53,6 +54,8 @@ public class AddPostActivity extends BaseActionBarActivity {
     BaseAddFragment imagesFragment;
     BaseAddFragment addPostDetailsFragment;
     BaseAddFragment addRealEstateMapFragment;
+
+    Call<Integer> addUpdateCall = null;
 
     @Override
     protected void initDataAndLayout() {
@@ -199,6 +202,15 @@ public class AddPostActivity extends BaseActionBarActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
+
+                            if(((AddImagesFragment)imagesFragment).isUploading()) {
+                                ((AddImagesFragment) imagesFragment).stopUpload();
+                            }
+
+                            if(addUpdateCall!=null) {
+                                addUpdateCall.cancel();
+                            }
+
                             finish();
                             break;
                     }
@@ -235,6 +247,7 @@ public class AddPostActivity extends BaseActionBarActivity {
         else {
             loadingText.setText(getString(R.string.saving));
         }
+
         postImages = imagesUrl;
         switch (categoryType)
         {
@@ -244,10 +257,10 @@ public class AddPostActivity extends BaseActionBarActivity {
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
                 if(forEdit) {
-                    RestClient.post().updateOtherPost(entity, AppData.UserGuid).enqueue(addPost());
+                    addUpdateCall = RestClient.post().updateOtherPost(entity, AppData.UserGuid);
                 }
                 else {
-                    RestClient.post().addOtherPost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                    addUpdateCall = RestClient.post().addOtherPost(entity, isMultiple ? 1 : 0);
                 }
             }
                 break;
@@ -257,10 +270,10 @@ public class AddPostActivity extends BaseActionBarActivity {
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
                 if(forEdit) {
-                    RestClient.post().updateAutomobilePost(entity, AppData.UserGuid).enqueue(addPost());
+                    addUpdateCall = RestClient.post().updateAutomobilePost(entity, AppData.UserGuid);
                 }
                 else {
-                    RestClient.post().addAutomobilePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                    addUpdateCall = RestClient.post().addAutomobilePost(entity, isMultiple ? 1 : 0);
                 }
             }
                 break;
@@ -270,10 +283,10 @@ public class AddPostActivity extends BaseActionBarActivity {
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
                 if(forEdit) {
-                    RestClient.post().updateElectronicsPost(entity, AppData.UserGuid).enqueue(addPost());
+                    addUpdateCall = RestClient.post().updateElectronicsPost(entity, AppData.UserGuid);
                 }
                 else {
-                    RestClient.post().addElectronicsPost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                    addUpdateCall = RestClient.post().addElectronicsPost(entity, isMultiple ? 1 : 0);
                 }
             }
                 break;
@@ -283,10 +296,10 @@ public class AddPostActivity extends BaseActionBarActivity {
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
                 if(forEdit) {
-                    RestClient.post().updateFurniturePost(entity, AppData.UserGuid).enqueue(addPost());
+                    addUpdateCall = RestClient.post().updateFurniturePost(entity, AppData.UserGuid);
                 }
                 else {
-                    RestClient.post().addFurniturePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                    addUpdateCall = RestClient.post().addFurniturePost(entity, isMultiple ? 1 : 0);
                 }
             }
                 break;
@@ -296,14 +309,16 @@ public class AddPostActivity extends BaseActionBarActivity {
                 entity.PostImagesUrl = imagesUrl;
                 entity.UserGuid = AppData.UserGuid;
                 if(forEdit) {
-                    RestClient.post().updateRealEstatePost(entity, AppData.UserGuid).enqueue(addPost());
+                    addUpdateCall = RestClient.post().updateRealEstatePost(entity, AppData.UserGuid);
                 }
                 else {
-                    RestClient.post().addRealEstatePost(entity, isMultiple ? 1 : 0).enqueue(addPost());
+                    addUpdateCall = RestClient.post().addRealEstatePost(entity, isMultiple ? 1 : 0);
                 }
             }
                 break;
         }
+
+        addUpdateCall.enqueue(addPost());
     }
 
     private Callback<Integer> addPost() {
