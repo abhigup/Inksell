@@ -395,15 +395,19 @@ public class Utility {
         {
             case UserNotRegistered:
                 displayMessage = R.string.ErrorUserNotExists;
+                processFurther = true;
                 break;
             case UserAlreadyExist:
                 displayMessage = R.string.ErrorUserAlreadyExist;
+                processFurther = true;
                 break;
             case UserAlreadyRegistered:
                 displayMessage = R.string.ErrorUserAlreadyRegistered;
+                processFurther = true;
                 break;
             case UserAlreadyVerified:
                 displayMessage = R.string.ErrorUserAlreadyVerified;
+                processFurther = true;
                 break;
             case UserSuccessfullyVerified:
                 isSuccess = true;
@@ -411,6 +415,7 @@ public class Utility {
                 break;
             case WrongVerificationCode:
                 displayMessage = R.string.ErrorWrongVerificationCode;
+                processFurther = true;
                 break;
             case SomeErrorOccured:
                 displayMessage = R.string.ErrorSomeErrorOccured;
@@ -574,7 +579,7 @@ public class Utility {
                     .endConfig()
                     .rect();
 
-            TextDrawable userImage = builder.build(PostedBy.substring(0,1), color2);
+            TextDrawable userImage = builder.build(PostedBy.trim().substring(0,1), color2);
 
             imageView.setImageDrawable(userImage);
         }

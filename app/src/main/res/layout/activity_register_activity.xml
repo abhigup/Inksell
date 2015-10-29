@@ -1,18 +1,22 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
     tools:context="inksell.login.register_activity">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
 
 
 
     <EditText
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:hint="Name"
         android:singleLine="true"
         android:ems="10"
@@ -22,13 +26,13 @@
     <Spinner
         android:layout_height="50dp"
         android:id="@+id/spncompany"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:spinnerMode="dialog" />
 
     <Spinner
         android:layout_height="50dp"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:id="@+id/spnlocation"
         android:layout_marginTop="10dp"
         android:spinnerMode="dialog" />
@@ -44,15 +48,13 @@
             android:layout_marginTop="10dp"
             android:id="@+id/txtemail"
             android:hint="e-mail"
-            android:ems="10"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:singleLine="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
+            android:layout_weight="0.8"
             android:id="@+id/txtdomain"/>
     </LinearLayout>
 
@@ -81,3 +83,10 @@
     </Button>
 
 </LinearLayout>
+
+    <include
+        layout="@layout/loading_fullpage_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

@@ -26,6 +26,7 @@ public abstract class InksellCallback<T> implements Callback<T> {
             T data = response.body();
             if (data == null) {
                 Utility.ShowInfoDialog(R.string.ErrorSomeErrorOccured);
+                onError(ResponseStatus.SomeErrorOccured);
                 return;
             }
 

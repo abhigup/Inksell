@@ -10,8 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import Constants.AppData;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -21,6 +19,7 @@ import models.UserEntity;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ResponseStatus;
+import utilities.Utility;
 
 public class EditMyDetails extends BaseActionBarActivity {
 
@@ -154,8 +153,8 @@ public class EditMyDetails extends BaseActionBarActivity {
 
     public void initUserData()
     {
-        Picasso.with(this).load(AppData.UserData.UserImageUrl)
-                .into(myImage);
+
+        Utility.setUserPic(myImage, AppData.UserData.UserImageUrl, AppData.UserData.Username);
 
         myName.setText(AppData.UserData.Username);
         myEmail.setText(AppData.UserData.CorporateEmail);

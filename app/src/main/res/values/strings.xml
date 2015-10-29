@@ -8,7 +8,9 @@
     <string name="action_clearAll">Clear All</string>
 
     <string name="register">Register</string>
+    <string name="registering">Registering...</string>
     <string name="verify">Verify</string>
+    <string name="verifying">Verifying...</string>
     <string name="submit">Submit</string>
     <string name="update">Update</string>
     <string name="updating">Updating...</string>
@@ -16,6 +18,7 @@
     <string name="cannot_find">Cannot find company or location ?</string>
     <string name="save_changes">Save Changes</string>
 
+    <string name="addingNewCompany">Adding new company...</string>
     <string name="saving">Saving...</string>
     <string name="addTag">Adding subscription</string>
     <string name="removeTag">Removing subscription</string>

@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -43,6 +44,12 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
     @InjectView(R.id.txtdomain)
     TextView domain;
 
+    @InjectView(R.id.loading_full_page)
+    RelativeLayout loadingFullPage;
+
+    @InjectView(R.id.loading_Text)
+    TextView loadingText;
+
     @Override
     protected void initDataAndLayout() {
 
@@ -61,6 +68,9 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
 
         locationSpinner.setAdapter(locationAdapter);
         locationSpinner.setOnItemSelectedListener(this);
+
+        loadingFullPage.setVisibility(View.GONE);
+        loadingText.setText(getString(R.string.registering));
     }
 
     @Override
@@ -103,18 +113,22 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
         }
 
         entity.CorporateEmail = entity.CorporateEmail + domain.getText();
+
+        loadingFullPage.setVisibility(View.VISIBLE);
         RestClient.post().registerUser(entity).enqueue(new InksellCallback<String>() {
             @Override
             public void onSuccess(String s) {
                 if (Utility.GetUUID(s) != null) {
                     LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
+                    LocalStorageHandler.SaveData(StorageConstants.IsAlreadyRegistered, false);
                     NavigationHelper.NavigateTo(verify_activity.class);
                 }
+                loadingFullPage.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ResponseStatus responseStatus) {
-
+                loadingFullPage.setVisibility(View.GONE);
             }
         });
     }
@@ -146,7 +160,6 @@ public class register_activity extends BaseActionBarActivity implements AdapterV
 
             @Override
             public void onError(ResponseStatus responseStatus) {
-
             }
         });
     }

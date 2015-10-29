@@ -1,10 +1,8 @@
 package inksell.login;
 
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import Constants.StorageConstants;
 import butterknife.InjectView;
@@ -22,6 +20,12 @@ public class already_activity extends BaseActionBarActivity {
     @InjectView(R.id.AlreadyTextEmail)
     TextView txtEmail;
 
+    @InjectView(R.id.loading_full_page)
+    RelativeLayout loadingFullPage;
+
+    @InjectView(R.id.loading_Text)
+    TextView loadingText;
+
     @Override
     protected void initDataAndLayout() {
 
@@ -29,6 +33,8 @@ public class already_activity extends BaseActionBarActivity {
 
     @Override
     protected void initActivity() {
+        loadingFullPage.setVisibility(View.GONE);
+        loadingText.setText(getString(R.string.verifying));
     }
 
     @Override
@@ -44,20 +50,21 @@ public class already_activity extends BaseActionBarActivity {
             return;
         }
 
+        loadingFullPage.setVisibility(View.VISIBLE);
         RestClient.get().registerUserAgain(email).enqueue(new InksellCallback<String>() {
             @Override
             public void onSuccess(String s) {
                 if(Utility.GetUUID(s)!=null) {
                     LocalStorageHandler.SaveData(StorageConstants.UserUUID, s);
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("isAlreadyRegistered", "true");
-                    NavigationHelper.NavigateTo(verify_activity.class, map);
+                    LocalStorageHandler.SaveData(StorageConstants.IsAlreadyRegistered, true);
+                    NavigationHelper.NavigateTo(verify_activity.class);
                 }
+                loadingFullPage.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ResponseStatus responseStatus) {
-
+                loadingFullPage.setVisibility(View.GONE);
             }
         });
     }

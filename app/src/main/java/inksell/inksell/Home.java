@@ -11,9 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import Constants.AppData;
+import Constants.StorageConstants;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import enums.CategoryType;
@@ -21,11 +23,14 @@ import inksell.common.BaseActionBarActivity;
 import inksell.search.SearchResultsActivity;
 import inksell.user.MyAccount;
 import inksell.user.SubscriptionFragment;
+import models.SubscriptionEntity;
 import models.UserEntity;
+import retrofit.Callback;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
 import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class Home extends BaseActionBarActivity{
@@ -85,8 +90,8 @@ public class Home extends BaseActionBarActivity{
                 navHeadEmail.setText(userEntity.CorporateEmail);
                 navHeadName.setText(userEntity.Username);
 
-                Picasso.with(getApplicationContext()).load(userEntity.UserImageUrl)
-                        .into(circleView);
+                Utility.setUserPic(circleView, AppData.UserData.UserImageUrl, AppData.UserData.Username);
+
             }
         });
 
@@ -151,10 +156,38 @@ public class Home extends BaseActionBarActivity{
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         LocalStorageHandler.ClearAll();
+                        SubscriptionEntity[] subscriptionEntities = LocalStorageHandler.GetData(StorageConstants.SubscriptionTagEntities, SubscriptionEntity[].class);
+                        if(subscriptionEntities!=null && subscriptionEntities.length>0)
+                        {
+                            RestClient.post().removeListedSubscriptionV2(new ArrayList(Arrays.asList(subscriptionEntities))).enqueue(logoutCallBack());
+                        }
+                        else {
+                            logoutSucess();
+                        }
                         break;
                 }
             }
         };
+    }
+
+    private Callback logoutCallBack() {
+        return new InksellCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer response) {
+                logoutSucess();
+            }
+
+            @Override
+            public void onError(ResponseStatus responseStatus) {
+                Utility.ShowToast(R.string.logoutFailure);
+            }
+        };
+    }
+
+    private void logoutSucess()
+    {
+        Utility.ShowToast(R.string.logoutSuccess);
+        NavigationHelper.NavigateTo(StartPage.class, true);
     }
 
     @Override

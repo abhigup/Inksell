@@ -1,6 +1,7 @@
 package inksell.login;
 
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import Constants.AppData;
@@ -24,6 +25,12 @@ public class verify_activity extends BaseActionBarActivity {
     @InjectView(R.id.verifyTextCode)
     TextView txtCode;
 
+    @InjectView(R.id.loading_full_page)
+    RelativeLayout loadingFullPage;
+
+    @InjectView(R.id.loading_Text)
+    TextView loadingText;
+
     @Override
     protected void initDataAndLayout() {
 
@@ -37,6 +44,11 @@ public class verify_activity extends BaseActionBarActivity {
         {
             guid = uuid;
         }
+
+        isAlreadyRegistered = Boolean.parseBoolean(LocalStorageHandler.GetData(StorageConstants.IsAlreadyRegistered, String.class));
+
+        loadingFullPage.setVisibility(View.GONE);
+        loadingText.setText(getString(R.string.verifying));
     }
 
     @Override
@@ -44,22 +56,11 @@ public class verify_activity extends BaseActionBarActivity {
         return R.layout.activity_verify_activity;
     }
 
-    @Override
-    protected void setIntentExtras()
-    {
-        isAlreadyRegistered = Boolean.parseBoolean(this.intentExtraMap.get("isAlreadyRegistered").toString());
-    }
-
     public void verify_click(View view) {
         if(Utility.IsStringNullorEmpty(guid))
         {
             Utility.ShowInfoDialog(R.string.ErrorNotRegistered);
-            isAlreadyRegistered = false;
             return;
-        }
-        else
-        {
-            isAlreadyRegistered = true;
         }
 
         if(Utility.IsStringNullorEmpty(txtCode.getText().toString()))
@@ -67,6 +68,8 @@ public class verify_activity extends BaseActionBarActivity {
             Utility.ShowInfoDialog(R.string.ErrorVerifyEmptyCode);
             return;
         }
+
+        loadingFullPage.setVisibility(View.VISIBLE);
         RestClient.get().verifyNewUser(guid, txtCode.getText().toString(), isAlreadyRegistered?1:0).enqueue(new InksellCallback<Integer>() {
             @Override
             public void onSuccess(Integer integer) {
@@ -76,11 +79,12 @@ public class verify_activity extends BaseActionBarActivity {
                     AppData.UserGuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
                     NavigationHelper.NavigateTo(Home.class, true);
                 }
+                loadingFullPage.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(ResponseStatus responseStatus) {
-
+                loadingFullPage.setVisibility(View.GONE);
             }
         });
     }
