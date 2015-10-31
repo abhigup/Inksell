@@ -13,7 +13,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/sad"
             android:id="@+id/empty_image"/>
 
         <TextView

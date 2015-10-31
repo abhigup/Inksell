@@ -22,5 +22,6 @@
 
     <color name="IconColor">#F5554a</color>
 
+    <color name="green">#4CAF50</color>
     <color name="labelTextColor">#F57F17</color>
 </resources>

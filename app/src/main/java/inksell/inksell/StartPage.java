@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import java.util.UUID;
 
@@ -18,7 +19,6 @@ import models.UserEntity;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ConfigurationManager;
-import utilities.FavouritesHelper;
 import utilities.LocalStorageHandler;
 import utilities.NavigationHelper;
 import utilities.ResponseStatus;
@@ -28,6 +28,9 @@ public class StartPage extends Activity {
 
     @InjectView(R.id.start_layout_buttons)
     LinearLayout startLayout;
+
+    @InjectView(R.id.start_progess)
+    ProgressBar startProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +47,16 @@ public class StartPage extends Activity {
         if(UserGUID !=null
             && isUserVerified==true)
         {
-            AppData.UserGuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
-            FavouritesHelper.setFavourites();
-            loadUserData();
+            ConfigurationManager.setLocalData();
+
+            if(AppData.UserData==null) {
+                startProgressBar.setVisibility(View.VISIBLE);
+                loadUserData();
+            }
+            else
+            {
+                NavigationHelper.NavigateTo(Home.class, true);
+            }
             startLayout.setVisibility(View.GONE);
         }
         else
@@ -61,12 +71,14 @@ public class StartPage extends Activity {
             @Override
             public void onSuccess(UserEntity userEntity) {
                 AppData.UserData = userEntity;
+                LocalStorageHandler.SaveData(StorageConstants.UserData, userEntity);
+                startProgressBar.setVisibility(View.GONE);
                 NavigationHelper.NavigateTo(Home.class, true);
             }
 
             @Override
-            public void onError(ResponseStatus responseStatus)
-            {
+            public void onError(ResponseStatus responseStatus) {
+                startProgressBar.setVisibility(View.GONE);
                 NavigationHelper.NavigateTo(Home.class, true);
             }
         });

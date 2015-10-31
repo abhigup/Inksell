@@ -126,17 +126,31 @@ public class Utility {
         );
     }
 
-    public static void ShowToast(String message) {
+    public static void ShowToast(String message, int color) {
         Context context = ConfigurationManager.CurrentActivityContext;
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, message, duration);
+        if(color!=-1) {
+            View toastView = toast.getView();
+            toastView.setBackgroundResource(color);
+        }
         toast.show();
+    }
+
+    public static void ShowToast(String string)
+    {
+        ShowToast(string, -1);
     }
 
     public static void ShowToast(int stringResource)
     {
-        ShowToast(ConfigurationManager.CurrentActivityContext.getString(stringResource));
+        ShowToast(ConfigurationManager.CurrentActivityContext.getString(stringResource), -1);
+    }
+
+    public static void ShowToast(int stringResource, int color)
+    {
+        ShowToast(ConfigurationManager.CurrentActivityContext.getString(stringResource), color);
     }
 
     public static int GetPixelsFromDp(int dp) {
@@ -553,7 +567,13 @@ public class Utility {
         }
 
         if(displayMessage!=-1) {
-            Utility.ShowInfoDialog(displayMessage);
+            if(isSuccess)
+            {
+                Utility.ShowToast(displayMessage, R.color.green);
+            }
+            else {
+                Utility.ShowInfoDialog(displayMessage);
+            }
         }
 
         ResponseStatusParser parser = new ResponseStatusParser();
@@ -799,11 +819,12 @@ public class Utility {
                         .show();
             } else {
                 // Log.i(TAG, "This device is not supported.");
-                Utility.ShowToast("This device is not supported.");
+                Utility.ShowToast(R.string.DeviceNotSupported);
             }
             return false;
         }
         return true;
     }
+
 
 }

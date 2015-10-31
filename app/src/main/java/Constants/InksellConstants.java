@@ -30,4 +30,5 @@ public class InksellConstants {
                     "AccountName=inksell;" +
                     "AccountKey=r6nE+8icgTm468ie3pwNSY4NKP6MlGeQ2KtuajknKBsAh/uIrd/NSBYpBSB2ZT/IzvisFfwGE1zFcoPb+38kKA==";
 
+    public static final String NotificationAddToFavourites = "AddToFavourites";
 }

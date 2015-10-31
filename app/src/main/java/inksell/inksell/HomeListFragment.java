@@ -291,6 +291,8 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
     public void onResume() {
         super.onResume();
 
+
+
         if(rvAdapter!=null) {
             postSummaryList = FavouritesHelper.setFavourites(postSummaryList);
             rvAdapter.updateFavourite(postSummaryList);

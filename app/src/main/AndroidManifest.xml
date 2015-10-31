@@ -134,6 +134,15 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="inksell.user.InksellBroadcastReceiver">
+
+            <intent-filter>
+                <action android:name="AddToFavourites">
+                </action>
+            </intent-filter>
+
+        </receiver>
+
         <service
             android:name="inksell.gcm.InksellGcmListenerService"
             android:exported="false" >

@@ -8,7 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
@@ -24,11 +28,12 @@ import models.CategoryEntity;
 import models.LocationEntity;
 import models.PostSummaryEntity;
 import models.SearchEntity;
-import retrofit.Callback;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.ConfigurationManager;
+import utilities.EmptyTemplateHelper;
 import utilities.NavigationHelper;
+import utilities.ResponseStatus;
 import utilities.Utility;
 
 public class SearchResultsActivity extends BaseActionBarActivity {
@@ -39,6 +44,8 @@ public class SearchResultsActivity extends BaseActionBarActivity {
     private RVAdapter rvAdapter;
 
     private List<PostSummaryEntity> postSummaryList;
+
+    EmptyTemplateHelper emptyTemplateHelper;
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
@@ -52,6 +59,16 @@ public class SearchResultsActivity extends BaseActionBarActivity {
     @InjectView(R.id.search_recycler_view)
     RecyclerView rv;
 
+    @InjectView(R.id.loading_spinner)
+    ProgressBar progressBar;
+
+    @InjectView(R.id.layout_error_tryAgain)
+    RelativeLayout layoutErrorTryAgain;
+
+    @InjectView(R.id.tryAgainButton)
+    Button tryAgainButton;
+
+    String query;
 
     @Override
     protected void initDataAndLayout() {
@@ -62,6 +79,17 @@ public class SearchResultsActivity extends BaseActionBarActivity {
 
     @Override
     protected void initActivity() {
+
+        emptyTemplateHelper = new EmptyTemplateHelper(this);
+        emptyTemplateHelper.setEmptyTemplate(R.drawable.sad, R.string.emptySearchResults);
+
+        progressBar.setVisibility(View.GONE);
+        tryAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                queryListener().onQueryTextSubmit(query);
+            }
+        });
 
         // Set a Toolbar to replace the ActionBar.
         setSupportActionBar(toolbar);
@@ -78,6 +106,8 @@ public class SearchResultsActivity extends BaseActionBarActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(layoutManager);
+
+
     }
 
     @Override
@@ -131,10 +161,14 @@ public class SearchResultsActivity extends BaseActionBarActivity {
             }
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String q) {
                 // this is your adapter that will be filtered
+                query = q;
                 if(locationAdapter.getCount()>0) {
-                    RestClient.post().searchTextV2(AppData.UserData.CopmanyId, AppData.UserData.LocationId, ((CategoryEntity) spnCategory.getSelectedItem()).type.ordinal(), AppData.UserGuid, query).enqueue(searchCallback());
+                    emptyTemplateHelper.setLayoutVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    rv.setVisibility(View.GONE);
+                    RestClient.post().searchTextV2(AppData.UserData.CopmanyId, ((LocationEntity) spnLocation.getSelectedItem()).locationId, ((CategoryEntity) spnCategory.getSelectedItem()).type.ordinal(), AppData.UserGuid, query).enqueue(searchCallback());
                 }
                 else
                 {
@@ -145,12 +179,20 @@ public class SearchResultsActivity extends BaseActionBarActivity {
         };
     }
 
-    private Callback<List<SearchEntity>> searchCallback() {
+    private InksellCallback<List<SearchEntity>> searchCallback() {
         return new InksellCallback<List<SearchEntity>>() {
             @Override
             public void onSuccess(List<SearchEntity> searchEntities) {
+
+                progressBar.setVisibility(View.GONE);
+                layoutErrorTryAgain.setVisibility(View.GONE);
+
                 postSummaryList = searchEntityToPostSummary(searchEntities);
-                if(!searchEntities.isEmpty()) {
+                if(searchEntities.isEmpty()) {
+                    emptyTemplateHelper.setLayoutVisibility(View.VISIBLE);
+                    rv.setVisibility(View.GONE);
+                }
+                else {
                     if(rvAdapter==null) {
                         rvAdapter = new RVAdapter(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
                         rvAdapter.setIsSearchPosts(true);
@@ -159,7 +201,18 @@ public class SearchResultsActivity extends BaseActionBarActivity {
                     else {
                         rvAdapter.Update(postSummaryList, NavigationHelper.cardViewClickListener(rv, postSummaryList, getParent()));
                     }
+                    emptyTemplateHelper.setLayoutVisibility(View.GONE);
+                    rv.setVisibility(View.VISIBLE);
                 }
+
+            }
+
+            @Override
+            public void onError(ResponseStatus responseStatus)
+            {
+                progressBar.setVisibility(View.GONE);
+                layoutErrorTryAgain.setVisibility(View.VISIBLE);
+                rv.setVisibility(View.GONE);
             }
         };
     }

@@ -14,10 +14,12 @@ import Constants.AppData;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import inksell.common.BaseActionBarActivity;
+import inksell.inksell.Home;
 import inksell.inksell.R;
 import models.UserEntity;
 import services.InksellCallback;
 import services.RestClient;
+import utilities.NavigationHelper;
 import utilities.ResponseStatus;
 import utilities.Utility;
 
@@ -68,6 +70,8 @@ public class EditMyDetails extends BaseActionBarActivity {
     @InjectView(R.id.loading_Text)
     TextView loadingText;
 
+    private boolean isNewUser = false;
+
     @Override
     protected void initDataAndLayout() {
         progressBar.setVisibility(View.VISIBLE);
@@ -76,6 +80,12 @@ public class EditMyDetails extends BaseActionBarActivity {
 
         loadUserData();
     }
+
+    protected void setIntentExtras()
+    {
+        isNewUser = Boolean.parseBoolean(this.intentExtraMap.get("isNewUser"));
+    }
+
 
     @Override
     protected void initActivity() {
@@ -95,7 +105,7 @@ public class EditMyDetails extends BaseActionBarActivity {
                 loadingText.setText(getString(R.string.saving));
                 loadingFullPage.setVisibility(View.VISIBLE);
 
-                UserEntity userEntity = AppData.UserData;
+                final UserEntity userEntity = AppData.UserData;
                 userEntity.Address = editAddress.getText().toString();
                 userEntity.City = editCity.getText().toString();
                 userEntity.PersonalEmail = personalEmail.getText().toString();
@@ -106,15 +116,27 @@ public class EditMyDetails extends BaseActionBarActivity {
                     public void onSuccess(Integer integer) {
                         loadingFullPage.setVisibility(View.GONE);
                         ResponseStatus status = ResponseStatus.values()[integer];
+                        AppData.UserData = userEntity;
+
+                        NavigateToHomeIfNewUser();
                     }
 
                     @Override
                     public void onError(ResponseStatus responseStatus) {
                         loadingFullPage.setVisibility(View.GONE);
+                        NavigateToHomeIfNewUser();
                     }
                 });
             }
         };
+    }
+
+    private void NavigateToHomeIfNewUser()
+    {
+        if(isNewUser)
+        {
+            NavigationHelper.NavigateTo(Home.class, true);
+        }
     }
 
     @Override

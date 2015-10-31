@@ -21,6 +21,7 @@
     <string name="emptyMyAccount">You haven\'t posted anything.\nStart posting now.</string>
     <string name="emptyFavourites">No Favourites saved.</string>
     <string name="emptySubscriptionList">You haven\'t subscribed to any tags.\nSubscribe now.</string>
+    <string name="emptySearchResults">Sorry ! \nNo results found.</string>
 
     <string name="logoutSuccess">Logged out successfully.</string>
     <string name="logoutFailure">Could not Log out. Please try again later.</string>

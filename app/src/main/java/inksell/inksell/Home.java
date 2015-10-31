@@ -28,6 +28,7 @@ import models.UserEntity;
 import retrofit.Callback;
 import services.InksellCallback;
 import services.RestClient;
+import utilities.ConfigurationManager;
 import utilities.LocalStorageHandler;
 import utilities.NavigationHelper;
 import utilities.ResponseStatus;
@@ -226,6 +227,13 @@ public class Home extends BaseActionBarActivity{
         homeListFragment.setFilteredList(type);
 
         return true;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        ConfigurationManager.setLocalData();
     }
 
     @Override

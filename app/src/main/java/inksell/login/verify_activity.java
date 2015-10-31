@@ -4,12 +4,17 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Constants.AppData;
 import Constants.StorageConstants;
 import butterknife.InjectView;
 import inksell.common.BaseActionBarActivity;
 import inksell.inksell.Home;
 import inksell.inksell.R;
+import inksell.user.EditMyDetails;
+import models.UserEntity;
 import services.InksellCallback;
 import services.RestClient;
 import utilities.LocalStorageHandler;
@@ -77,7 +82,7 @@ public class verify_activity extends BaseActionBarActivity {
                 {
                     LocalStorageHandler.SaveData(StorageConstants.UserVerified, true);
                     AppData.UserGuid = LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class);
-                    NavigationHelper.NavigateTo(Home.class, true);
+                    loadUserData();
                 }
                 loadingFullPage.setVisibility(View.GONE);
             }
@@ -87,5 +92,32 @@ public class verify_activity extends BaseActionBarActivity {
                 loadingFullPage.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void loadUserData()
+    {
+        RestClient.get().getUserDetails(AppData.UserGuid).enqueue(new InksellCallback<UserEntity>() {
+            @Override
+            public void onSuccess(UserEntity userEntity) {
+                LocalStorageHandler.SaveData(StorageConstants.UserData, userEntity);
+                AppData.UserData = userEntity;
+                if(isAlreadyRegistered) {
+                    NavigationHelper.NavigateTo(Home.class, true);
+                }
+                else
+                {
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("isNewUser", "true");
+                    NavigationHelper.NavigateTo(EditMyDetails.class, map, true, null);
+                }
+            }
+
+            @Override
+            public void onError(ResponseStatus responseStatus)
+            {
+                NavigationHelper.NavigateTo(Home.class, true);
+            }
+        });
+
     }
 }

@@ -41,4 +41,6 @@
     <string name="ErrorPostSoldOutUpdateFailed">Error updating post status. Please try again later.</string>
 
     <string name="ErrorAddMultipleNoPosts">Please add atleast one post.</string>
+
+    <string name="DeviceNotSupported">This device is not supported.</string>
 </resources>

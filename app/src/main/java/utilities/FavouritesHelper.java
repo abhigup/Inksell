@@ -55,11 +55,11 @@ public class FavouritesHelper {
 
     public static List<PostSummaryEntity> getFavourites()
     {
-        setFavourites();
+        setFavouritesFromLocal();
         return setFavourites(postSummaryEntityList);
     }
 
-    public static void setFavourites()
+    public static void setFavouritesFromLocal()
     {
         postSummaryEntityList = new ArrayList<>();
 
@@ -67,6 +67,7 @@ public class FavouritesHelper {
 
         if(postSummaryEntities!=null) {
             postSummaryEntityList = new ArrayList(Arrays.asList(postSummaryEntities));
+            setFavourites(postSummaryEntityList);
         }
     }
 

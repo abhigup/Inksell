@@ -7,6 +7,10 @@ public class StorageConstants {
 
     public static final String UserUUID = "UserUUID";
 
+    public static final String UserData = "UserData";
+
+    public static final String PostsData = "PostsData";
+
     public static final String UserVerified = "Verified";
 
     public static final String Favourites = "Favourites";
@@ -20,4 +24,6 @@ public class StorageConstants {
     public static final String UserNotificationToken = "UserNotificationToken";
 
     public static final String IsAlreadyRegistered = "IsAlreadyRegistered";
+
+
 }
