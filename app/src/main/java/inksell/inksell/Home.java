@@ -24,7 +24,6 @@ import inksell.search.SearchResultsActivity;
 import inksell.user.MyAccount;
 import inksell.user.SubscriptionFragment;
 import models.SubscriptionEntity;
-import models.UserEntity;
 import retrofit.Callback;
 import services.InksellCallback;
 import services.RestClient;
@@ -83,18 +82,10 @@ public class Home extends BaseActionBarActivity{
 
     private void loadUserData()
     {
-        RestClient.get().getUserDetails(AppData.UserGuid).enqueue(new InksellCallback<UserEntity>() {
-            @Override
-            public void onSuccess(UserEntity userEntity) {
-                AppData.UserData = userEntity;
+        navHeadEmail.setText(AppData.UserData.CorporateEmail);
+        navHeadName.setText(AppData.UserData.Username);
 
-                navHeadEmail.setText(userEntity.CorporateEmail);
-                navHeadName.setText(userEntity.Username);
-
-                Utility.setUserPic(circleView, AppData.UserData.UserImageUrl, AppData.UserData.Username);
-
-            }
-        });
+        Utility.setUserPic(circleView, AppData.UserData.UserImageUrl, AppData.UserData.Username);
 
     }
 

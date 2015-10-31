@@ -142,6 +142,8 @@
             android:fontFamily="sans-serif-light"
             android:singleLine="false"
             android:layout_width="match_parent"
+            android:linksClickable="true"
+            android:autoLink="web"
             android:id="@+id/view_furniture_description"
             android:layout_height="wrap_content"/>
 

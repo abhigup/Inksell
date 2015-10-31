@@ -56,7 +56,13 @@ public abstract class InksellCallback<T> implements Callback<T> {
     @Override
     public void onFailure(Throwable error) {
         //ToDo : Remove below after Development
-        Utility.ShowInfoDialog(error.getMessage());
+        if(!Utility.IsNetworkAvailable())
+        {
+            Utility.ShowInfoDialog(R.string.error_network);
+        }
+        else {
+            Utility.ShowInfoDialog(error.getMessage());
+        }
 
         this.onError(ResponseStatus.SomeErrorOccured);
     }

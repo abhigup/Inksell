@@ -7,7 +7,7 @@
     <string name="ErrorUnknownResponseStatus">Unknown Error Response Status.</string>
     <string name="ErrorUserAlreadyExist">User already exists.</string>
 
-    <string name="error_network">No Network</string>
+    <string name="error_network">No Network. Please check your network connection.</string>
     <string name="error_network_http_error">Network Error</string>
     <string name="error_unknown">Unknown Error</string>
     <string name="error_no_response">No Response.</string>

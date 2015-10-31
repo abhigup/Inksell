@@ -308,6 +308,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
             @Override
             public void onSuccess(List<PostSummaryEntity> postSummaryEntities) {
 
+                rv.setVisibility(View.VISIBLE);
                 layoutErrorTryAgain.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
 
@@ -336,6 +337,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
                 progressBar.setVisibility(View.GONE);
                 layoutErrorTryAgain.setVisibility(View.VISIBLE);
 
+                rv.setVisibility(View.GONE);
                 swipeContainer.setRefreshing(false);
             }
         };
