@@ -62,10 +62,10 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/add_multiple_recycler_view"
-            android:layout_below="@+id/add_post_multiple_title_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/add_submit"
+            android:layout_marginBottom="50dp"
             />
 
     </RelativeLayout>
@@ -78,7 +78,7 @@
             android:layout_alignParentBottom="true"
             android:text="@string/submit"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:textColor="@color/white"
             style="@style/ButtonPrimary"
             android:id="@+id/add_submit"/>

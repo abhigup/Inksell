@@ -46,6 +46,7 @@ public class InksellGcmListenerService extends GcmListenerService {
 
     private void createNotification() {
         Intent notificationIntent = new Intent(this, StartPage.class);
+        notificationIntent.putExtra("postSummary", Utility.GetJSONString(postSummaryEntity));
         PendingIntent pendingIntent = PendingIntent.getActivity(this, postSummaryEntity.PostId, notificationIntent, 0);
 
         _notificationManeger = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);

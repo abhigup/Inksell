@@ -31,6 +31,7 @@
         <activity
             android:name=".StartPage"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Material.Light.NoActionBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,31 +41,38 @@
         </activity>
         <activity
             android:name="inksell.login.register_activity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_register_activity" >
         </activity>
         <activity
             android:name="inksell.login.verify_activity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_verify_activity" >
         </activity>
         <activity
             android:name="inksell.login.already_activity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_already_activity" >
         </activity>
         <activity
             android:name="inksell.login.new_company"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_new_company" >
         </activity>
         <activity
             android:name=".Home"
             android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
             android:name="inksell.posts.view.ViewPostActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
             android:name="inksell.search.SearchResultsActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop"
             android:theme="@style/AppThemeNoActionBar" >
             <intent-filter>
@@ -80,16 +88,19 @@
         <activity
             android:name="inksell.posts.add.AddPostActivity"
             android:label="@string/title_activity_add_post"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="inksell.user.MyAccount"
             android:label="@string/title_activity_my_account"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
             android:name="inksell.user.EditMyDetails"
             android:label="@string/title_activity_edit_my_details"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
@@ -112,15 +123,18 @@
 
         <activity
             android:name="inksell.posts.add.AddMultipleActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
             android:name="inksell.posts.view.ViewMultipleActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" >
         </activity>
         <activity
             android:name="inksell.posts.add.MapActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_map" >
         </activity>
 

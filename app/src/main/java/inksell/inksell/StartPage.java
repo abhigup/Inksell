@@ -15,6 +15,7 @@ import butterknife.InjectView;
 import inksell.login.already_activity;
 import inksell.login.register_activity;
 import inksell.login.verify_activity;
+import models.PostSummaryEntity;
 import models.UserEntity;
 import services.InksellCallback;
 import services.RestClient;
@@ -43,6 +44,17 @@ public class StartPage extends Activity {
         UUID UserGUID = Utility.GetUUID(LocalStorageHandler.GetData(StorageConstants.UserUUID, String.class));
         String isUserVerifiedString = LocalStorageHandler.GetData(StorageConstants.UserVerified, String.class);
         boolean isUserVerified = (isUserVerifiedString == null)?false:Boolean.valueOf(isUserVerifiedString);
+
+
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null) {
+            PostSummaryEntity postSummaryEntity = Utility.GetObjectFromJSON(extras.getString("postSummary"), PostSummaryEntity.class);
+            if(postSummaryEntity!=null)
+            {
+                NavigationHelper.NavigateToViewPosts(postSummaryEntity, true);
+                return;
+            }
+        }
 
         if(UserGUID !=null
             && isUserVerified==true)

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,6 +41,9 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     @InjectView(R.id.subscriptions_autocomplete)
     AutoCompleteTextView autoCompleteTextView;
 
+    @InjectView(R.id.subscriptions_add_button)
+    ImageButton addButton;
+
     @InjectView(R.id.subscriptions_buttons_layout1)
     LinearLayout buttonsLayout1;
 
@@ -56,7 +60,7 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
 
     private List<SubscriptionEntity> subscriptionEntityList;
 
-    ArrayAdapter tagsAdapter;
+    ArrayAdapter<TagsEntity> tagsAdapter;
     String token;
 
     @Override
@@ -80,6 +84,7 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         RestClient.get().getAllSubscriptionsTags().enqueue(new InksellCallback<List<TagsEntity>>() {
             @Override
             public void onSuccess(List<TagsEntity> tagsEntities) {
+                tagsAdapter.clear();
                 tagsAdapter.addAll(tagsEntities);
                 autoCompleteTextView.setThreshold(1);
                 autoCompleteTextView.setAdapter(tagsAdapter);
@@ -101,9 +106,37 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
         emptyTemplateHelper.setEmptyTemplate(R.drawable.subscription_none, R.string.emptySubscriptionList);
 
         loadingFullPage.setVisibility(View.GONE);
+        addButton.setOnClickListener(addNewTag());
 
         GetAllSubscriptionTags(0);
         setSubscriptionListFromLocal();
+    }
+
+    private View.OnClickListener addNewTag() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean isNew = false;
+                String tag = autoCompleteTextView.getText().toString();
+                for(int i=0;i<tagsAdapter.getCount();i++)
+                {
+                    TagsEntity tagsEntity = tagsAdapter.getItem(i);
+                    if(tagsEntity!=null && tag.equalsIgnoreCase(tagsEntity.tagName))
+                    {
+                        addNewSubscription(tagsEntity.tagName, tagsEntity.tagId, false);
+                        isNew = true;
+                        break;
+                    }
+                }
+
+                if(!isNew)
+                {
+                    addNewSubscription(tag, 0, true);
+                    GetAllSubscriptionTags(1);
+                }
+            }
+        };
     }
 
     @Override
@@ -133,16 +166,16 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
             }
         }
 
-        SubscriptionEntity subscriptionEntity = new SubscriptionEntity();
-        subscriptionEntity.tagId = tagsEntity.tagId;
-        subscriptionEntity.tagName = tagsEntity.tagName;
-        subscriptionEntity.IsNew = false;
-
-        addNewSubscription(subscriptionEntity);
+        addNewSubscription(tagsEntity.tagName, tagsEntity.tagId, false);
     }
 
-    private void addNewSubscription(final SubscriptionEntity subscriptionEntity)
+    private void addNewSubscription(String tagName, int tagId, boolean isNew)
     {
+        final SubscriptionEntity subscriptionEntity = new SubscriptionEntity();
+        subscriptionEntity.tagId = tagId;
+        subscriptionEntity.tagName = tagName;
+        subscriptionEntity.IsNew = isNew;
+
         if(Utility.IsStringNullorEmpty(AppData.NotificationToken))
         {
             Utility.ShowToast("Unable to setup notifications! Please try again");
