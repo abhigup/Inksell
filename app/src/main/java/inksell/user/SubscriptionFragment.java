@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -148,8 +147,7 @@ public class SubscriptionFragment extends BaseFragment implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TagsEntity tagsEntity = (TagsEntity) parent.getItemAtPosition(position);
 
-        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-        mgr.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        Utility.hideSoftKeyboard(getActivity());
 
         if(subscriptionEntityList.size()>=3)
         {

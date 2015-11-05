@@ -174,6 +174,8 @@ public class SearchResultsActivity extends BaseActionBarActivity {
                 {
                     Utility.ShowInfoDialog("No locations selected. Please try again later");
                 }
+
+                Utility.hideSoftKeyboard(SearchResultsActivity.this);
                 return true;
             }
         };

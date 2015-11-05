@@ -56,6 +56,7 @@ public class StartPage extends Activity {
             }
         }
 
+
         if(UserGUID !=null
             && isUserVerified==true)
         {

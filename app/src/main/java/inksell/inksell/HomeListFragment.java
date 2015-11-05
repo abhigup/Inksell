@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -409,8 +408,7 @@ public class HomeListFragment extends BaseFragment implements SwipeRefreshLayout
             locationWrapper.updateLocationFromPlaceId(placeId);
 
             //Close Keyboard
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            Utility.hideSoftKeyboard(getActivity());
         }
     };
 

@@ -19,6 +19,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -363,7 +364,7 @@ public class Utility {
         //Hours ago
         long elapsedHours = different / hoursInMilli;
         different = different % hoursInMilli;
-        if(elapsedHours>1)
+        if(elapsedHours>=1)
         {
             return elapsedHours + " hours ago";
         }
@@ -824,6 +825,13 @@ public class Utility {
             return false;
         }
         return true;
+    }
+
+
+    public static void hideSoftKeyboard(Activity activity)
+    {
+        InputMethodManager mgr = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
+        mgr.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
 

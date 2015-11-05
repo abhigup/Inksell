@@ -2,7 +2,6 @@ package inksell.posts.add;
 
 import android.content.Intent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -131,8 +130,7 @@ public class MapActivity extends BaseFragmentActivity implements ILocationCallba
             locationWrapper.updateLocationFromPlaceId(placeId);
 
             //Close Keyboard
-            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            Utility.hideSoftKeyboard(MapActivity.this);
         }
     };
 
